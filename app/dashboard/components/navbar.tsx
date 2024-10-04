@@ -11,7 +11,7 @@ const Navbar: React.FC = () => {
 
   const handleSignOut = async () => {
     await signOut({ redirect: false });
-    router.push('/'); // Redirect to home page after sign out
+    router.push('/'); // เปลี่ยนหน้าหลัง signout
   };
 
   const isAdmin = session?.user?.role === 'ADMIN';
