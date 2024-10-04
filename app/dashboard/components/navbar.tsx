@@ -14,6 +14,8 @@ const Navbar: React.FC = () => {
     router.push('/'); // Redirect to home page after sign out
   };
 
+  const isAdmin = session?.user?.role === 'ADMIN';
+
   return (
     <div className="navbar bg-base-100">
       <div className="navbar-start">
@@ -25,6 +27,7 @@ const Navbar: React.FC = () => {
             <li><Link href="/">Home</Link></li>
             <li><Link href="/about">About</Link></li>
             <li><Link href="/services">Services</Link></li>
+            {isAdmin && <li><Link href="/dashboard">Dashboard</Link></li>}
             <li><Link href="/contact">Contact</Link></li>
           </ul>
         </div>
@@ -35,6 +38,7 @@ const Navbar: React.FC = () => {
           <li><Link href="/">Home</Link></li>
           <li><Link href="/about">About</Link></li>
           <li><Link href="/services">Services</Link></li>
+          {isAdmin && <li><Link href="/dashboard">Dashboard</Link></li>}
           <li><Link href="/contact">Contact</Link></li>
         </ul>
       </div>
