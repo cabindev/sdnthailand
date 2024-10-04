@@ -13,7 +13,7 @@ pnpm dev
 # or
 bun dev
 ```
-<!-- ใช้  node เป็น Backend
+ใช้  node เป็น Backend
 const express = require('express');
 const next = require('next');
 const dev = process.env.NODE_ENV !== 'production';
@@ -39,7 +39,7 @@ app.prepare().then(() => {
         if (err) throw err;
         console.log(`> Ready on http://localhost:${port}`);
     });
-}); -->
+});
 
 s
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
