@@ -8,23 +8,35 @@ datasource db {
 }
 
 model User {
-  id                  Int       @id @default(autoincrement())
+  id                  Int            @id @default(autoincrement())
   firstName           String
   lastName            String
-  email               String    @unique
+  email               String         @unique
   password            String
   image               String?
-  role                Role      @default(MEMBER)
+  role                Role           @default(MEMBER)
   emailVerified       DateTime?
-  resetToken          String?   @unique
+  resetToken          String?        @unique
   resetTokenCreatedAt DateTime?
   resetTokenExpiresAt DateTime?
   lastPasswordReset   DateTime?
-  createdAt           DateTime  @default(now())
-  updatedAt           DateTime  @updatedAt
+  createdAt           DateTime       @default(now())
+  updatedAt           DateTime       @updatedAt
+  mediaRequests       MediaRequest[]
 }
 
 enum Role {
   MEMBER
   ADMIN
+}
+
+model MediaRequest {
+  id          Int      @id @default(autoincrement())
+  userId      Int
+  subject     String
+  message     String
+  phoneNumber String
+  filePath    String?
+  createdAt   DateTime @default(now())
+  user        User     @relation(fields: [userId], references: [id])
 }

@@ -18,7 +18,7 @@ export default function ResetPassword() {
   }, []);
 
   const validatePassword = (password: string) => {
-    return password.length >= 8;
+    return password.length >= 5;
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -27,7 +27,7 @@ export default function ResetPassword() {
     setMessage('');
 
     if (!validatePassword(password)) {
-      setMessage('รหัสผ่านต้องมีความยาวอย่างน้อย 8 ตัวอักษร');
+      setMessage('รหัสผ่านต้องมีความยาวอย่างน้อย 5 ตัวอักษร');
       setIsLoading(false);
       return;
     }
@@ -53,10 +53,10 @@ export default function ResetPassword() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-[var(--background)]">
-      <div className="max-w-md w-full space-y-8 p-10 bg-[var(--primary-foreground)] rounded-xl shadow-lg">
+    <div className="min-h-screen flex items-center justify-center bg-white">
+      <div className="max-w-md w-full space-y-8 p-10 bg-white rounded-xl shadow-lg">
         <div>
-          <h2 className="mt-6 text-center text-3xl font-extrabold text-[var(--foreground)]">
+          <h2 className="mt-6 text-center text-3xl font-extrabold text-gray-900">
             รีเซ็ตรหัสผ่าน
           </h2>
         </div>
@@ -68,7 +68,7 @@ export default function ResetPassword() {
                 id="password"
                 type="password"
                 required
-                className="appearance-none rounded-none relative block w-full px-3 py-2 border border-[var(--muted)] placeholder-[var(--muted-foreground)] text-[var(--foreground)] rounded-t-md focus:outline-none focus:ring-[var(--primary)] focus:border-[var(--primary)] focus:z-10 sm:text-sm"
+                className="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none focus:ring-gray-500 focus:border-gray-500 focus:z-10 sm:text-sm"
                 placeholder="รหัสผ่านใหม่"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
@@ -80,7 +80,7 @@ export default function ResetPassword() {
                 id="confirmPassword"
                 type="password"
                 required
-                className="appearance-none rounded-none relative block w-full px-3 py-2 border border-[var(--muted)] placeholder-[var(--muted-foreground)] text-[var(--foreground)] rounded-b-md focus:outline-none focus:ring-[var(--primary)] focus:border-[var(--primary)] focus:z-10 sm:text-sm"
+                className="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-b-md focus:outline-none focus:ring-gray-500 focus:border-gray-500 focus:z-10 sm:text-sm"
                 placeholder="ยืนยันรหัสผ่านใหม่"
                 value={confirmPassword}
                 onChange={(e) => setConfirmPassword(e.target.value)}
@@ -91,7 +91,7 @@ export default function ResetPassword() {
           <div>
             <button
               type="submit"
-              className="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-[var(--primary-foreground)] bg-[var(--primary)] hover:bg-[var(--primary-foreground)] hover:text-[var(--primary)] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[var(--primary)]"
+              className="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-gray-600 hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500"
               disabled={isLoading}
             >
               {isLoading ? 'กำลังดำเนินการ...' : 'รีเซ็ตรหัสผ่าน'}
@@ -106,7 +106,7 @@ export default function ResetPassword() {
         )}
 
         <div className="text-center mt-4">
-          <Link href="/auth/signin" className="font-medium text-[var(--primary)] hover:text-[var(--primary-foreground)]">
+          <Link href="/auth/signin" className="font-medium text-gray-600 hover:text-gray-500">
             กลับไปหน้าเข้าสู่ระบบ
           </Link>
         </div>

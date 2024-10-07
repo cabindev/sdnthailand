@@ -14,7 +14,7 @@ export default function SignIn() {
 
   useEffect(() => {
     if (session) {
-      router.push("/"); // หรือหน้าหลักหลังจาก login
+      router.push("/");
     }
   }, [session, router]);
 
@@ -32,7 +32,7 @@ export default function SignIn() {
       if (result?.error) {
         setError("อีเมลหรือรหัสผ่านไม่ถูกต้อง");
       } else {
-        router.replace("/"); // หรือหน้าหลักหลังจาก login
+        router.replace("/");
       }
     } catch (error) {
       setError("เกิดข้อผิดพลาด โปรดลองอีกครั้ง");
@@ -40,10 +40,10 @@ export default function SignIn() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-[var(--background)]">
-      <div className="max-w-md w-full space-y-8 p-10 bg-[var(--primary-foreground)] rounded-xl shadow-lg">
+    <div className="min-h-screen flex items-center justify-center bg-white">
+      <div className="max-w-md w-full space-y-8 p-10 bg-white rounded-xl shadow-lg">
         <div>
-          <h2 className="mt-6 text-center text-3xl font-extrabold text-[var(--foreground)]">
+          <h2 className="mt-6 text-center text-3xl font-extrabold text-gray-900">
             เข้าสู่ระบบ
           </h2>
         </div>
@@ -60,7 +60,7 @@ export default function SignIn() {
                 type="email"
                 autoComplete="email"
                 required
-                className="appearance-none rounded-none relative block w-full px-3 py-2 border border-[var(--muted)] placeholder-[var(--muted-foreground)] text-[var(--foreground)] rounded-t-md focus:outline-none focus:ring-[var(--primary)] focus:border-[var(--primary)] focus:z-10 sm:text-sm"
+                className="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none focus:ring-gray-500 focus:border-gray-500 focus:z-10 sm:text-sm"
                 placeholder="อีเมล"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
@@ -76,7 +76,7 @@ export default function SignIn() {
                 type="password"
                 autoComplete="current-password"
                 required
-                className="appearance-none rounded-none relative block w-full px-3 py-2 border border-[var(--muted)] placeholder-[var(--muted-foreground)] text-[var(--foreground)] rounded-b-md focus:outline-none focus:ring-[var(--primary)] focus:border-[var(--primary)] focus:z-10 sm:text-sm"
+                className="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-b-md focus:outline-none focus:ring-gray-500 focus:border-gray-500 focus:z-10 sm:text-sm"
                 placeholder="รหัสผ่าน"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
@@ -90,11 +90,11 @@ export default function SignIn() {
                 id="remember-me"
                 name="remember-me"
                 type="checkbox"
-                className="h-4 w-4 text-[var(--primary)] focus:ring-[var(--primary)] border-[var(--muted)] rounded"
+                className="h-4 w-4 text-gray-600 focus:ring-gray-500 border-gray-300 rounded"
               />
               <label
                 htmlFor="remember-me"
-                className="ml-2 block text-sm text-[var(--foreground)]"
+                className="ml-2 block text-sm text-gray-900"
               >
                 จดจำฉัน
               </label>
@@ -102,7 +102,7 @@ export default function SignIn() {
 
             <Link
               href="/auth/forgot-password"
-              className="link-primary font-medium"
+              className="text-sm font-medium text-gray-600 hover:text-gray-500"
             >
               ลืมรหัสผ่าน?
             </Link>
@@ -111,7 +111,7 @@ export default function SignIn() {
           <div>
             <button
               type="submit"
-              className="btn-primary group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[var(--primary)]"
+              className="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-gray-600 hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500"
             >
               เข้าสู่ระบบ
             </button>
@@ -122,9 +122,9 @@ export default function SignIn() {
           <p className="mt-2 text-center text-sm text-red-600">{error}</p>
         )}
 
-        <p className="mt-2 text-center text-sm text-[var(--muted-foreground)]">
+        <p className="mt-2 text-center text-sm text-gray-600">
           ยังไม่เป็นสมาชิก?{" "}
-          <Link href="/auth/form_signup" className="link-primary font-medium">
+          <Link href="/auth/form_signup" className="font-medium text-gray-600 hover:text-gray-500">
             สมัครสมาชิกเลย
           </Link>
         </p>

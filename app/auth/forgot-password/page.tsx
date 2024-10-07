@@ -27,10 +27,10 @@ export default function ForgotPassword() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-[var(--background)]">
-      <div className="max-w-md w-full space-y-8 p-10 bg-[var(--primary-foreground)] rounded-xl shadow-lg">
+    <div className="min-h-screen flex items-center justify-center bg-white">
+      <div className="max-w-md w-full space-y-8 p-10 bg-white rounded-xl shadow-lg">
         <div>
-          <h2 className="mt-6 text-center text-3xl font-extrabold text-[var(--foreground)]">
+          <h2 className="mt-6 text-center text-3xl font-extrabold text-gray-900">
             ลืมรหัสผ่าน
           </h2>
         </div>
@@ -46,7 +46,7 @@ export default function ForgotPassword() {
                 type="email"
                 autoComplete="email"
                 required
-                className="appearance-none rounded-md relative block w-full px-3 py-2 border border-[var(--muted)] placeholder-[var(--muted-foreground)] text-[var(--foreground)] focus:outline-none focus:ring-[var(--primary)] focus:border-[var(--primary)] focus:z-10 sm:text-sm"
+                className="appearance-none rounded-md relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-gray-500 focus:border-gray-500 focus:z-10 sm:text-sm"
                 placeholder="กรอกอีเมลของคุณ"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
@@ -57,7 +57,7 @@ export default function ForgotPassword() {
           <div>
             <button
               type="submit"
-              className="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-[var(--primary-foreground)] bg-[var(--primary)] hover:bg-[var(--primary-foreground)] hover:text-[var(--primary)] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[var(--primary)]"
+              className="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-gray-600 hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500"
               disabled={loading}
             >
               {loading ? (
@@ -70,16 +70,13 @@ export default function ForgotPassword() {
         </form>
 
         {message && (
-          <div role="alert" className={`alert mt-4 ${isSuccess ? 'alert-success' : 'alert-error'}`}>
-            <svg xmlns="http://www.w3.org/2000/svg" className="stroke-current shrink-0 h-6 w-6" fill="none" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d={isSuccess ? "M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" : "M6 18L18 6M6 6l12 12"} />
-            </svg>
+          <div role="alert" className={`alert mt-4 ${isSuccess ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-700'} p-4 rounded-md`}>
             <span>{message}</span>
           </div>
         )}
 
         <div className="text-center mt-4">
-          <Link href="/auth/signin" className="font-medium text-[var(--primary)] hover:text-[var(--primary-foreground)]">
+          <Link href="/auth/signin" className="font-medium text-gray-600 hover:text-gray-500">
             กลับไปหน้าเข้าสู่ระบบ
           </Link>
         </div>

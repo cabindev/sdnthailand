@@ -3,36 +3,37 @@
 @tailwind utilities;
 
 :root {
-  --background: #fffbeb;
-  --foreground: #78350f;
-  --primary: #d97706;
-  --primary-foreground: #fef3c7;
-  --secondary: #92400e;
-  --secondary-foreground: #fef3c7;
-  --accent: #fbbf24;
-  --accent-foreground: #78350f;
-  --muted: #fde68a;
-  --muted-foreground: #92400e;
-  --hover-bg: #f59e0b; /* เพิ่มสีพื้นหลังสำหรับ hover */
-  --hover-text: #ffffff; /* เพิ่มสีตัวอักษรสำหรับ hover */
+  --background: #ffffff;
+  --foreground: #333333;
+  --primary: #333333;
+  --primary-foreground: #ffffff;
+  --secondary: #f5f5f5;
+  --secondary-foreground: #333333;
+  --accent: #ff9900;
+  --accent-foreground: #ffffff;
+  --muted: #767676;
+  --muted-foreground: #ffffff;
+  --hover-bg: #f5f5f5;
+  --hover-text: #333333;
 }
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --background: #292524;
-    --foreground: #fef3c7;
-    --primary: #fbbf24;
-    --primary-foreground: #78350f;
-    --secondary: #f59e0b;
-    --secondary-foreground: #78350f;
-    --accent: #d97706;
-    --accent-foreground: #fef3c7;
-    --muted: #78350f;
-    --muted-foreground: #fde68a;
-    --hover-bg: #fef3c7; /* สีพื้นหลังสำหรับ hover ในโหมดมืด */
-    --hover-text: #292524; /* สีตัวอักษรสำหรับ hover ในโหมดมืด */
+    --background: #1a1a1a;
+    --foreground: #f5f5f5;
+    --primary: #f5f5f5;
+    --primary-foreground: #1a1a1a;
+    --secondary: #2a2a2a;
+    --secondary-foreground: #f5f5f5;
+    --accent: #ff9900;
+    --accent-foreground: #1a1a1a;
+    --muted: #767676;
+    --muted-foreground: #f5f5f5;
+    --hover-bg: #2a2a2a;
+    --hover-text: #f5f5f5;
   }
 }
+
 
 body {
   color: var(--foreground);
