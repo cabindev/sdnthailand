@@ -40,3 +40,35 @@ model MediaRequest {
   createdAt   DateTime @default(now())
   user        User     @relation(fields: [userId], references: [id])
 }
+
+model AnnounceResult {
+  id            String     @id @default(cuid())
+  procurementId String
+  procurement   Procurement @relation(fields: [procurementId], references: [id])
+  pdfFile       String?
+  announcedDate DateTime   @default(now())
+  createdAt     DateTime   @default(now())
+  updatedAt     DateTime   @updatedAt
+}
+
+model Procurement {
+  id             String     @id @default(cuid())
+  projectCode    String     @unique
+  title          String
+  description    String
+  startDate      DateTime
+  endDate        DateTime
+  status         ProcurementStatus
+  coverImage     String?
+  pdfFile        String?
+  createdAt      DateTime   @default(now())
+  updatedAt      DateTime   @updatedAt
+  announceResults AnnounceResult[]
+}
+
+enum ProcurementStatus {
+  DRAFT
+  OPEN
+  CLOSED
+  CANCELLED
+}

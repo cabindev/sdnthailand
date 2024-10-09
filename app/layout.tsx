@@ -7,6 +7,7 @@ import authOptions from "./lib/configs/auth/authOptions";
 import ConditionalNavbar from "./components/ConditionalNavbar";
 import 'antd/dist/reset.css';
 
+
 const seppuriSemibold = localFont({
   src: "./fonts/seppuri-semibold-webfont.woff2",
   variable: "--font-seppuri-semibold",
@@ -22,8 +23,8 @@ const seppuriThin = localFont({
 });
 
 export const metadata: Metadata = {
-  title: "SSN Thailand",
-  description: "Social Security Number Thailand",
+  title: "SDN Thailand",
+  description: "SDN Thailand",
 };
 
 export default async function RootLayout({
