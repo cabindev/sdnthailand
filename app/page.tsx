@@ -6,7 +6,7 @@ import HomeProject2020 from "./project2020/page";
 
 export default function Home() {
 return (
-  <div className="min-h-screen bg-white pt-20">
+  <div className="min-h-screen bg-white pt-4">
     <main className="pt-16 sm:pt-20">
       {/* Hero Section */}
       <div className="relative pb-16 sm:pb-20">

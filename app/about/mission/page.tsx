@@ -4,7 +4,7 @@ import Image from "next/image";
 
 export default function Mission() {
  return (
-   <div className="min-h-screen bg-white pt-24">
+   <div className="min-h-screen bg-white pt-4">
      {/* Hero Section */}
      <div className="relative overflow-hidden bg-gradient-to-r from-orange-50 to-orange-100 py-16">
        <div className="container mx-auto px-4">

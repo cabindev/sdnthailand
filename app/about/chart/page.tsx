@@ -2,7 +2,7 @@
 import Image from "next/image";
 export default function Chart() {
   return (
-    <div className="p-8  bg-Amber-100 pt-24"> 
+    <div className="p-8  bg-Amber-100 pt-4"> 
       <div className="flex flex-col items-center justify-center ">
           <div className="text-center mb-12">
         <h1 className="text-4xl font-bold text-orange-400">
