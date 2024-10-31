@@ -21,9 +21,9 @@ return (
               priority
             />
             <div>
-              <h1 className="text-3xl sm:text-4xl font-normal text-gray-900">
+              <h3 className="text-2xl sm:text-4xl font-normal text-gray-900">
                 สำนักงานเครือข่ายองค์กรงดเหล้า
-              </h1>
+              </h3>
               <p className="mt-4 text-base sm:text-lg text-gray-600 max-w-2xl mx-auto">
               SDN Thailand
               </p>

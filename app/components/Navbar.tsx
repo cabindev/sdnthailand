@@ -37,7 +37,8 @@ const Navbar: React.FC = () => {
        { href: '/about/project2567', label: 'โครงการปี 2567' },
      ]
    },
-   { href: '/support', label: 'ขอสื่อ' },
+
+   { href: '/about/contact', label: 'ติดต่อเรา' },
    ...(isAdmin ? [{ href: '/dashboard', label: 'จัดการระบบ' }] : []),
  ];
 
