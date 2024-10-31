@@ -12,9 +12,20 @@ export async function GET() {
         lastName: true,
         email: true,
         role: true,
+        image: true, 
+      },
+      orderBy: {
+        id: 'asc' 
       }
     });
-    return NextResponse.json(users);
+
+    // แปลงข้อมูลเพื่อจัดการกรณีที่ image เป็น null
+    const formattedUsers = users.map(user => ({
+      ...user,
+      image: user.image || '/images/default-avatar.png' // ถ้า image เป็น null ให้ใช้รูป default
+    }));
+
+    return NextResponse.json(formattedUsers);
   } catch (error) {
     console.error('Error fetching users:', error);
     return NextResponse.json({ error: 'Failed to fetch users' }, { status: 500 });

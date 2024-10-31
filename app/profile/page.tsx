@@ -4,7 +4,6 @@ import { useEffect, useState } from 'react';
 import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
 import axios from 'axios';
-import Image from 'next/image';
 import Link from 'next/link';
 
 interface UserProfile {
@@ -56,21 +55,19 @@ export default function ProfilePage() {
             </button>
           </div>
           <div className="relative px-6 py-10">
-            <div className="absolute -top-16 left-1/2 transform -translate-x-1/2">
-              {profile.image ? (
-                <Image
-                  src={profile.image}
-                  alt="Profile"
-                  width={120}
-                  height={120}
-                  className="rounded-full border-4 border-white shadow-lg"
-                />
-              ) : (
-                <div className="w-32 h-32 bg-gray-300 rounded-full flex items-center justify-center text-gray-500 text-xl font-bold border-4 border-white shadow-lg">
-                  {profile.firstName[0]}{profile.lastName[0]}
-                </div>
-              )}
-            </div>
+          <div className="absolute -top-16 left-1/2 transform -translate-x-1/2">
+            {profile.image ? (
+              <img
+                src={profile.image}
+                alt="Profile"
+                className="w-32 h-32 rounded-full border-4 border-white shadow-lg object-cover"
+              />
+            ) : (
+              <div className="w-32 h-32 bg-gray-300 rounded-full flex items-center justify-center text-gray-500 text-xl font-bold border-4 border-white shadow-lg">
+                {profile.firstName[0]}{profile.lastName[0]}
+              </div>
+            )}
+          </div>
             <div className="text-center mt-16">
               <h2 className="text-3xl font-semibold text-gray-800">{`${profile.firstName} ${profile.lastName}`}</h2>
               <p className="text-gray-600 mt-2">{profile.role}</p>

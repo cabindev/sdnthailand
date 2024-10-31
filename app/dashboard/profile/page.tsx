@@ -49,7 +49,7 @@ export default function ProfilePage() {
               <h2 className="text-4xl font-bold text-white text-shadow-md">SDN Thailand</h2>
             </div>
             <button 
-              onClick={() => router.push(`/profile/edit/${profile.id}`)}
+              onClick={() => router.push(`/dashboard/profile/edit/${profile.id}`)}
               className="absolute top-4 right-4 bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full transition duration-300 ease-in-out"
             >
               Edit
@@ -57,18 +57,16 @@ export default function ProfilePage() {
           </div>
           <div className="relative px-6 py-10">
             <div className="absolute -top-16 left-1/2 transform -translate-x-1/2">
-              {profile.image ? (
-                <Image
-                  src={profile.image}
-                  alt="Profile"
-                  width={120}
-                  height={120}
-                  className="rounded-full border-4 border-white shadow-lg"
-                />
-              ) : (
-                <div className="w-32 h-32 bg-gray-300 rounded-full flex items-center justify-center text-gray-500 text-xl font-bold border-4 border-white shadow-lg">
-                  {profile.firstName[0]}{profile.lastName[0]}
-                </div>
+            {profile.image ? (
+              <img
+                src={profile.image}
+                alt="Profile"
+                className="w-32 h-32 rounded-full border-4 border-white shadow-lg object-cover"
+              />
+            ) : (
+              <div className="w-32 h-32 bg-gray-300 rounded-full flex items-center justify-center text-gray-500 text-xl font-bold border-4 border-white shadow-lg">
+                {profile.firstName[0]}{profile.lastName[0]}
+              </div>
               )}
             </div>
             <div className="text-center mt-16">
