@@ -3,11 +3,13 @@ import Link from "next/link";
 import Image from "next/image";
 import { FaNewspaper, FaFileInvoice, FaProjectDiagram } from "react-icons/fa";
 import HomeProject2020 from "./project2020/page";
+import PopularNews from "./sdnpost/components/PopularNews";
 
 export default function Home() {
 return (
   <div className="min-h-screen bg-white pt-4">
     <main className="pt-16 sm:pt-20">
+      {/* <PopularNews/> */}
       {/* Hero Section */}
       <div className="relative pb-16 sm:pb-20">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -21,7 +23,7 @@ return (
               priority
             />
             <div>
-              <h3 className="text-2xl sm:text-4xl font-normal text-gray-900">
+              <h3 className="text-2xl sm:text-4xl font-bold text-gray-900">
                 สำนักงานเครือข่ายองค์กรงดเหล้า
               </h3>
               <p className="mt-4 text-base sm:text-lg text-gray-600 max-w-2xl mx-auto">
@@ -43,7 +45,7 @@ return (
               <div className="p-3 bg-orange-50 rounded-full group-hover:bg-orange-100 transition-colors">
                 <FaNewspaper className="text-2xl sm:text-3xl text-orange-500" />
               </div>
-              <h2 className="text-lg sm:text-xl font-medium text-gray-900">
+              <h2 className="text-lg sm:text-xl font-bold text-gray-900">
                 ขอสื่อรณรงค์
               </h2>
               <p className="text-sm sm:text-base text-gray-600">
@@ -60,7 +62,7 @@ return (
               <div className="p-3 bg-orange-50 rounded-full group-hover:bg-orange-100 transition-colors">
                 <FaFileInvoice className="text-2xl sm:text-3xl text-orange-500" />
               </div>
-              <h2 className="text-lg sm:text-xl font-medium text-gray-900">
+              <h2 className="text-lg sm:text-xl font-bold text-gray-900">
                 ประกาศจัดซื้อจัดจ้าง
               </h2>
               <p className="text-sm sm:text-base text-gray-600">
@@ -77,7 +79,7 @@ return (
               <div className="p-3 bg-orange-50 rounded-full group-hover:bg-orange-100 transition-colors">
                 <FaProjectDiagram className="text-2xl sm:text-3xl text-orange-500" />
               </div>
-              <h2 className="text-lg sm:text-xl font-medium text-gray-900">
+              <h2 className="text-lg sm:text-xl font-bold text-gray-900">
                 สรุปผลโครงการปี 2563
               </h2>
               <p className="text-sm sm:text-base text-gray-600">
