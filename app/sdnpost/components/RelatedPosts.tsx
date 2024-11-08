@@ -43,7 +43,7 @@ export default function RelatedPosts({ currentPostId }: RelatedPostsProps) {
 
   return (
     <div className="mt-12 pt-8 border-t border-gray-200">
-      <h2 className="text-2xl md:text-3xl font-seppuri font-bold mb-6">บทความที่เกี่ยวข้อง</h2>
+      <h2 className="text-2xl md:text-3xl font-seppuri font-bold mb-6">ข่าวที่เกี่ยวข้อง</h2>
       <div className="grid gap-8">
         {posts.map(post => (
           <Link
