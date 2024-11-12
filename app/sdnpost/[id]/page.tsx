@@ -3,7 +3,6 @@
 
 import { useEffect, useState } from 'react'
 import Link from 'next/link'
-import Image from 'next/image'
 import { Toaster } from 'react-hot-toast'
 import { FaEye } from 'react-icons/fa'
 
@@ -37,53 +36,57 @@ export default function PostDetail({ params }: { params: { id: string } }) {
   const [error, setError] = useState<string | null>(null)
   const [viewIncremented, setViewIncremented] = useState(false)
 
-
-
-
-  // useEffect สำหรับ fetch ข้อมูล
   useEffect(() => {
     let isMounted = true
 
     const getPost = async () => {
-      if (!params.id) return
-      
-      setIsLoading(true)
-      setError(null)
+      if (!params.id) {
+        setError('ไม่พบรหัสบทความ')
+        setIsLoading(false)
+        return
+      }
       
       try {
+        setIsLoading(true)
+        setError(null)
+        
         const response = await fetch(`/api/sdnpost/${params.id}`)
         
         if (!response.ok) {
-          throw new Error(`HTTP error! status: ${response.status}`)
+          throw new Error(`ไม่สามารถโหลดบทความได้ (${response.status})`)
         }
         
         const result = await response.json()
         
         if (!result.success) {
-          throw new Error(result.error || 'Failed to fetch post')
+          throw new Error(result.error || 'ไม่สามารถโหลดบทความได้')
         }
         
         if (isMounted && result.data) {
           setPost(result.data)
           
           if (!viewIncremented) {
-            const viewResponse = await fetch(`/api/sdnpost/views/${params.id}`, {
-              method: 'POST',
-              headers: {
-                'Content-Type': 'application/json'
+            try {
+              const viewResponse = await fetch(`/api/sdnpost/views/${params.id}`, {
+                method: 'POST',
+                headers: {
+                  'Content-Type': 'application/json'
+                }
+              })
+              
+              const viewResult = await viewResponse.json()
+              if (viewResult.success) {
+                setViewIncremented(true)
               }
-            })
-            
-            const viewResult = await viewResponse.json()
-            if (viewResult.success) {
-              setViewIncremented(true)
+            } catch (viewErr) {
+              console.error('Error incrementing view count:', viewErr)
             }
           }
         }
       } catch (err) {
         if (isMounted) {
           console.error('Error fetching post:', err)
-          setError(err instanceof Error ? err.message : 'Failed to load post')
+          setError(err instanceof Error ? err.message : 'ไม่สามารถโหลดบทความได้')
         }
       } finally {
         if (isMounted) {
@@ -96,18 +99,19 @@ export default function PostDetail({ params }: { params: { id: string } }) {
 
     return () => {
       isMounted = false
-
     }
   }, [params.id, viewIncremented])
-
 
   if (isLoading) return <LoadingSpinner />
   if (error) return <ErrorMessage message={error} />
   if (!post) return <ErrorMessage message="ไม่พบบทความ" />
 
-  const featuredImage = post._embedded?.['wp:featuredmedia']?.[0]?.source_url
+  post._embedded?.['wp:featuredmedia']?.[0]?.media_details?.sizes?.full?.source_url
   const author = post._embedded?.author?.[0]
   const categories = post._embedded?.['wp:term']?.[0] || []
+  const featuredMedia = post._embedded?.['wp:featuredmedia']?.[0]
+  const shareQuote = featuredMedia?.quote || post.title.rendered
+  const featuredImage = post._embedded?.['wp:featuredmedia']?.[0]?.source_url
   const shareUrl = `${BASE_URL}/sdnpost/${post.id}`
 
   return (
@@ -116,7 +120,6 @@ export default function PostDetail({ params }: { params: { id: string } }) {
       <div className="bg-white rounded-2xl shadow-sm p-4 md:p-8">
         <div className="flex flex-col md:flex-row gap-8">
           <div className="flex-1">
-            {/* Categories */}
             {categories.length > 0 && (
               <div className="flex flex-wrap gap-2 mb-4 md:mb-6">
                 {categories.map(cat => (
@@ -130,43 +133,32 @@ export default function PostDetail({ params }: { params: { id: string } }) {
               </div>
             )}
   
-            {/* Title and Text-to-Speech Controls */}
             <div>
               <h1 
                 className="text-2xl md:text-4xl font-seppuri font-bold mb-4 leading-relaxed text-gray-800"
                 dangerouslySetInnerHTML={{ __html: post?.title?.rendered || '' }}
               />
-
-           
-            </div>
-            <div className='flex-1'>
-            <TextToSpeechControls 
-              text={post.content.rendered.replace(/<[^>]*>/g, '')} 
-            />
-
-            <div 
-              className="prose prose-base md:prose-lg max-w-none..."
-              dangerouslySetInnerHTML={{ __html: post?.content?.rendered || '' }}
-            />
             </div>
 
-            {/* Author and View Count */}
             <div className="flex flex-col md:flex-row md:items-center justify-between mb-6 md:mb-8 pb-6 md:pb-8 border-b border-gray-200 gap-4">
               <div className="flex items-center gap-4">
                 {author?.avatar_urls?.['96'] && (
                   <div className="w-10 md:w-12 h-10 md:h-12 rounded-full overflow-hidden">
-                    <Image 
+                    <img 
                       src={author.avatar_urls['96']} 
                       alt={author.name || ''} 
-                      width={48}
-                      height={48}
-                      className="w-full h-full object-cover" 
+                      className="w-full h-full object-cover"
+                      onError={(e) => {
+                        const target = e.target as HTMLImageElement
+                        target.onerror = null
+                        target.src = '/images/default-avatar.png' // ต้องมีรูป default
+                      }}
                     />
                   </div>
                 )}
                 <div>
                   <div className="font-ibm font-medium text-gray-800 text-sm md:text-base">
-                    {author?.name}
+                    {author?.name || 'ไม่ระบุผู้เขียน'}
                   </div>
                   <div className="text-xs md:text-sm text-gray-500">
                     {new Date(post.date).toLocaleDateString('th-TH', {
@@ -185,35 +177,46 @@ export default function PostDetail({ params }: { params: { id: string } }) {
               </div>
             </div>
 
-            {/* Content */}
+            <div className='flex-1'>
+              <TextToSpeechControls 
+                text={post.content.rendered.replace(/<[^>]*>/g, '')} 
+              />
+            </div>
+
             {featuredImage && (
               <div className="mb-8 md:mb-10 rounded-xl overflow-hidden shadow-lg">
-                <Image
+                <img
                   src={featuredImage}
                   alt={post.title.rendered}
-                  width={800}
-                  height={400}
                   className="w-full h-auto"
-                  priority
+                  loading="eager"
+                  onError={(e) => {
+                    const target = e.target as HTMLImageElement
+                    target.onerror = null
+                    target.src = '/images/default-featured.png' // ต้องมีรูป default
+                  }}
                 />
               </div>
             )}
 
-          <div 
-            className="prose prose-base md:prose-lg max-w-none
-              prose-headings:font-seppuri prose-headings:text-gray-800
-              prose-h1:text-2xl md:prose-h1:text-4xl
-              prose-h2:text-xl md:prose-h2:text-3xl
-              prose-h3:text-lg md:prose-h3:text-2xl
-              prose-p:font-ibm prose-p:text-gray-600 prose-p:leading-relaxed
-              prose-a:text-orange-500 hover:prose-a:text-orange-600
-              prose-img:rounded-xl prose-img:shadow-lg
-              prose-strong:text-gray-800
-              prose-ul:list-disc prose-ol:list-decimal
-              prose-li:font-ibm prose-li:text-gray-600
-              mb-8 md:mb-12"
-            dangerouslySetInnerHTML={{ __html: post?.content?.rendered || '' }}
-          />
+            <div 
+              className="prose prose-base md:prose-lg max-w-none
+                prose-headings:font-seppuri prose-headings:text-gray-800
+                prose-h1:text-2xl md:prose-h1:text-4xl
+                prose-h2:text-xl md:prose-h2:text-3xl
+                prose-h3:text-lg md:prose-h3:text-2xl
+                prose-p:font-ibm prose-p:text-gray-600 prose-p:leading-relaxed
+                prose-a:text-orange-500 hover:prose-a:text-orange-600
+                prose-img:rounded-xl prose-img:shadow-lg
+                prose-img:w-full prose-img:max-w-3xl prose-img:mx-auto
+                prose-img:h-auto prose-img:object-cover
+                prose-strong:text-gray-800
+                prose-ul:list-disc prose-ol:list-decimal
+                prose-li:font-ibm prose-li:text-gray-600
+                mb-8 md:mb-12
+                [&>*]:mx-auto [&>*]:max-w-3xl"
+              dangerouslySetInnerHTML={{ __html: post?.content?.rendered || '' }}
+            />
 
             <RelatedPosts currentPostId={post.id} />
 
@@ -229,9 +232,13 @@ export default function PostDetail({ params }: { params: { id: string } }) {
             </div>
           </div>
 
-          {/* Sidebar */}
           <div className="hidden md:block w-16">
-          <ShareButtons url={shareUrl} title={post?.title?.rendered || ''} />
+          <ShareButtons 
+            url={shareUrl} 
+            title={post.title.rendered}
+            quote={post._embedded?.['wp:featuredmedia']?.[0]?.quote}
+            imageUrl={featuredImage}
+          />
           </div>
         </div>
       </div>

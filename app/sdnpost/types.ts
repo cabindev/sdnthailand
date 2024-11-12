@@ -11,6 +11,26 @@ export interface Post {
   _embedded?: {
     'wp:featuredmedia'?: Array<{
       source_url: string
+      media_details?: {
+        sizes?: {
+          thumbnail?: {
+            source_url?: string
+          }
+          medium?: {
+            source_url?: string
+          }
+          large?: {
+            source_url?: string
+          }
+          full?: {
+            source_url?: string
+          }
+        }
+        file?: string
+        width?: number
+        height?: number
+      }
+      quote?: string  // เพิ่มตามที่เห็นในภาพแรก
     }>
     author?: Array<{
       name: string

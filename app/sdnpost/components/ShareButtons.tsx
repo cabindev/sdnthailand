@@ -1,6 +1,8 @@
 // app/sdnpost/components/ShareButtons.tsx
 'use client'
 
+import { useState } from 'react'
+import Head from 'next/head'
 import toast from 'react-hot-toast'
 import { FaFacebook, FaTwitter, FaLink } from 'react-icons/fa'
 import { FacebookShareButton, TwitterShareButton } from 'react-share'
@@ -8,52 +10,74 @@ import { FacebookShareButton, TwitterShareButton } from 'react-share'
 interface ShareButtonsProps {
   url: string
   title: string
+  quote?: string
+  imageUrl?: string // เพิ่ม prop สำหรับรูปภาพ
 }
 
-export default function ShareButtons({ url, title }: ShareButtonsProps) {
-  const shareUrl = `https://sdnthailand.com${url}`
+export default function ShareButtons({ url, title, quote, imageUrl }: ShareButtonsProps) {
+  const [isSharing, setIsSharing] = useState(false)
+  
+  const sanitizedTitle = title.replace(/&[^;]+;/g, '').trim()
+  const sanitizedQuote = quote?.replace(/&[^;]+;/g, '').trim() || sanitizedTitle
+  
+  const shareText = sanitizedQuote || sanitizedTitle
   
   const copyToClipboard = async () => {
+    if (isSharing) return
+    
+    setIsSharing(true)
     try {
-      await navigator.clipboard.writeText(shareUrl)
+      await navigator.clipboard.writeText(`${shareText}\n${url}`)
       toast.success('คัดลอกลิงก์แล้ว')
     } catch (err) {
+      console.error('Copy failed:', err)
       toast.error('ไม่สามารถคัดลอกลิงก์ได้')
+    } finally {
+      setIsSharing(false)
     }
   }
 
   return (
-    <div className="flex flex-col gap-4 sticky top-24">
-      <div className="text-gray-600 font-ibm">Share</div>
-      <div className="flex flex-col gap-3">
-        <div>
+    <>
+      <Head>
+        <meta property="og:title" content={sanitizedTitle} />
+        <meta property="og:description" content={shareText} />
+        {imageUrl && <meta property="og:image" content={imageUrl} />}
+        <meta property="og:url" content={url} />
+        <meta property="og:type" content="article" />
+      </Head>
+
+      <div className="flex flex-col gap-4 sticky top-24">
+        <div className="text-gray-600 font-ibm">แชร์</div>
+        <div className="flex flex-col gap-3">
           <FacebookShareButton 
-            url={shareUrl} 
-            hashtag="#SDNThailand" // เปลี่ยนจาก quote เป็น hashtag
-            className="w-10 h-10 flex items-center justify-center rounded-full bg-[#1877F2] text-white hover:opacity-90 transition-opacity"
+            url={url}
+            title={sanitizedTitle}
+            className="w-10 h-10 flex items-center justify-center rounded-full bg-[#1877F2] text-white hover:opacity-90 transition-opacity disabled:opacity-50"
+            disabled={isSharing}
           >
             <FaFacebook size={20} />
           </FacebookShareButton>
-        </div>
 
-        <div>
           <TwitterShareButton 
-            url={shareUrl} 
-            title={title}
-            className="w-10 h-10 flex items-center justify-center rounded-full bg-black text-white hover:opacity-90 transition-opacity"
+            url={url}
+            title={`${shareText} #SDNThailand`}
+            className="w-10 h-10 flex items-center justify-center rounded-full bg-black text-white hover:opacity-90 transition-opacity disabled:opacity-50"
+            disabled={isSharing}
           >
             <FaTwitter size={20} />
           </TwitterShareButton>
-        </div>
 
-        <button
-          onClick={copyToClipboard}
-          className="w-10 h-10 flex items-center justify-center rounded-full bg-orange-500 text-white hover:opacity-90 transition-opacity"
-          aria-label="Copy link"
-        >
-          <FaLink size={18} />
-        </button>
+          <button
+            onClick={copyToClipboard}
+            disabled={isSharing}
+            className="w-10 h-10 flex items-center justify-center rounded-full bg-orange-500 text-white hover:opacity-90 transition-opacity disabled:opacity-50"
+            aria-label="Copy link"
+          >
+            <FaLink size={18} />
+          </button>
+        </div>
       </div>
-    </div>
+    </>
   )
 }
