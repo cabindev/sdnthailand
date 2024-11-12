@@ -20,7 +20,7 @@ export default function robots(): MetadataRoute.Robots {
         ]
       }
     ],
-    sitemap: 'https://sdnthailand.com/sitemap.xml',
-    host: 'https://sdnthailand.com'
+    sitemap: 'https://support.sdnthailand.com/sitemap.xml',
+    host: 'https://support.sdnthailand.com/'
   }
 }
