@@ -34,7 +34,7 @@ interface Params {
 }
 
 // Constants
-const BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'https://sdnthailand.com'
+const BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'https://support.sdnthailand.com/'
 const SITE_NAME = 'SDN Thailand'
 const DEFAULT_DESCRIPTION = 'เครือข่ายองค์กรงดเหล้า'
 

@@ -11,7 +11,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   async function getPosts(): Promise<Post[]> {
     try {
       const res = await fetch(
-        'https://sdnthailand.com/wp-json/wp/v2/posts?_fields=id,date&per_page=100',
+        'https://support.sdnthailand.com/wp-json/wp/v2/posts?_fields=id,date&per_page=100',
         { next: { revalidate: 3600 } } // Cache 1 hour
       );
       
@@ -28,7 +28,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const posts = await getPosts();
 
   const postUrls = posts.map((post) => ({
-    url: `https://sdnthailand.com/sdnpost/${post.id}`,
+    url: `https://support.sdnthailand.com/sdnpost/${post.id}`,
     lastModified: new Date(post.date),
     changeFrequency: 'monthly' as const,
     priority: 0.7
@@ -36,25 +36,25 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
 
   return [
     {
-      url: 'https://sdnthailand.com',
+      url: 'https://support.sdnthailand.com',
       lastModified: new Date(),
       changeFrequency: 'daily',
       priority: 1.0
     },
     {
-      url: 'https://sdnthailand.com/sdnpost',
+      url: 'https://support.sdnthailand.com/sdnpost',
       lastModified: new Date(),
       changeFrequency: 'daily',
       priority: 0.9
     },
     {
-      url: 'https://sdnthailand.com/about',
+      url: 'https://support.sdnthailand.com/about',
       lastModified: new Date(),
       changeFrequency: 'monthly',
       priority: 0.8
     },
     {
-      url: 'https://sdnthailand.com/contact',
+      url: 'https://support.sdnthailand.com/contact',
       lastModified: new Date(),
       changeFrequency: 'monthly',
       priority: 0.8
