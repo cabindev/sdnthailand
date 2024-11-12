@@ -1,97 +1,191 @@
-//app/api/sdnpost/[id]/route.ts
-import { NextResponse } from 'next/server'
+import { NextRequest, NextResponse } from 'next/server'
 
-const WP_API_URL = 'https://sdnthailand.com/wp-json/wp/v2'
-const POST_VIEWS_API = 'https://sdnthailand.com/wp-json/post-views/views/post'
+// Interface สำหรับ Response
+interface ViewResponse {
+  success: boolean;
+  count?: number;
+  error?: string;
+}
 
-interface Post {
+// Interface สำหรับ WordPress API Response
+interface WordPressViewResponse {
+  success: boolean;
+  count?: number;
+}
+
+export async function POST(
+  request: NextRequest,
+  { params }: { params: { id: string } }
+): Promise<NextResponse<ViewResponse>> {
+  // ตรวจสอบว่ามี ID หรือไม่
+  if (!params.id) {
+    return NextResponse.json(
+      { 
+        success: false, 
+        error: 'Post ID is required' 
+      },
+      { status: 400 }
+    )
+  }
+
+  try {
+    // กำหนด base URL จาก environment variable หรือใช้ค่าเริ่มต้น
+    const baseUrl = process.env.WORDPRESS_API_URL || 'https://sdnthailand.com'
+    
+    // Log สำหรับ debug
+    console.log('Incrementing views for post:', params.id)
+    console.log('API URL:', `${baseUrl}/wp-json/post-views/views/post/${params.id}/increment`)
+
+    // เรียก WordPress API
+    const response = await fetch(
+      `${baseUrl}/wp-json/post-views/views/post/${params.id}/increment`,
+      {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json'
+        },
+        next: { revalidate: 0 } // ไม่ cache response
+      }
+    )
+
+    // ตรวจสอบ response status
+    if (!response.ok) {
+      const errorText = await response.text()
+      console.error('API Error Response:', errorText)
+      throw new Error(`API returned ${response.status}: ${errorText}`)
+    }
+
+    // แปลง response เป็น JSON
+    const data: WordPressViewResponse = await response.json()
+
+    // ส่งค่ากลับ
+    return NextResponse.json({
+      success: true,
+      count: data.count || 0
+    })
+
+  } catch (error) {
+    // จัดการ error
+    console.error('Error incrementing views:', error)
+
+    // ถ้าเป็น Error object
+    const errorMessage = error instanceof Error ? error.message : 'Unknown error occurred'
+
+    return NextResponse.json(
+      { 
+        success: false, 
+        error: `Failed to increment views: ${errorMessage}`
+      },
+      { status: 500 }
+    )
+  }
+}
+
+
+// Interfaces for WordPress API Response
+interface WordPressPost {
   id: number
-  title: { rendered: string }
   date: string
-  content: { rendered: string }
-  excerpt: { rendered: string }
+  title: {
+    rendered: string
+  }
+  content: {
+    rendered: string
+  }
   _embedded?: {
     'wp:featuredmedia'?: Array<{
       source_url: string
     }>
-    'wp:term'?: Array<Array<{
-      name: string
-    }>>
     author?: Array<{
       name: string
+      avatar_urls: {
+        [key: string]: string
+      }
     }>
+    'wp:term'?: Array<Array<{
+      id: number
+      name: string
+    }>>
   }
+  viewCount?: number
 }
 
-export async function POST(
-    request: Request,
-    { params }: { params: { id: string } }
-  ): Promise<NextResponse> {
-    try {
-      // เพิ่มยอดวิวใน WordPress
-      const response = await fetch(
-        `${WP_API_URL}/post-views/views/post/${params.id}/increment`,
-        {
-          method: 'POST',
-          headers: {
-            'Accept': 'application/json',
-          },
-          next: { revalidate: 0 } // ไม่ cache
-        }
-      )
-  
-      if (!response.ok) {
-        throw new Error('Failed to increment views')
-      }
-  
-      return NextResponse.json({ success: true })
-    } catch (error) {
-      console.error('Error incrementing views:', error)
-      return NextResponse.json(
-        { error: 'Failed to increment views' },
-        { status: 500 }
-      )
-    }
-  }
-  
+interface PostResponse {
+  success: boolean
+  data?: WordPressPost
+  error?: string
+}
+
+// GET method สำหรับดึงยอดวิว (ถ้าต้องการ)
 export async function GET(
-  request: Request,
+  request: NextRequest,
   { params }: { params: { id: string } }
-): Promise<NextResponse> {
+): Promise<NextResponse<PostResponse>> {
+  // ตรวจสอบว่ามี ID หรือไม่
+  if (!params.id) {
+    return NextResponse.json(
+      {
+        success: false,
+        error: 'Post ID is required'
+      },
+      { status: 400 }
+    )
+  }
+
   try {
-    // ดึงข้อมูลโพสต์และยอดวิวพร้อมกัน
-    const [postResponse, viewsResponse] = await Promise.all([
-      fetch(
-        `${WP_API_URL}/posts/${params.id}?_embed`,
-        { next: { revalidate: 60 } }
-      ),
-      fetch(
-        `${POST_VIEWS_API}/${params.id}`,
-        { next: { revalidate: 60 } }
-      )
-    ])
+    // กำหนด base URL จาก environment variable หรือใช้ค่าเริ่มต้น
+    const baseUrl = process.env.WORDPRESS_API_URL || 'https://sdnthailand.com'
+    
+    // ดึงข้อมูลโพสต์
+    const postResponse = await fetch(
+      `${baseUrl}/wp-json/wp/v2/posts/${params.id}?_embed`,
+      {
+        headers: {
+          'Accept': 'application/json'
+        },
+        next: { revalidate: 60 } // cache 60 วินาที
+      }
+    )
 
     if (!postResponse.ok) {
-      throw new Error('Failed to fetch post')
+      const errorText = await postResponse.text()
+      throw new Error(`Post API returned ${postResponse.status}: ${errorText}`)
     }
 
-    const post = await postResponse.json() as Post
-    let viewCount = 0
+    const post: WordPressPost = await postResponse.json()
 
-    if (viewsResponse.ok) {
-      const viewsData = await viewsResponse.json()
-      viewCount = parseInt(viewsData.count) || 0 // เปลี่ยนจาก views เป็น count
+    // ดึงจำนวนวิว
+    const viewResponse = await fetch(
+      `${baseUrl}/wp-json/post-views/views/post/${params.id}`,
+      {
+        headers: {
+          'Accept': 'application/json'
+        },
+        next: { revalidate: 60 }
+      }
+    )
+
+    if (viewResponse.ok) {
+      const viewData = await viewResponse.json()
+      post.viewCount = viewData.count || 0
     }
 
     return NextResponse.json({
-      ...post,
-      viewCount
+      success: true,
+      data: post
     })
 
   } catch (error) {
     console.error('Error fetching post:', error)
+    
+    const errorMessage = error instanceof Error ? error.message : 'Unknown error occurred'
+
     return NextResponse.json(
-      { error: 'Failed to fetch post' },
+      {
+        success: false,
+        error: `Failed to fetch post: ${errorMessage}`
+      },
       { status: 500 }
     )
   }
