@@ -12,7 +12,7 @@ import ShareButtons from '../components/ShareButtons'
 import RelatedPosts from '../components/RelatedPosts'
 import LoadingSpinner from '../components/LoadingSpinner'
 
-const BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'https://sdnthailand.com'
+const BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'https://support.sdnthailand.com/'
 
 function ErrorMessage({ message }: { message: string }) {
   return (
