@@ -53,8 +53,8 @@ export default function SDNPostPage() {
   if (isLoading) {
     return (
       <div className="container mx-auto px-4 py-20">
-        <div className="flex justify-center items-center min-h-[60vh]">
-          <div className="w-10 h-10 border-4 border-orange-500/20 border-t-orange-500 rounded-full animate-spin"></div>
+        <div className="flex justify-center items-center gap-6 min-h-[60vh]">
+          <span className="loading loading-dots loading-lg text-orange-500"></span>
         </div>
       </div>
     )

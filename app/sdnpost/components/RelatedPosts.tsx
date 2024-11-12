@@ -24,21 +24,39 @@ interface RelatedPostsProps {
 
 export default function RelatedPosts({ currentPostId }: RelatedPostsProps) {
   const [posts, setPosts] = useState<RelatedPost[]>([])
+  const [isLoading, setIsLoading] = useState(true)
+  const [error, setError] = useState<string | null>(null)
 
   useEffect(() => {
     const fetchRelatedPosts = async () => {
+      setIsLoading(true)
+      setError(null)
+      
       try {
-        const res = await fetch(`/api/sdnpost?per_page=3&_embed`)
+        const res = await fetch(`/api/sdnpost/related/${currentPostId}`)
         if (!res.ok) throw new Error('Failed to fetch related posts')
+        
         const data = await res.json()
-        setPosts(data.posts.filter((p: RelatedPost) => p.id !== currentPostId).slice(0, 3))
+        if (!data.success) {
+          throw new Error(data.error || 'Failed to fetch related posts')
+        }
+        
+        setPosts(data.posts)
       } catch (error) {
         console.error('Error fetching related posts:', error)
+        setError(error instanceof Error ? error.message : 'Failed to fetch related posts')
+      } finally {
+        setIsLoading(false)
       }
     }
-    fetchRelatedPosts()
+
+    if (currentPostId) {
+      fetchRelatedPosts()
+    }
   }, [currentPostId])
 
+  if (isLoading) return <div className="animate-pulse">Loading...</div>
+  if (error) return null // ไม่แสดงอะไรถ้ามี error
   if (posts.length === 0) return null
 
   return (
