@@ -31,24 +31,23 @@ const ibmPlex = IBM_Plex_Sans_Thai_Looped({
   variable: '--font-ibm'
 })
 
+
 export const metadata: Metadata = {
-  metadataBase: new URL("https://support.sdnthailand.com"),
+  metadataBase: new URL("https://sdnthailand.com"),
   title: {
-    default: "Workspaces | sdnthailand",
-    template: '%s | Workspaces | sdnthailand'
+    default: "SDN | sdnthailand",
+    template: '%s | SDN | sdnthailand'
   },
-  description: "Blog | sdnthailand SDN-Workspaces",
+  description: "Blog | sdnthailand",
   openGraph: {
-    title: "SDN Workspaces",
-    description: "Workspaces | sdnthailand SDN-Workspaces",
+    title: "SDN",
+    description: "SDN | sdnthailand",
     type: "website",
     locale: "en_US",
-    url: "https://support.sdnthailand.com",
-    siteName: "SDN-Workspaces"
+    url: "https:/.sdnthailand.com",
+    siteName: "sdnthailand"
   },
 };
-
-
 export default async function RootLayout({
   children,
 }: Readonly<{
