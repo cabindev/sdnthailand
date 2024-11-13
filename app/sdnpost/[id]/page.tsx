@@ -233,14 +233,15 @@ export default function PostDetail({ params }: { params: { id: string } }) {
             </div>
           </div>
 
+
           <div className="hidden md:block w-16">
-         <ShareButtons 
-  url={shareUrl} 
-  title={post.title.rendered}
-  quote={post._embedded?.['wp:featuredmedia']?.[0]?.quote}
-  imageUrl={featuredImage}
-/>
-          </div>
+          <ShareButtons
+            url={`${BASE_URL}/sdnpost/${post.id}`}
+            title={post.title.rendered}
+            imageUrl={post._embedded?.['wp:featuredmedia']?.[0]?.source_url || `${BASE_URL}/images/default-og.png`}
+          />
+
+        </div>
         </div>
       </div>
     </div>

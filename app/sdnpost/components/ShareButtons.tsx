@@ -1,7 +1,6 @@
-// app/sdnpost/components/ShareButtons.tsx
 'use client'
 
-import { 
+import {
   FacebookShareButton,
   TwitterShareButton,
   LineShareButton,
@@ -15,11 +14,10 @@ import { toast } from 'react-hot-toast'
 interface ShareButtonsProps {
   url: string
   title: string
-  quote?: string
   imageUrl?: string
 }
 
-export default function ShareButtons({ url, title, quote, imageUrl }: ShareButtonsProps) {
+export default function ShareButtons({ url, title, imageUrl }: ShareButtonsProps) {
   const handleCopyLink = async () => {
     try {
       await navigator.clipboard.writeText(url)
@@ -29,33 +27,23 @@ export default function ShareButtons({ url, title, quote, imageUrl }: ShareButto
     }
   }
 
-  const shareData = {
+  const shareProps = {
     url,
     title,
-    quote: quote || title,
     hashtag: '#SDNThailand',
-    description: quote || title,
-    media: imageUrl // เพิ่ม media property
   }
 
   return (
     <div className="flex flex-col gap-4 sticky top-24">
-      <FacebookShareButton 
-        {...shareData}
-        windowWidth={660}
-        windowHeight={460}
-      >
+      <FacebookShareButton {...shareProps}>
         <FacebookIcon size={40} round />
       </FacebookShareButton>
 
-      <TwitterShareButton 
-        {...shareData}
-        via="SDNThailand"
-      >
+      <TwitterShareButton {...shareProps}>
         <TwitterIcon size={40} round />
       </TwitterShareButton>
 
-      <LineShareButton {...shareData}>
+      <LineShareButton {...shareProps}>
         <LineIcon size={40} round />
       </LineShareButton>
 
