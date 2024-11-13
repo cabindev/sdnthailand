@@ -43,9 +43,7 @@ export default function ShareButtons({ url, title, imageUrl }: ShareButtonsProps
         <TwitterIcon size={40} round />
       </TwitterShareButton>
 
-      <LineShareButton {...shareProps}>
-        <LineIcon size={40} round />
-      </LineShareButton>
+
 
       <button
         onClick={handleCopyLink}
