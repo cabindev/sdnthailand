@@ -115,6 +115,7 @@ export default function PostDetail({ params }: { params: { id: string } }) {
   const shareUrl = `${BASE_URL}/sdnpost/${post.id}`
 
   return (
+    
     <div className="container max-w-5xl mx-auto px-4 py-12 md:py-20">
       <Toaster />
       <div className="bg-white rounded-2xl shadow-sm p-4 md:p-8">
@@ -233,7 +234,7 @@ export default function PostDetail({ params }: { params: { id: string } }) {
           </div>
 
           <div className="hidden md:block w-16">
-          <ShareButtons 
+         <ShareButtons 
   url={shareUrl} 
   title={post.title.rendered}
   quote={post._embedded?.['wp:featuredmedia']?.[0]?.quote}
