@@ -234,11 +234,11 @@ export default function PostDetail({ params }: { params: { id: string } }) {
 
           <div className="hidden md:block w-16">
           <ShareButtons 
-            url={shareUrl} 
-            title={post.title.rendered}
-            quote={post._embedded?.['wp:featuredmedia']?.[0]?.quote}
-            imageUrl={featuredImage}
-          />
+  url={shareUrl} 
+  title={post.title.rendered}
+  quote={post._embedded?.['wp:featuredmedia']?.[0]?.quote}
+  imageUrl={featuredImage}
+/>
           </div>
         </div>
       </div>
