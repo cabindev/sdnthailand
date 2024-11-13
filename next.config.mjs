@@ -1,15 +1,21 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-    images: {
-      domains: ['support.sdnthailand.com'],
-      remotePatterns: [
-        {
-          protocol: 'https',
-          hostname: 'sdnthailand.com',
-          pathname: '/wp-content/uploads/**',
-        },
-      ],
-    },
-  };
-  
-  export default nextConfig;
+  images: {
+    remotePatterns: [
+      {
+        protocol: 'https',
+        hostname: 'support.sdnthailand.com',
+        port: '',
+        pathname: '/images/**',
+      },
+      {
+        protocol: 'https',
+        hostname: 'sdnthailand.com',
+        port: '',
+        pathname: '/images/**',
+      },
+    ],
+  },
+};
+
+export default nextConfig;
