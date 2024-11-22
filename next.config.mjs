@@ -4,7 +4,7 @@ const nextConfig = {
     remotePatterns: [
       {
         protocol: 'https',
-        hostname: 'support.sdnthailand.com',
+        hostname: 'blog.sdnthailand.com',
         port: '',
         pathname: '/images/**',
       },
