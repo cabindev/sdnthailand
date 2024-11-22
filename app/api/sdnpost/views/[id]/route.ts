@@ -1,7 +1,7 @@
 // app/api/sdnpost/views/[id]/route.ts
 import { NextRequest, NextResponse } from 'next/server'
 
-const WP_API_URL = process.env.WORDPRESS_API_URL || 'https://sdnthailand.com'
+const WP_API_URL = process.env.WORDPRESS_API_URL || 'https://blog.sdnthailand.com'
 
 export async function POST(
   request: NextRequest,

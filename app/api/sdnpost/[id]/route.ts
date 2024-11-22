@@ -30,7 +30,7 @@ export async function POST(
 
   try {
     // กำหนด base URL จาก environment variable หรือใช้ค่าเริ่มต้น
-    const baseUrl = process.env.WORDPRESS_API_URL || 'https://sdnthailand.com'
+    const baseUrl = process.env.WORDPRESS_API_URL || 'https://blog.sdnthailand.com'
     
     // Log สำหรับ debug
     console.log('Incrementing views for post:', params.id)
@@ -135,7 +135,7 @@ export async function GET(
 
   try {
     // กำหนด base URL จาก environment variable หรือใช้ค่าเริ่มต้น
-    const baseUrl = process.env.WORDPRESS_API_URL || 'https://sdnthailand.com'
+    const baseUrl = process.env.WORDPRESS_API_URL || 'https://blog.sdnthailand.com'
     
     // ดึงข้อมูลโพสต์
     const postResponse = await fetch(

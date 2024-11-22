@@ -29,7 +29,7 @@ export default function ProjectGrid() {
   useEffect(() => {
     async function fetchProjects() {
       try {
-        const res = await fetch('/api/projects?_embed=true');
+        const res = await fetch('/api/projects2020?_embed=true');
         const data = await res.json();
         setProjects(data);
       } catch (error) {

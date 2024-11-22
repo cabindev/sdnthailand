@@ -1,14 +1,7 @@
 'use client'
 
-import {
-  FacebookShareButton,
-  TwitterShareButton,
-  LineShareButton,
-  FacebookIcon,
-  TwitterIcon,
-  LineIcon
-} from 'react-share'
-import { FaLink } from 'react-icons/fa'
+import React from 'react'
+import { FaFacebook, FaXTwitter, FaLine, FaLink } from 'react-icons/fa6'
 import { toast } from 'react-hot-toast'
 
 interface ShareButtonsProps {
@@ -17,7 +10,7 @@ interface ShareButtonsProps {
   imageUrl?: string
 }
 
-export default function ShareButtons({ url, title, imageUrl }: ShareButtonsProps) {
+export default function ShareButtons({ url, title }: ShareButtonsProps) {
   const handleCopyLink = async () => {
     try {
       await navigator.clipboard.writeText(url)
@@ -27,29 +20,50 @@ export default function ShareButtons({ url, title, imageUrl }: ShareButtonsProps
     }
   }
 
-  const shareProps = {
-    url,
-    title,
-    hashtag: '#SDNThailand',
+  const handleFacebookShare = () => {
+    window.open(
+      `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(url)}&quote=${encodeURIComponent(title)}`,
+      '_blank',
+      'width=600,height=400'
+    )
+  }
+
+  const handleTwitterShare = () => {
+    window.open(
+      `https://twitter.com/intent/tweet?url=${encodeURIComponent(url)}&text=${encodeURIComponent(title)}`,
+      '_blank',
+      'width=600,height=400'
+    )
+  }
+
+  const handleLineShare = () => {
+    window.open(
+      `https://line.me/R/msg/text/?${encodeURIComponent(`${title} ${url}`)}`,
+      '_blank'
+    )
   }
 
   return (
     <div className="flex flex-col gap-4 sticky top-24">
-      <FacebookShareButton {...shareProps}>
-        <FacebookIcon size={40} round />
-      </FacebookShareButton>
+      <button
+        onClick={handleFacebookShare}
+        className="w-10 h-10 flex items-center justify-center bg-[#1877f2] hover:bg-[#166fe5] text-white rounded-full transition-colors"
+      >
+        <FaFacebook className="w-5 h-5" />
+      </button>
 
-      <TwitterShareButton {...shareProps}>
-        <TwitterIcon size={40} round />
-      </TwitterShareButton>
-
-
+      <button
+        onClick={handleTwitterShare}
+        className="w-10 h-10 flex items-center justify-center bg-black hover:bg-gray-900 text-white rounded-full transition-colors"
+      >
+        <FaXTwitter className="w-4 h-4" />
+      </button>
 
       <button
         onClick={handleCopyLink}
-        className="w-10 h-10 flex items-center justify-center bg-gray-200 hover:bg-gray-300 rounded-full transition-colors"
+        className="w-10 h-10 flex items-center justify-center bg-gray-200 hover:bg-gray-300 text-gray-600 rounded-full transition-colors"
       >
-        <FaLink className="w-5 h-5 text-gray-600" />
+        <FaLink className="w-5 h-5" />
       </button>
     </div>
   )

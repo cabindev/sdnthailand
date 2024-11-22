@@ -6,7 +6,7 @@ export async function GET(
     { params }: { params: { id: string } }
   ) {
     try {
-      const res = await fetch(`https://sdnthailand.com/wp-json/wp/v2/project/${params.id}`, {
+      const res = await fetch(`https://blog.sdnthailand.com/wp-json/wp/v2/project/${params.id}`, {
         next: { revalidate: 3600 }
       })
   
