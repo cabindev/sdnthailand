@@ -40,7 +40,7 @@ export default function ProjectList() {
   useEffect(() => {
     const fetchProjects = async () => {
       try {
-        const res = await fetch('/api/projects')
+        const res = await fetch('/api/projects2020')
         if (!res.ok) throw new Error('Failed to fetch')
         const data = await res.json()
         setProjects(data)

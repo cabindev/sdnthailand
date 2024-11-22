@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server'
 
-const WP_API_URL = 'https://sdnthailand.com/wp-json/wp/v2'
+const WP_API_URL = 'https://blog.sdnthailand.com/wp-json/wp/v2'
 
 // Interface สำหรับ Post
 interface Post {

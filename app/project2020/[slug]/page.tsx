@@ -1,6 +1,6 @@
 // app/project2020/[slug]/page.tsx
 async function getProject(slug: string) {
-  const res = await fetch(`https://sdnthailand.com/wp-json/wp/v2/project?slug=${slug}&_embed=true`);
+  const res = await fetch(`https://blog.sdnthailand.com/wp-json/wp/v2/project?slug=${slug}&_embed=true`);
   const projects = await res.json();
   return projects[0];
 }
