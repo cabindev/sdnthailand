@@ -40,7 +40,7 @@ export const metadata = {
   description: 'SDN Thailand',
   openGraph: {
     title: 'SDN Thailand ',
-    description: 'ข้อมูลข่าวสาร SDN Thailand',
+    description: 'ข้อมูลข่าวสาร เครือข่ายงดเหล้า SDN Thailand',
     url: 'https://sdnthailand.com',
     siteName: 'SDN Thailand ',
     locale: 'th_TH',
