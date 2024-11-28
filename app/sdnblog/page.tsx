@@ -61,7 +61,7 @@ export default function SDNBlogPage() {
     return (
       <div className="container mx-auto px-4 py-20">
         <div className="flex justify-center items-center gap-6 min-h-[60vh]">
-          <span className="loading loading-dots loading-lg text-blue-500"></span>
+          <span className="loading loading-dots loading-lg text-amber-500"></span>
         </div>
       </div>
     )
@@ -90,7 +90,7 @@ export default function SDNBlogPage() {
         <h1 className="text-4xl font-bold text-gray-800 mb-4">
           SDN Thailand Blog
         </h1>
-        <div className="w-24 h-1 bg-blue-500 mx-auto mb-4"></div>
+        <div className="w-24 h-1 bg-amber-500 mx-auto mb-4"></div>
         <p className="text-gray-600 max-w-2xl mx-auto">
           บทความและเรื่องราวที่น่าสนใจจาก SDN Thailand
         </p>
@@ -113,8 +113,8 @@ export default function SDNBlogPage() {
             disabled={currentPage === 1}
             className={`w-10 h-10 flex items-center justify-center rounded-full
               ${currentPage === 1 
-                ? 'bg-blue-100 text-blue-300 cursor-not-allowed' 
-                : 'bg-blue-500 text-white hover:bg-blue-600 transition-colors'
+                ? 'bg-amber-100 text-amber-300 cursor-not-allowed' 
+                : 'bg-amber-500 text-white hover:bg-amber-600 transition-colors'
               }`}
           >
             <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -136,8 +136,8 @@ export default function SDNBlogPage() {
                     onClick={() => handlePageChange(pageNumber)}
                     className={`w-10 h-10 flex items-center justify-center rounded-lg
                       ${currentPage === pageNumber
-                        ? 'bg-blue-500 text-white'
-                        : 'bg-white text-blue-500 border border-blue-500 hover:bg-blue-50'
+                        ? 'bg-amber-500 text-white'
+                        : 'bg-white text-amber-500 border border-amber-500 hover:bg-amber-50'
                       }`}
                   >
                     {pageNumber}
@@ -159,8 +159,8 @@ export default function SDNBlogPage() {
             disabled={currentPage === totalPages}
             className={`w-10 h-10 flex items-center justify-center rounded-full
               ${currentPage === totalPages 
-                ? 'bg-blue-100 text-blue-300 cursor-not-allowed' 
-                : 'bg-blue-500 text-white hover:bg-blue-600 transition-colors'
+                ? 'bg-amber-100 text-amber-300 cursor-not-allowed' 
+                : 'bg-amber-500 text-white hover:bg-amber-600 transition-colors'
               }`}
           >
             <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">

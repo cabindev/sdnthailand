@@ -12,7 +12,7 @@ import ShareButtons from '../components/ShareButtons'
 import RelatedPosts from '../components/RelatedPosts'
 import LoadingSpinner from '../components/LoadingSpinner'
 
-const BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'https://support.sdnthailand.com/'
+const BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'https://sdnthailand.com/'
 
 function ErrorMessage({ message }: { message: string }) {
   return (
@@ -38,7 +38,7 @@ export default function PostDetail({ params }: { params: { id: string } }) {
 
   useEffect(() => {
     let isMounted = true
-
+   
     const getPost = async () => {
       if (!params.id) {
         setError('ไม่พบรหัสบทความ')
@@ -49,7 +49,8 @@ export default function PostDetail({ params }: { params: { id: string } }) {
       try {
         setIsLoading(true)
         setError(null)
-        
+   
+        // ดึงข้อมูลโพสต์
         const response = await fetch(`/api/sdnpost/${params.id}`)
         
         if (!response.ok) {
@@ -63,26 +64,84 @@ export default function PostDetail({ params }: { params: { id: string } }) {
         }
         
         if (isMounted && result.data) {
-          setPost(result.data)
-          
+          // ตั้งค่าโพสต์พร้อมยอดวิว
+          setPost({
+            ...result.data,
+            viewCount: result.data['post-views-counter'] || result.data.viewCount || 0
+          })
+   
+          // เพิ่มยอดวิวถ้ายังไม่ได้เพิ่ม
           if (!viewIncremented) {
             try {
+              console.log('Incrementing view count for post:', params.id)
+              
               const viewResponse = await fetch(`/api/sdnpost/views/${params.id}`, {
                 method: 'POST',
                 headers: {
-                  'Content-Type': 'application/json'
+                  'Content-Type': 'application/json',
+                  'Accept': 'application/json'
                 }
               })
+   
+              if (!viewResponse.ok) {
+                throw new Error(`ไม่สามารถเพิ่มยอดวิวได้ (${viewResponse.status})`)
+              }
               
               const viewResult = await viewResponse.json()
+              
               if (viewResult.success) {
                 setViewIncremented(true)
+                
+                // อัพเดทยอดวิวในโพสต์
+                setPost(prev => {
+                  if (!prev) return null
+                  return {
+                    ...prev,
+                    viewCount: viewResult.count,
+                    'post-views-counter': viewResult.count
+                  }
+                })
+   
+                console.log('Successfully incremented view count:', viewResult.count)
+              } else {
+                console.warn('Failed to increment view count:', viewResult.error)
               }
+   
             } catch (viewErr) {
               console.error('Error incrementing view count:', viewErr)
+              // ไม่ throw error เพื่อให้แสดงเนื้อหาได้ต่อไป
             }
           }
+   
+          // ดึงยอดวิวล่าสุดทุก 60 วินาที
+          const intervalId = setInterval(async () => {
+            if (isMounted) {
+              try {
+                const refreshResponse = await fetch(`/api/sdnpost/${params.id}`)
+                const refreshResult = await refreshResponse.json()
+                
+                if (refreshResult.success && refreshResult.data) {
+                  setPost(prev => {
+                    if (!prev) return null
+                    return {
+                      ...prev,
+                      viewCount: refreshResult.data['post-views-counter'] || refreshResult.data.viewCount || prev.viewCount,
+                      'post-views-counter': refreshResult.data['post-views-counter'] || refreshResult.data.viewCount || prev['post-views-counter']
+                    }
+                  })
+                }
+              } catch (refreshErr) {
+                console.error('Error refreshing view count:', refreshErr)
+              }
+            }
+          }, 60000) // 60 seconds
+   
+          // Cleanup interval
+          return () => {
+            clearInterval(intervalId)
+          }
         }
+   
       } catch (err) {
         if (isMounted) {
           console.error('Error fetching post:', err)
@@ -94,13 +153,14 @@ export default function PostDetail({ params }: { params: { id: string } }) {
         }
       }
     }
-
+   
     getPost()
-
+   
     return () => {
       isMounted = false
     }
-  }, [params.id, viewIncremented])
+   }, [params.id, viewIncremented])
+
 
   if (isLoading) return <LoadingSpinner />
   if (error) return <ErrorMessage message={error} />
@@ -170,12 +230,12 @@ export default function PostDetail({ params }: { params: { id: string } }) {
                   </div>
                 </div>
               </div>
-              <div className="flex items-center gap-2 text-gray-500">
-                <FaEye className="w-4 h-4 md:w-5 md:h-5" />
-                <span className="font-ibm text-sm md:text-base">
-                  {post.viewCount?.toLocaleString() || '0'} ครั้ง
-                </span>
-              </div>
+             <div className="flex items-center gap-2 text-gray-500">
+  <FaEye className="w-4 h-4 md:w-5 md:h-5" />
+  <span className="font-ibm text-sm md:text-base">
+    {(post['post-views-counter'] || post.viewCount || 0).toLocaleString()} ครั้ง
+  </span>
+</div>
             </div>
 
             <div className='flex-1'>
@@ -236,10 +296,11 @@ export default function PostDetail({ params }: { params: { id: string } }) {
 
           <div className="hidden md:block w-16">
           <ShareButtons 
-            url={`${BASE_URL}/sdnpost/${post.id}`}
-            title={post.title.rendered}
-            imageUrl={post._embedded?.['wp:featuredmedia']?.[0]?.source_url || `${BASE_URL}/images/default-og.png`}
-          />
+  url={`${BASE_URL}/sdnpost/${post.id}`}
+  title={post.title.rendered}
+  imageUrl={post._embedded?.['wp:featuredmedia']?.[0]?.source_url || `${BASE_URL}/images/default-og.png`}
+
+/>
 
         </div>
         </div>

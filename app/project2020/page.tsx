@@ -6,7 +6,7 @@ import Image from "next/image"
 
 export default function HomeProject2020() {
  return (
-   <div className="min-h-screen bg-white">
+   <div className="min-h-screen bg-orange-300">
      <div className="max-w-7xl mx-auto">
        {/* Hero Section */}
        <div className="relative pt-16 sm:pt-20 pb-12 sm:pb-16">

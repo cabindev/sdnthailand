@@ -7,8 +7,16 @@ export default function robots(): MetadataRoute.Robots {
     rules: {
       userAgent: '*',
       allow: '/',
-      disallow: '/studio',
+      disallow: [
+        '/api/',
+        '/auth/',
+        '/dashboard/',
+        '/admin/',
+        '/private/',
+        '/studio/',
+        '/*?*', // ป้องกัน query parameters
+      ],
     },
-    sitemap: 'https://support.sdnthailand.com/sitemap.xml',
+    sitemap: 'https://sdnthailand.com/sitemap.xml',
   }
 }

@@ -11,6 +11,12 @@ export interface Post {
   modified: string
   featured_media: number
   
+  // Meta fields
+  meta?: {
+    [key: string]: any
+    'post-views-counter'?: number
+  }
+ 
   // Embedded content
   _embedded?: {
     'wp:featuredmedia'?: Array<{
@@ -36,7 +42,7 @@ export interface Post {
       }
     }>
   }
-
+ 
   // Additional fields
   uagb_featured_image_src?: {
     full: [string, number, number, boolean]
@@ -53,24 +59,25 @@ export interface Post {
   
   uagb_excerpt?: string
   viewCount?: number
+  'post-views-counter'?: number
   featuredImage?: string
-}
-
-export interface BlogResponse {
+ }
+ 
+ export interface BlogResponse {
   posts: Post[]
   totalPages: number
   total: number
-}
-
-export interface Category {
+ }
+ 
+ export interface Category {
   id: number
   name: string
   slug: string
   description?: string
   count: number
-}
-
-export interface Author {
+ }
+ 
+ export interface Author {
   id: number 
   name: string
   url?: string
@@ -78,22 +85,63 @@ export interface Author {
   avatar_urls?: {
     [key: string]: string
   }
-}
-
-export interface BlogError {
-  error: string
-  status?: number
-}
-
-// API Response Types
-export interface ApiSuccessResponse<T> {
+ }
+ 
+ export interface ViewResponse {
+  success: boolean
+  count?: number
+  error?: string  
+ }
+ 
+ // API Response Types
+ export interface ApiSuccessResponse<T> {
   success: true
   data: T
-}
-
-export interface ApiErrorResponse {
+ }
+ 
+ export interface ApiErrorResponse {
   success: false
   error: string
-}
-
-export type ApiResponse<T> = ApiSuccessResponse<T> | ApiErrorResponse
+ }
+ 
+ export type ApiResponse<T> = ApiSuccessResponse<T> | ApiErrorResponse
+ 
+ // Additional response types
+ export interface PostsResponse extends ApiSuccessResponse<{
+  posts: Post[]
+  totalPages: number
+  total: number
+ }> {}
+ 
+ export interface PostResponse extends ApiSuccessResponse<Post> {}
+ 
+ export interface CategoriesResponse extends ApiSuccessResponse<Category[]> {}
+ 
+ export interface AuthorResponse extends ApiSuccessResponse<Author> {}
+ 
+ // Error Types
+ export interface BlogError {
+  error: string
+  status?: number
+ }
+ 
+ // Request Types
+ export interface PostQueryParams {
+  page?: number
+  per_page?: number
+  search?: string
+  categories?: number[]
+  tags?: number[]
+  author?: number
+  orderby?: 'date' | 'title' | 'modified' | 'comment_count'
+  order?: 'asc' | 'desc'
+ }
+ 
+ // ViewCount Types
+ export interface ViewCountData {
+  id: number
+  count: number
+  lastUpdated: string
+ }
+ 
+ export interface ViewCountResponse extends ApiSuccessResponse<ViewCountData> {}

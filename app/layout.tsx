@@ -32,17 +32,17 @@ const ibmPlex = IBM_Plex_Sans_Thai_Looped({
 })
 
 export const metadata = {
-  metadataBase: new URL(process.env.NEXT_PUBLIC_API_URL || 'https://support.sdnthailand.com'),
+  metadataBase: new URL(process.env.NEXT_PUBLIC_API_URL || 'https://sdnthailand.com'),
   title: {
-    default: 'SDN Thailand Support',
-    template: '%s | SDN Thailand Support',
+    default: 'SDN Thailand ',
+    template: '%s | SDN Thailand ',
   },
-  description: 'ศูนย์บริการลูกค้า SDN Thailand',
+  description: 'SDN Thailand',
   openGraph: {
-    title: 'SDN Thailand Support',
-    description: 'ศูนย์บริการลูกค้า SDN Thailand',
-    url: 'https://support.sdnthailand.com',
-    siteName: 'SDN Thailand Support',
+    title: 'SDN Thailand ',
+    description: 'ข้อมูลข่าวสาร SDN Thailand',
+    url: 'https://sdnthailand.com',
+    siteName: 'SDN Thailand ',
     locale: 'th_TH',
     type: 'website',
     // Don't specify images here, let opengraph-image.tsx handle it

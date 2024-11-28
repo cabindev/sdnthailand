@@ -8,6 +8,9 @@ export interface Post {
     rendered: string
   }
   date: string
+  excerpt?: {
+    rendered: string
+  }
   _embedded?: {
     'wp:featuredmedia'?: Array<{
       source_url: string
@@ -26,11 +29,8 @@ export interface Post {
             source_url?: string
           }
         }
-        file?: string
-        width?: number
-        height?: number
       }
-      quote?: string  // เพิ่มตามที่เห็นในภาพแรก
+      quote?: string
     }>
     author?: Array<{
       name: string
@@ -44,12 +44,48 @@ export interface Post {
       slug: string
     }>>
   }
+  meta?: {
+    [key: string]: any
+  }
   viewCount?: number
+  'post-views-counter'?: number
 }
 
-export interface PostState {
-  post: Post | null
-  viewCount: number
-  isLoading: boolean
-  error: string | null
+export interface PostResponse {
+  success: boolean
+  data?: Post
+  error?: string
+}
+
+export interface ViewResponse {
+  success: boolean
+  count?: number
+  error?: string
+}
+
+export interface PostsResponse {
+  success: boolean
+  data?: {
+    posts: Post[]
+    totalPages: number
+    total: number
+  }
+  error?: string
+}
+
+export interface Category {
+  id: number
+  name: string
+  slug: string
+  description?: string
+  parent?: number
+  count?: number
+}
+
+export interface Tag {
+  id: number
+  name: string
+  slug: string
+  description?: string
+  count?: number
 }
