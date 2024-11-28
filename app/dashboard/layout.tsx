@@ -8,9 +8,8 @@ import {
   UserOutlined,
   SettingOutlined,
   LogoutOutlined,
-  ShoppingCartOutlined,
-  CloseOutlined,
-  HomeOutlined
+  HomeOutlined,
+  CloseOutlined
 } from '@ant-design/icons';
 import Link from 'next/link';
 import Image from 'next/image';
@@ -27,7 +26,6 @@ export default function DashboardLayout({
   const [collapsed, setCollapsed] = useState(false);
   const [drawerVisible, setDrawerVisible] = useState(false);
   const [selectedKeys, setSelectedKeys] = useState<string[]>([]);
-  const [openKeys, setOpenKeys] = useState<string[]>([]);
   const [isMobile, setIsMobile] = useState(false);
   const pathname = usePathname();
   const router = useRouter();
@@ -38,19 +36,6 @@ export default function DashboardLayout({
     { key: '/dashboard', icon: <DashboardOutlined />, label: 'Dashboard' },
     { key: '/dashboard/users', icon: <UserOutlined />, label: 'Users' },
     { key: '/dashboard/settings', icon: <SettingOutlined />, label: 'Settings' },
-    {
-      key: 'procurement',
-      icon: <ShoppingCartOutlined />,
-      label: 'Procurement',
-      children: [
-        { key: '/dashboard/procurement', label: 'ภาพรวมจัดซื้อจัดจ้าง' },
-        { key: '/dashboard/procurement/table', label: 'ตารางจัดซื้อจัดจ้าง' },
-        { key: '/dashboard/procurement/create', label: '1.1 ประกาศจัดซื้อจัดจ้าง' },
-        { key: '/dashboard/procurement/admin', label: '1.2 แก้ไขจัดซื้อจัดจ้าง' },
-        { key: '/dashboard/procurement/announce-result/create', label: '2.1 สร้างประกาศผล' },
-        { key: '/dashboard/procurement/announce-result/edit', label: '2.2 แก้ไขประกาศผล' },
-      ],
-    },
   ];
 
   useEffect(() => {
@@ -64,25 +49,11 @@ export default function DashboardLayout({
 
   useEffect(() => {
     const updateSelectedKeys = () => {
-      const matchingMenuItem = menuItems.find(item => 
-        pathname === item.key || 
-        (item.children && item.children.some(child => pathname === child.key))
-      );
+      const matchingMenuItem = menuItems.find(item => pathname === item.key);
       if (matchingMenuItem) {
-        if (matchingMenuItem.children) {
-          setOpenKeys([matchingMenuItem.key]);
-          const matchingChild = matchingMenuItem.children.find(child => pathname === child.key);
-          if (matchingChild) {
-            setSelectedKeys([matchingChild.key]);
-          } else {
-            setSelectedKeys([matchingMenuItem.key]);
-          }
-        } else {
-          setSelectedKeys([matchingMenuItem.key]);
-        }
+        setSelectedKeys([matchingMenuItem.key]);
       }
     };
-
     updateSelectedKeys();
   }, [pathname]);
 
@@ -97,10 +68,6 @@ export default function DashboardLayout({
     if (isMobile) {
       setDrawerVisible(false);
     }
-  };
-
-  const handleOpenChange = (keys: string[]) => {
-    setOpenKeys(keys);
   };
 
   const userMenuItems = [
@@ -138,8 +105,6 @@ export default function DashboardLayout({
         theme="light"
         mode="inline"
         selectedKeys={selectedKeys}
-        openKeys={openKeys}
-        onOpenChange={handleOpenChange}
         onClick={handleMenuClick}
         items={menuItems}
         className="border-r-0 custom-menu"
@@ -198,10 +163,6 @@ export default function DashboardLayout({
           </div>
         </Header>
         <Content className="m-0 p-2 bg-white border-l-2 border-r-2 overflow-y-auto">
-          {/* <div className="mb-4 text-2xl font-bold text-foreground">
-            {menuItems.find(item => item.key === selectedKeys[0])?.label || 
-             menuItems.find(item => item.children?.some(child => child.key === selectedKeys[0]))?.children?.find(child => child.key === selectedKeys[0])?.label}
-          </div> */}
           {children}
         </Content>
       </Layout>

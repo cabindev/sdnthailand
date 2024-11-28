@@ -1,8 +1,7 @@
 import { NextResponse } from 'next/server'
 
-const WP_API_URL = 'https://blog.sdnthailand.com/wp-json/wp/v2'
+const WP_API_URL = `${process.env.WORDPRESS_API_URL}/wp-json/wp/v2` || 'https://blog.sdnthailand.com/wp-json/wp/v2'
 
-// Interface สำหรับ Post
 interface Post {
   id: number
   title: { rendered: string }
@@ -40,7 +39,6 @@ interface Post {
   viewCount?: number
 }
 
-// Interface สำหรับ API Response
 interface PostsResponse {
   posts: Post[]
   totalPages: number
@@ -48,6 +46,8 @@ interface PostsResponse {
 }
 
 export async function GET(request: Request): Promise<NextResponse<PostsResponse | { error: string }>> {
+  console.log('WP_API_URL:', WP_API_URL)
+  
   const { searchParams } = new URL(request.url)
   const page = searchParams.get('page') || '1'
   const per_page = '9'
@@ -71,10 +71,8 @@ export async function GET(request: Request): Promise<NextResponse<PostsResponse 
     const totalPages = Number(response.headers.get('X-WP-TotalPages'))
     const total = Number(response.headers.get('X-WP-Total'))
 
-    // แปลงข้อมูลให้มีรูปภาพและยอดวิว
     const postsWithMedia = await Promise.all(posts.map(async (post) => {
       try {
-        // ดึงยอดวิว
         const viewsResponse = await fetch(
           `${WP_API_URL}/post-views/views/post/${post.id}`,
           { next: { revalidate: 60 } }
@@ -83,12 +81,11 @@ export async function GET(request: Request): Promise<NextResponse<PostsResponse 
         const viewsData = viewsResponse.ok ? await viewsResponse.json() : null
         const viewCount = viewsData?.count || 0
 
-        // จัดการรูปภาพ
         const featuredImage = 
           post._embedded?.['wp:featuredmedia']?.[0]?.source_url ||
           post._embedded?.['wp:featuredmedia']?.[0]?.media_details?.sizes?.large?.source_url ||
           post._embedded?.['wp:featuredmedia']?.[0]?.media_details?.sizes?.medium?.source_url ||
-          '/placeholder-image.jpg'
+          '/images/default-featured.png'
 
         return {
           ...post,
@@ -103,7 +100,7 @@ export async function GET(request: Request): Promise<NextResponse<PostsResponse 
           featuredImage: post._embedded?.['wp:featuredmedia']?.[0]?.source_url || 
                         post._embedded?.['wp:featuredmedia']?.[0]?.media_details?.sizes?.large?.source_url ||
                         post._embedded?.['wp:featuredmedia']?.[0]?.media_details?.sizes?.medium?.source_url ||
-                        '/placeholder-image.jpg'
+                        '/images/default-featured.png'
         }
       }
     }))
@@ -116,39 +113,5 @@ export async function GET(request: Request): Promise<NextResponse<PostsResponse 
   } catch (error) {
     console.error('Error fetching posts:', error)
     return NextResponse.json({ error: 'Failed to fetch posts' }, { status: 500 })
-  }
-}
-
-export async function POST(
-  request: Request,
-  { params }: { params: { id: string } }
-): Promise<NextResponse> {
-  try {
-    const response = await fetch(
-      `${WP_API_URL}/post-views/views/post/${params.id}/increment`,
-      {
-        method: 'POST',
-        headers: {
-          'Accept': 'application/json',
-        },
-        next: { revalidate: 0 }
-      }
-    )
-
-    if (!response.ok) {
-      throw new Error('Failed to increment views')
-    }
-
-    const data = await response.json()
-    return NextResponse.json({ 
-      success: true,
-      viewCount: data.count || 0
-    })
-  } catch (error) {
-    console.error('Error incrementing views:', error)
-    return NextResponse.json(
-      { error: 'Failed to increment views' },
-      { status: 500 }
-    )
   }
 }

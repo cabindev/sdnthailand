@@ -39,6 +39,10 @@ interface Post {
     }>>;
   };
   viewCount?: number;
+  meta?: {
+    'post-views-counter'?: number;
+  };
+  views?: number;
 }
 
 function ErrorMessage({ message }: { message: string }) {
@@ -65,7 +69,7 @@ export default function BlogPostDetail({ params }: { params: { id: string } }) {
 
   useEffect(() => {
     let isMounted = true
-
+  
     const getPost = async () => {
       if (!params.id) {
         setError('ไม่พบรหัสบทความ')
@@ -77,37 +81,75 @@ export default function BlogPostDetail({ params }: { params: { id: string } }) {
         setIsLoading(true)
         setError(null)
         
-        const response = await fetch(`/api/sdnblog/${params.id}`)
+        // ดึงข้อมูลโพสต์และยอดวิวพร้อมกัน
+        const [postResponse, viewResponse] = await Promise.all([
+          fetch(`/api/sdnblog/${params.id}`),
+          fetch(`/api/sdnblog/views/${params.id}`)
+        ])
         
-        if (!response.ok) {
-          throw new Error(`ไม่สามารถโหลดบทความได้ (${response.status})`)
+        if (!postResponse.ok) {
+          throw new Error(`ไม่สามารถโหลดบทความได้ (${postResponse.status})`)
         }
         
-        const result = await response.json()
+        const postResult = await postResponse.json()
+        const viewResult = await viewResponse.json()
         
-        if (!result.success) {
-          throw new Error(result.error || 'ไม่สามารถโหลดบทความได้')
+        if (!postResult.success) {
+          throw new Error(postResult.error || 'ไม่สามารถโหลดบทความได้')
         }
         
-        if (isMounted && result.data) {
-          setPost(result.data)
+        if (isMounted) {
+          // รวมข้อมูลโพสต์และยอดวิว
+          setPost({
+            ...postResult.data,
+            viewCount: viewResult.count
+          })
           
+          // เพิ่มยอดวิว
           if (!viewIncremented) {
             try {
-              const viewResponse = await fetch(`/api/sdnblog/views/${params.id}`, {
+              const incrementResponse = await fetch(`/api/sdnblog/views/${params.id}`, {
                 method: 'POST',
                 headers: {
                   'Content-Type': 'application/json'
                 }
               })
               
-              const viewResult = await viewResponse.json()
-              if (viewResult.success) {
+              const incrementResult = await incrementResponse.json()
+              if (incrementResult.success) {
                 setViewIncremented(true)
+                // อัพเดทยอดวิวใหม่
+                setPost(prev => prev ? {
+                  ...prev,
+                  viewCount: incrementResult.count
+                } : null)
               }
             } catch (viewErr) {
               console.error('Error incrementing view count:', viewErr)
             }
+          }
+  
+          // อัพเดทยอดวิวทุก 60 วินาที
+          const intervalId = setInterval(async () => {
+            if (isMounted) {
+              try {
+                const refreshResponse = await fetch(`/api/sdnblog/views/${params.id}`)
+                const refreshResult = await refreshResponse.json()
+                
+                if (refreshResult.success) {
+                  setPost(prev => prev ? {
+                    ...prev,
+                    viewCount: refreshResult.count
+                  } : null)
+                }
+              } catch (refreshErr) {
+                console.error('Error refreshing view count:', refreshErr)
+              }
+            }
+          }, 60000)
+  
+          return () => {
+            clearInterval(intervalId)
           }
         }
       } catch (err) {
@@ -121,9 +163,9 @@ export default function BlogPostDetail({ params }: { params: { id: string } }) {
         }
       }
     }
-
+  
     getPost()
-
+  
     return () => {
       isMounted = false
     }
@@ -143,7 +185,7 @@ export default function BlogPostDetail({ params }: { params: { id: string } }) {
     <div className="min-h-screen bg-gray-50">
       {/* Hero Section */}
       {featuredImage && (
-        <div className="relative w-full h-[60vh] md:h-[70vh] mb-8">
+        <div className="relative w-full h-[40vh] sm:h-[50vh] md:h-[60vh] lg:h-[70vh] mb-4 sm:mb-6 md:mb-8">
           <img
             src={featuredImage}
             alt={post.title.rendered}
@@ -155,16 +197,17 @@ export default function BlogPostDetail({ params }: { params: { id: string } }) {
               target.src = '/images/default-featured.png'
             }}
           />
-          <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent" />
+          <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/30 to-transparent" />
         </div>
       )}
    
       {/* Content Section */}
-      <div className="container max-w-4xl mx-auto px-4 -mt-32 relative z-10">
+      <div className="container max-w-4xl mx-auto px-4 -mt-16 sm:-mt-20 md:-mt-28 lg:-mt-32 relative z-10">
         <Toaster />
-        <div className="bg-white rounded-2xl shadow-xl p-4 md:p-8">
-          <div className="flex flex-col gap-8">
+        <div className="bg-white rounded-2xl shadow-xl p-4 sm:p-6 md:p-8">
+          <div className="flex flex-col gap-6 sm:gap-8">
             <div className="flex-1">
+              {/* Categories */}
               {categories.length > 0 && (
                 <div className="flex flex-wrap gap-2 mb-4 md:mb-6">
                   {categories.map(cat => (
@@ -178,18 +221,20 @@ export default function BlogPostDetail({ params }: { params: { id: string } }) {
                 </div>
               )}
    
+              {/* Title */}
               <h1 
-                className="text-2xl md:text-4xl font-seppuri font-bold mb-4 leading-relaxed text-gray-800"
+                className="text-xl sm:text-2xl md:text-4xl font-seppuri font-bold mb-4 leading-relaxed text-gray-800"
                 dangerouslySetInnerHTML={{ __html: post.title.rendered }}
               />
    
-              <div className="flex flex-col md:flex-row md:items-center justify-between mb-6 md:mb-8 pb-6 md:pb-8 border-b border-gray-200 gap-4">
+              {/* Author & View Count */}
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between mb-6 md:mb-8 pb-6 md:pb-8 border-b border-gray-200 gap-4">
                 <div className="flex items-center gap-4">
                   <div>
                     {authorLink ? (
                       <Link 
                         href={authorLink}
-                        className="font-ibm font-medium text-gray-800 text-sm md:text-base hover:text-orange-500"
+                        className="font-ibm font-medium text-gray-800 text-sm md:text-base hover:text-orange-500 transition-colors"
                       >
                         {authorName || 'ไม่ระบุผู้เขียน'}
                       </Link>
@@ -215,18 +260,20 @@ export default function BlogPostDetail({ params }: { params: { id: string } }) {
                 </div>
               </div>
    
-              <div className='flex-1 mb-8'>
+              {/* Text to Speech Controls */}
+              <div className="flex-1 mb-6 sm:mb-8">
                 <TextToSpeechControls 
                   text={post.content.rendered.replace(/<[^>]*>/g, '')} 
                 />
               </div>
    
+              {/* Content */}
               <div 
-                className="prose prose-base md:prose-lg max-w-none
+                className="prose prose-sm sm:prose-base md:prose-lg max-w-none
                   prose-headings:font-seppuri prose-headings:text-gray-800
-                  prose-h1:text-2xl md:prose-h1:text-4xl
-                  prose-h2:text-xl md:prose-h2:text-3xl
-                  prose-h3:text-lg md:prose-h3:text-2xl
+                  prose-h1:text-xl sm:prose-h1:text-2xl md:prose-h1:text-4xl
+                  prose-h2:text-lg sm:prose-h2:text-xl md:prose-h2:text-3xl
+                  prose-h3:text-base sm:prose-h3:text-lg md:prose-h3:text-2xl
                   prose-p:font-ibm prose-p:text-gray-600 prose-p:leading-relaxed
                   prose-a:text-orange-500 hover:prose-a:text-orange-600
                   prose-img:rounded-xl prose-img:shadow-lg
@@ -235,17 +282,19 @@ export default function BlogPostDetail({ params }: { params: { id: string } }) {
                   prose-strong:text-gray-800
                   prose-ul:list-disc prose-ol:list-decimal
                   prose-li:font-ibm prose-li:text-gray-600
-                  mb-8 md:mb-12
+                  mb-6 sm:mb-8 md:mb-12
                   [&>*]:mx-auto [&>*]:max-w-3xl"
                 dangerouslySetInnerHTML={{ __html: post.content.rendered }}
               />
    
+              {/* Related Posts */}
               <RelatedPosts currentPostId={post.id} />
    
-              <div className="mt-8 md:mt-12 pt-8 border-t border-gray-200">
+              {/* Back to Blog Link */}
+              <div className="mt-6 sm:mt-8 md:mt-12 pt-6 sm:pt-8 border-t border-gray-200">
                 <Link 
                   href="/sdnblog" 
-                  className="inline-flex items-center gap-2 text-orange-100 hover:text-orange-300 transition-colors text-sm md:text-base"
+                  className="inline-flex items-center gap-2"
                 >
                   <span className="inline-flex items-center gap-2 font-ibm text-sm md:text-base bg-gradient-to-r from-orange-300 to-orange-400 text-white px-4 py-2 rounded-full hover:from-orange-600 hover:to-orange-700 transition-all duration-300 shadow-md hover:shadow-lg transform hover:-translate-y-0.5">
                     บทความทั้งหมด
@@ -255,7 +304,16 @@ export default function BlogPostDetail({ params }: { params: { id: string } }) {
             </div>
    
             {/* Share Buttons - Fixed Position */}
-            <div className="hidden md:flex fixed right-8 top-1/2 -translate-y-1/2 flex-col gap-4">
+            <div className="hidden md:flex fixed right-4 lg:right-8 top-1/2 -translate-y-1/2 flex-col gap-4 z-50">
+              <ShareButtons 
+                url={shareUrl}
+                title={post.title.rendered}
+                imageUrl={featuredImage || `${BASE_URL}/images/default-og.png`}
+              />
+            </div>
+   
+            {/* Mobile Share Buttons */}
+            <div className="flex md:hidden justify-center gap-4 mt-6">
               <ShareButtons 
                 url={shareUrl}
                 title={post.title.rendered}

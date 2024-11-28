@@ -14,7 +14,32 @@ const Navbar: React.FC = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [openSubmenu, setOpenSubmenu] = useState<string | null>(null);
+  const [visible, setVisible] = useState(true);
+  const [prevScrollPos, setPrevScrollPos] = useState(0);
   const menuRef = useRef<HTMLDivElement>(null);
+
+  // Handle scroll behavior
+  useEffect(() => {
+    const handleScroll = () => {
+      const currentScrollPos = window.scrollY;
+      const isScrollingDown = prevScrollPos < currentScrollPos;
+      
+      setVisible(
+        // Show navbar if:
+        // 1. Scrolling up
+        // 2. At the top of the page
+        // 3. Mobile menu is open
+        !isScrollingDown || 
+        currentScrollPos < 10 || 
+        isMobileMenuOpen
+      );
+      
+      setPrevScrollPos(currentScrollPos);
+    };
+
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, [prevScrollPos, isMobileMenuOpen]);
 
   const handleSignOut = async () => {
     await signOut({ redirect: false });
@@ -35,7 +60,8 @@ const Navbar: React.FC = () => {
         { href: '/about/project2567', label: 'โครงการปี 2567' },
       ]
     },
-    { href: '/about/contact', label: 'ติดต่อเรา' },
+    { href: '/library', label: 'Ebook' },
+    { href: 'https://support.sdnthailand.com/about/contact', label: 'ติดต่อเรา' },
     ...(isAdmin ? [{ href: '/dashboard', label: 'จัดการระบบ' }] : []),
   ];
 
@@ -57,7 +83,13 @@ const Navbar: React.FC = () => {
   const toggleMobileMenu = () => setIsMobileMenuOpen(!isMobileMenuOpen);
 
   return (
-    <nav className="bg-white/80 shadow-sm fixed w-full z-50 backdrop-blur-md">
+    <nav 
+      className={`
+        fixed w-full z-50 transition-all duration-300
+        ${visible ? 'translate-y-0' : '-translate-y-full'}
+        ${prevScrollPos > 0 ? 'bg-white/80 shadow-sm backdrop-blur-md' : 'bg-transparent'}
+      `}
+    >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between h-16">
           {/* Logo and SDN THAILAND */}
@@ -72,7 +104,11 @@ const Navbar: React.FC = () => {
               rel="noopener noreferrer"
               className="hidden sm:block text-center leading-tight hover:text-orange-500 transition-colors"
             >
-              <span className="block text-base font-medium text-gray-900">SDN THAILAND</span>
+              <span className={`block text-base font-medium ${
+                prevScrollPos > 0 ? "text-gray-900" : "text-gray-600"
+              }`}>
+                SDN THAILAND
+              </span>
             </Link>
           </div>
 
@@ -88,17 +124,21 @@ const Navbar: React.FC = () => {
                         className={`${
                           pathname.startsWith(item.href)
                             ? "text-orange-500"
-                            : "text-gray-500 hover:text-gray-900"
+                            : prevScrollPos > 0 
+                              ? "text-gray-500 hover:text-gray-900"
+                              : "text-gray hover:text-orange-500"
                         } inline-flex items-center px-1 pt-1 text-sm font-medium transition-colors duration-200`}
                       >
                         {item.label}
-                        <IoIosArrowDown className={`ml-1 w-4 h-4 transition-transform duration-200 ${
-                          openSubmenu === item.href ? 'rotate-180' : ''
-                        }`} />
+                        <IoIosArrowDown 
+                          className={`ml-1 w-4 h-4 transition-transform duration-200 ${
+                            openSubmenu === item.href ? 'rotate-180' : ''
+                          }`} 
+                        />
                       </button>
                       
                       {openSubmenu === item.href && (
-                        <div className="absolute left-0 mt-1 w-56 bg-white rounded-md shadow-lg py-1 z-50 border">
+                        <div className="absolute left-0 mt-1 w-56 bg-gray rounded-md shadow-lg py-1 z-50 border">
                           {item.subItems.map((subItem) => (
                             <Link
                               key={subItem.href}
@@ -106,7 +146,7 @@ const Navbar: React.FC = () => {
                               className={`block px-4 py-2 text-sm ${
                                 pathname === subItem.href
                                   ? "text-orange-500 bg-gray-50"
-                                  : "text-gray-700 hover:bg-gray-50 hover:text-orange-500"
+                                  : "text-gray-700 hover:bg-orange-50 hover:text-orange-500"
                               }`}
                               onClick={() => setOpenSubmenu(null)}
                             >
@@ -122,7 +162,9 @@ const Navbar: React.FC = () => {
                       className={`${
                         pathname === item.href
                           ? "text-orange-500"
-                          : "text-gray-500 hover:text-gray-900"
+                          : prevScrollPos > 0 
+                            ? "text-gray-500 hover:text-gray-900"
+                            : "text-gray hover:text-orange-500"
                       } inline-flex items-center px-1 pt-1 text-sm font-medium transition-colors duration-200`}
                     >
                       {item.label}
@@ -146,22 +188,28 @@ const Navbar: React.FC = () => {
                     src={session.user?.image || "/images/default-avatar.png"}
                     alt="Profile"
                   />
-                  <span className="text-gray-700">{session.user?.firstName}</span>
-                  <IoIosArrowDown className="w-4 h-4" />
+                  <span className={`${
+                    prevScrollPos > 0 ? "text-gray-700" : "text-gray"
+                  }`}>
+                    {session.user?.firstName}
+                  </span>
+                  <IoIosArrowDown className={`w-4 h-4 ${
+                    prevScrollPos > 0 ? "text-gray-700" : "text-gray"
+                  }`} />
                 </button>
 
                 {isMenuOpen && (
-                  <div className="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg py-1 z-50 border">
+                  <div className="absolute right-0 mt-2 w-48 bg-gray rounded-md shadow-lg py-1 z-50 border">
                     <Link
                       href="/profile"
-                      className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 hover:text-orange-500"
+                      className="block px-4 py-2 text-sm text-gray-700 hover:bg-orange-500 hover:text-orange-500"
                       onClick={() => setIsMenuOpen(false)}
                     >
                       โปรไฟล์
                     </Link>
                     <button
                       onClick={handleSignOut}
-                      className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 hover:text-orange-500"
+                      className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-orange-500 hover:text-orange-500"
                     >
                       ออกจากระบบ
                     </button>
@@ -170,19 +218,27 @@ const Navbar: React.FC = () => {
               </div>
             ) : (
               <div className="hidden md:flex items-center space-x-4">
-                <Link
+                {/* <Link
                   href="/auth/signin"
-                  className="text-sm font-medium text-gray-700 hover:text-orange-500"
+                  className={`text-sm font-medium ${
+                    prevScrollPos > 0 
+                      ? "text-gray-700 hover:text-orange-500"
+                      : "text-gray hover:text-orange-200"
+                  }`}
                 >
                   เข้าสู่ระบบ
-                </Link>
+                </Link> */}
               </div>
             )}
 
             {/* Mobile Menu Button */}
             <button
               onClick={toggleMobileMenu}
-              className="md:hidden p-2 rounded-md text-gray-400 hover:text-gray-500"
+              className={`md:hidden p-2 rounded-md ${
+                prevScrollPos > 0 
+                  ? "text-gray-400 hover:text-orange-500"
+                  : "text-gray hover:text-orange-200"
+              }`}
             >
               <HiMenuAlt3 className="h-6 w-6" />
             </button>
@@ -192,7 +248,7 @@ const Navbar: React.FC = () => {
 
       {/* Mobile Menu */}
       {isMobileMenuOpen && (
-        <div className="md:hidden border-t">
+        <div className="md:hidden border-t bg-gray">
           <div className="pt-2 pb-3 space-y-1">
             {navItems.map((item) => (
               <div key={item.href}>
@@ -203,11 +259,11 @@ const Navbar: React.FC = () => {
                       className={`${
                         pathname.startsWith(item.href)
                           ? "text-orange-500"
-                          : "text-gray-500 hover:text-gray-900"
+                          : "text-gray-500 hover:text-orange-900"
                       } w-full flex items-center justify-between px-4 py-2 text-base font-medium`}
                     >
                       {item.label}
-                      <IoIosArrowDown className={`w-4 h-4 ${
+                      <IoIosArrowDown className={`w-4 h-4 transition-transform duration-200 ${
                         openSubmenu === item.href ? 'rotate-180' : ''
                       }`} />
                     </button>
