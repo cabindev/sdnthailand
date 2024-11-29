@@ -50,7 +50,7 @@ export async function GET(request: Request): Promise<NextResponse<PostsResponse 
   
   const { searchParams } = new URL(request.url)
   const page = searchParams.get('page') || '1'
-  const per_page = '9'
+  const per_page = '6'
 
   try {
     const response = await fetch(

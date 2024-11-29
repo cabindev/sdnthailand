@@ -231,11 +231,11 @@ export default function PostDetail({ params }: { params: { id: string } }) {
                 </div>
               </div>
              <div className="flex items-center gap-2 text-gray-500">
-  <FaEye className="w-4 h-4 md:w-5 md:h-5" />
-  <span className="font-ibm text-sm md:text-base">
-    {(post['post-views-counter'] || post.viewCount || 0).toLocaleString()} ครั้ง
-  </span>
-</div>
+              <FaEye className="w-4 h-4 md:w-5 md:h-5" />
+              <span className="font-ibm text-sm md:text-base">
+                {(post['post-views-counter'] || post.viewCount || 0).toLocaleString()} ครั้ง
+              </span>
+            </div>
             </div>
 
             <div className='flex-1'>
