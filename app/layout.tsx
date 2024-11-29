@@ -8,6 +8,7 @@ import 'antd/dist/reset.css';
 import { IBM_Plex_Sans_Thai_Looped } from 'next/font/google'
 import localFont from 'next/font/local'
 import { Toaster } from 'react-hot-toast'
+import SWRProvider from "./providers/SWRProvider";
 
 // Local Seppuri font
 const seppuri = localFont({
@@ -45,7 +46,6 @@ export const metadata = {
     siteName: 'SDN Thailand ',
     locale: 'th_TH',
     type: 'website',
-    // Don't specify images here, let opengraph-image.tsx handle it
   },
 }
 
@@ -59,11 +59,13 @@ export default async function RootLayout({
     <html lang="th" className={`${seppuri.variable} ${ibmPlex.variable}`}>
       <body>
         <SessionProvider session={session}>
-          <ConditionalNavbar />
-          <main className="font-ibm"> {/* default font for body */}
-            {children}
-            <Toaster position="bottom-center" />
-          </main>
+          <SWRProvider>
+            <ConditionalNavbar />
+            <main className="font-ibm">
+              {children}
+              <Toaster position="bottom-center" />
+            </main>
+          </SWRProvider>
         </SessionProvider>
       </body>
     </html>

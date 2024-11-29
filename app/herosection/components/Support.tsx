@@ -34,7 +34,7 @@ export default function Support() {
        {/* Services Section */}
        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 sm:gap-8">
          <Link
-           href="https://sdnthailand.com/auth/signin"
+           href="https://support.sdnthailand.com/support"
            className="group bg-white border border-gray-200 rounded-xl p-6 sm:p-8 hover:border-orange-500 hover:shadow-md transition-all duration-200"
          >
            <div className="flex flex-col items-center text-center space-y-4">
@@ -51,7 +51,7 @@ export default function Support() {
          </Link>
 
          <Link
-           href="/procurement"
+           href="https://support.sdnthailand.com/procurement"
            className="group bg-white border border-gray-200 rounded-xl p-6 sm:p-8 hover:border-orange-500 hover:shadow-md transition-all duration-200"
          >
            <div className="flex flex-col items-center text-center space-y-4">
@@ -83,15 +83,6 @@ export default function Support() {
              </p>
            </div>
          </Link>
-       </div>
-     </div>
-
-     {/* Project2020 Preview Section */}
-     <div className="bg-gray-50 py-12 sm:py-20">
-       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-         <div className="bg-white rounded-xl shadow-sm overflow-hidden">
-           <HomeProject2020 />
-         </div>
        </div>
      </div>
    </>

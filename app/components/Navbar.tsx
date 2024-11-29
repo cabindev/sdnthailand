@@ -49,10 +49,10 @@ const Navbar: React.FC = () => {
   const isAdmin = session?.user?.role === 'ADMIN';
 
   const navItems = [
-    { href: '/', label: 'หน้าหลัก' },
+    { href: '/', label: 'Home' },
     { 
       href: '/about', 
-      label: 'องค์กร',
+      label: 'Org.',
       subItems: [
         { href: '/about/mission', label: 'ปณิธาน' },
         { href: '/about/principle', label: 'หลักการ' },
@@ -61,8 +61,8 @@ const Navbar: React.FC = () => {
       ]
     },
     { href: '/library', label: 'Ebook' },
-    { href: 'https://support.sdnthailand.com/about/contact', label: 'ติดต่อเรา' },
-    ...(isAdmin ? [{ href: '/dashboard', label: 'จัดการระบบ' }] : []),
+    { href: 'https://support.sdnthailand.com/about/contact', label: 'Contact' },
+    ...(isAdmin ? [{ href: '/dashboard', label: 'Dashboard' }] : []),
   ];
 
   useEffect(() => {
