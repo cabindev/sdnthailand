@@ -1,6 +1,7 @@
-// library/types/index.ts
+// app/library/types/index.ts
 export interface Book {
     img: string;
-    title: string; 
+    title: string;
     url: string;
-   }
+    tags: string[];
+  }

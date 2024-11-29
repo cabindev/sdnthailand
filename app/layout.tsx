@@ -9,6 +9,7 @@ import { IBM_Plex_Sans_Thai_Looped } from 'next/font/google'
 import localFont from 'next/font/local'
 import { Toaster } from 'react-hot-toast'
 import SWRProvider from "./providers/SWRProvider";
+import Footer from "./components/Footer";
 
 // Local Seppuri font
 const seppuri = localFont({
@@ -61,10 +62,11 @@ export default async function RootLayout({
         <SessionProvider session={session}>
           <SWRProvider>
             <ConditionalNavbar />
-            <main className="font-ibm">
+            <main className="font-ibm min-h-screen">
               {children}
               <Toaster position="bottom-center" />
             </main>
+            <Footer/>
           </SWRProvider>
         </SessionProvider>
       </body>
