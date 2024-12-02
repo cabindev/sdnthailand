@@ -5,16 +5,46 @@ import PostCard from './components/PostCard'
 import { useSearchParams, useRouter } from 'next/navigation'
 
 interface Post {
-  id: number;
-  title: { rendered: string };
-  date: string;
-  excerpt: { rendered: string };
+  id: number
+  title: { rendered: string }
+  date: string
+  content: { rendered: string }
+  excerpt: { rendered: string }
+  meta?: {
+    post_views_count?: number
+  }
   _embedded?: {
-    'wp:featuredmedia'?: Array<{ source_url: string }>;
-    'wp:term'?: Array<Array<{ name: string }>>;
-    author?: Array<{ name: string }>;
-  };
-  featuredImage?: string;
+    'wp:featuredmedia'?: Array<{
+      source_url: string
+      media_details?: {
+        sizes?: {
+          thumbnail?: { source_url: string }
+          medium?: { source_url: string }
+          large?: { source_url: string }
+          full?: { source_url: string }
+        }
+      }
+    }>
+    'wp:term'?: Array<Array<{
+      id: number
+      name: string
+      slug: string
+    }>>
+    author?: Array<{
+      name: string
+      avatar_urls?: {
+        [key: string]: string
+      }
+    }>
+  }
+  featuredImage?: string
+  viewCount?: number
+}
+
+interface PostsResponse {
+  posts: Post[]
+  totalPages: number
+  total: number
 }
 
 export default function SDNPostPage() {
@@ -33,7 +63,12 @@ export default function SDNPostPage() {
       try {
         const res = await fetch(`/api/sdnpost?page=${currentPage}`)
         if (!res.ok) throw new Error('Failed to fetch posts')
-        const data = await res.json()
+        const data = await res.json() as PostsResponse
+        
+        if ('error' in data) {
+          throw new Error((data as { error: string }).error)
+        }
+        
         setPosts(data.posts)
         setTotalPages(data.totalPages)
       } catch (err) {
@@ -76,28 +111,47 @@ export default function SDNPostPage() {
     )
   }
 
+  if (!posts?.length) {
+    return (
+      <div className="container mx-auto px-4 py-20">
+        <div className="text-center">
+          <h2 className="text-2xl font-semibold text-gray-800 mb-4">ไม่พบบทความ</h2>
+          <p className="text-gray-600">ขออภัย ไม่พบบทความที่ต้องการในขณะนี้</p>
+        </div>
+      </div>
+    )
+  }
+
   return (
     <div className="container mx-auto px-4 py-20">
-    {/* เพิ่มส่วนหัว */}
-    <div className="mb-12 text-center">
-      <h1 className="text-4xl font-bold text-gray-800 mb-4">
-        SDN Thailand News & Updates
-      </h1>
-      <div className="w-24 h-1 bg-orange-500 mx-auto mb-4"></div>
-      <p className="text-gray-600 max-w-2xl mx-auto">
-        ติดตามข่าวสารและบทความล่าสุด
-      </p>
-    </div>
+      {/* Header Section */}
+      <div className="mb-12 text-center">
+        <h1 className="text-4xl font-bold text-gray-800 mb-4">
+          SDN Thailand News & Updates
+        </h1>
+        <div className="w-24 h-1 bg-orange-500 mx-auto mb-4"></div>
+        <p className="text-gray-600 max-w-2xl mx-auto">
+          ติดตามข่าวสารและบทความล่าสุด
+        </p>
+      </div>
 
-    {/* ปรับ grid เป็น 4 คอลัมน์ และจำกัดขนาดการ์ด */}
-    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-      {posts.map((post) => (
-        <div key={post.id} className="opacity-0 animate-fade-in max-w-sm mx-auto w-full">
-          <PostCard post={post} />
-        </div>
-      ))}
-    </div>
+      {/* Posts Grid */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+        {posts.map((post) => (
+          <div 
+            key={post.id} 
+            className="opacity-0 animate-fade-in max-w-sm mx-auto w-full"
+            style={{
+              animation: 'fadeIn 0.5s ease-in forwards',
+              animationDelay: '0.1s'
+            }}
+          >
+            <PostCard post={post} />
+          </div>
+        ))}
+      </div>
 
+      {/* Pagination */}
       {totalPages > 1 && (
         <div className="mt-16 flex justify-center items-center gap-2">
           <button
