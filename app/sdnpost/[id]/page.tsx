@@ -1,3 +1,4 @@
+// app/sdnpost/[id]/page.tsx
 import { Metadata } from 'next'
 import PostDetail from './PostDetail'
 
@@ -42,7 +43,6 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
         description: description,
         images: [ogImage]
       },
-      // ข้อมูลสำหรับ structured data
       alternates: {
         canonical: `https://sdnthailand.com/sdnpost/${params.id}`
       }
@@ -53,23 +53,6 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       description: 'ข่าว และกิจกรรมเครือข่ายภาคประชาสังคม',
     }
   }
-}
-
-// เพิ่ม dynamic OG Image generation
-export const generateImageMetadata = async ({ params }: Props) => {
-  const post = await fetch(
-    `${process.env.WORDPRESS_API_URL}/wp-json/wp/v2/posts/${params.id}?_embed`
-  ).then(res => res.json())
-
-  return [
-    {
-      contentType: 'image/jpeg',
-      size: { width: 1200, height: 630 },
-      id: 'social',
-      alt: post.title?.rendered,
-      url: post._embedded?.['wp:featuredmedia']?.[0]?.source_url || '/images/default-og.png'
-    }
-  ]
 }
 
 export default function Page({ params }: Props) {
