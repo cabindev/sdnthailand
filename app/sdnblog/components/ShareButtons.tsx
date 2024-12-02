@@ -11,38 +11,40 @@ interface ShareButtonsProps {
 }
 
 export default function ShareButtons({ url, title, isMobile = false }: ShareButtonsProps) {
-  const handleCopyLink = async () => {
-    try {
-      await navigator.clipboard.writeText(url)
-      toast.success('คัดลอกลิงก์แล้ว')
-    } catch (err) {
-      toast.error('ไม่สามารถคัดลอกลิงก์ได้')
-    }
-  }
 
-  const handleFacebookShare = () => {
-    window.open(
-      `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(url)}&quote=${encodeURIComponent(title)}`,
-      '_blank',
-      'width=600,height=400'
-    )
-  }
 
-  const handleTwitterShare = () => {
-    window.open(
-      `https://twitter.com/intent/tweet?url=${encodeURIComponent(url)}&text=${encodeURIComponent(title)}`,
-      '_blank',
-      'width=600,height=400'
-    )
-  }
+  const fullUrl = `https://sdnthailand.com/sdnblog/${url.split('/').pop()}`
 
-  const handleLineShare = () => {
-    window.open(
-      `https://line.me/R/msg/text/?${encodeURIComponent(`${title} ${url}`)}`,
-      '_blank'
-    )
-  }
+const handleFacebookShare = () => {
+  window.open(
+    `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(fullUrl)}`,
+    '_blank'
+  )
+}
 
+const handleTwitterShare = () => {
+  window.open(
+    `https://twitter.com/intent/tweet?url=${encodeURIComponent(fullUrl)}&text=${encodeURIComponent(title)}`,
+    '_blank',
+    'width=600,height=400'
+  )
+}
+
+const handleLineShare = () => {
+  window.open(
+    `https://line.me/R/msg/text/?${encodeURIComponent(`${title} ${fullUrl}`)}`,
+    '_blank'
+  )
+}
+
+const handleCopyLink = async () => {
+  try {
+    await navigator.clipboard.writeText(fullUrl)
+    toast.success('คัดลอกลิงก์แล้ว')
+  } catch (err) {
+    toast.error('ไม่สามารถคัดลอกลิงก์ได้')
+  }
+}
   // ใช้ dynamic className ตาม prop isMobile
   const containerClassName = isMobile 
     ? "flex flex-row justify-center gap-4 mt-6 px-4" 

@@ -11,7 +11,8 @@ import ShareButtons from '../components/ShareButtons'
 import RelatedPosts from '../components/RelatedPosts'
 import LoadingSpinner from '../components/LoadingSpinner'
 
-const BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'https://blog.sdnthailand.com/'
+const BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'https://sdnthailand.com'
+
 
 interface ErrorMessageProps {
   message: string;
@@ -267,21 +268,21 @@ export default function BlogPostDetail({ params }: BlogPostDetailProps) {
               </Link>
             </div>
 
-            {/* Share Buttons */}
+            {/* Desktop Share Buttons */}
             <div className="hidden md:flex fixed right-4 lg:right-8 top-1/2 -translate-y-1/2 flex-col gap-4 z-50">
-            <ShareButtons 
+              <ShareButtons 
                 url={shareUrl}
                 title={post.title.rendered}
-            />
+              />
             </div>
 
             {/* Mobile Share Buttons */}
             <div className="block md:hidden w-full">
-            <ShareButtons 
+              <ShareButtons 
                 url={shareUrl}
                 title={post.title.rendered}
                 isMobile={true}
-            />
+              />
             </div>
           </div>
         </div>
