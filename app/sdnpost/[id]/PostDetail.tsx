@@ -297,14 +297,23 @@ export default function PostDetail({ params }: PostDetailProps) {
                 </Link>
               </div>
             </div>
-
             {/* Share Buttons */}
             <div className="hidden md:block w-16">
-              <ShareButtons
+            <ShareButtons 
                 url={shareUrl}
                 title={post.title.rendered}
-              />
+            />
             </div>
+
+            {/* Mobile Share Buttons */}
+            <div className="block md:hidden w-full">
+            <ShareButtons 
+                url={shareUrl}
+                title={post.title.rendered}
+                isMobile={true}
+            />
+            </div>
+            
           </div>
         </div>
       </div>

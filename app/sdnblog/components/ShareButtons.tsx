@@ -7,10 +7,10 @@ import { toast } from 'react-hot-toast'
 interface ShareButtonsProps {
   url: string
   title: string
-  imageUrl?: string
+  isMobile?: boolean // เพิ่ม prop สำหรับ mobile view
 }
 
-export default function ShareButtons({ url, title }: ShareButtonsProps) {
+export default function ShareButtons({ url, title, isMobile = false }: ShareButtonsProps) {
   const handleCopyLink = async () => {
     try {
       await navigator.clipboard.writeText(url)
@@ -43,11 +43,17 @@ export default function ShareButtons({ url, title }: ShareButtonsProps) {
     )
   }
 
+  // ใช้ dynamic className ตาม prop isMobile
+  const containerClassName = isMobile 
+    ? "flex flex-row justify-center gap-4 mt-6 px-4" 
+    : "flex flex-col gap-4 sticky top-24"
+
   return (
-    <div className="flex flex-col gap-4 sticky top-24">
+    <div className={containerClassName}>
       <button
         onClick={handleFacebookShare}
         className="w-10 h-10 flex items-center justify-center bg-[#1877f2] hover:bg-[#166fe5] text-white rounded-full transition-colors"
+        aria-label="Share on Facebook"
       >
         <FaFacebook className="w-5 h-5" />
       </button>
@@ -55,13 +61,23 @@ export default function ShareButtons({ url, title }: ShareButtonsProps) {
       <button
         onClick={handleTwitterShare}
         className="w-10 h-10 flex items-center justify-center bg-black hover:bg-gray-900 text-white rounded-full transition-colors"
+        aria-label="Share on Twitter"
       >
         <FaXTwitter className="w-4 h-4" />
       </button>
 
       <button
+        onClick={handleLineShare}
+        className="w-10 h-10 flex items-center justify-center bg-[#00b900] hover:bg-[#00a000] text-white rounded-full transition-colors"
+        aria-label="Share on Line"
+      >
+        <FaLine className="w-5 h-5" />
+      </button>
+
+      <button
         onClick={handleCopyLink}
         className="w-10 h-10 flex items-center justify-center bg-gray-200 hover:bg-gray-300 text-gray-600 rounded-full transition-colors"
+        aria-label="Copy link"
       >
         <FaLink className="w-5 h-5" />
       </button>
