@@ -1,3 +1,4 @@
+//sdnpost/route.ts
 import { NextResponse } from 'next/server'
 
 const WP_API_URL = `${process.env.WORDPRESS_API_URL}/wp-json/wp/v2` || 'https://blog.sdnthailand.com/wp-json/wp/v2'
@@ -50,7 +51,7 @@ export async function GET(request: Request): Promise<NextResponse<PostsResponse 
   
   const { searchParams } = new URL(request.url)
   const page = searchParams.get('page') || '1'
-  const per_page = '6'
+  const per_page = searchParams.get('per_page') || '12'
 
   try {
     const response = await fetch(
