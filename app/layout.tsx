@@ -33,21 +33,30 @@ const ibmPlex = IBM_Plex_Sans_Thai_Looped({
   variable: '--font-ibm'
 })
 
-export const metadata = {
-  metadataBase: new URL(process.env.NEXT_PUBLIC_API_URL || 'https://sdnthailand.com'),
+
+export const metadata: Metadata = {
+  metadataBase: new URL('https://sdnthailand.com'),
   title: {
-    default: 'SDN Thailand ',
-    template: '%s | SDN Thailand ',
+    default: 'SDN Thailand',
+    template: '%s | SDN Thailand'
   },
-  description: 'SDN Thailand',
+  description: 'ข่าว และกิจกรรมเครือข่ายภาคประชาสังคม',
   openGraph: {
-    title: 'SDN Thailand ',
-    description: 'ข้อมูลข่าวสาร เครือข่ายงดเหล้า SDN Thailand',
-    url: 'https://sdnthailand.com',
-    siteName: 'SDN Thailand ',
-    locale: 'th_TH',
     type: 'website',
+    locale: 'th_TH',
+    url: 'https://sdnthailand.com',
+    siteName: 'SDN Thailand',
+    images: [{
+      url: '/images/default-og.png',
+      width: 1200,
+      height: 630,
+      alt: 'SDN Thailand'
+    }]
   },
+  twitter: {
+    card: 'summary_large_image',
+    site: '@sdnthailand'
+  }
 }
 
 export default async function RootLayout({
