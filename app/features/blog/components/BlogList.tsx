@@ -1,32 +1,82 @@
+// BlogList.tsx
 'use client';
 
-import { Suspense } from 'react';
+import { useEffect, useState } from 'react';
 import Link from 'next/link';
-import { useBlogPosts } from '../hooks/useBlogPosts';
 import BlogCard from './BlogCard';
 
+interface BlogPost {
+  id: number;
+  title: {
+    rendered: string;
+  };
+  uagb_excerpt: string;
+  uagb_featured_image_src?: {
+    full?: string[];
+  };
+  _embedded?: {
+    'wp:featuredmedia'?: Array<{
+      source_url: string;
+    }>;
+  };
+}
+
+interface BlogResponse {
+  success: boolean;
+  posts: BlogPost[];
+  totalPages: number;
+  total: number;
+}
+
 function BlogContent() {
-  const { posts, isLoading, error } = useBlogPosts();
+  const [posts, setPosts] = useState<BlogPost[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+    const fetchPosts = async () => {
+      try {
+        setIsLoading(true);
+        const response = await fetch('/api/sdnblog?per_page=4');
+        const data = await response.json();
+        if (data.posts) setPosts(data.posts);
+      } catch (err) {
+        setError('Failed to fetch posts');
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    fetchPosts();
+  }, []);
 
   if (isLoading) {
     return (
-      <div className="mt-8 animate-pulse space-y-4">
-        <div className="h-64 bg-gray-200 rounded-lg"></div>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          {[1, 2, 3].map((i) => (
-            <div key={i} className="h-48 bg-gray-200 rounded-lg"></div>
-          ))}
+      <div className="space-y-8">
+        <div className="animate-pulse">
+          <div className="h-[450px] bg-gray-200 rounded-xl mb-8" />
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+            {[1, 2, 3].map((i) => (
+              <div key={i} className="h-64 bg-gray-200 rounded-xl" />
+            ))}
+          </div>
         </div>
       </div>
     );
   }
 
   if (error) {
-    return <p className="mt-2 text-red-600">{error}</p>;
-  }
-
-  if (!posts?.length) {
-    return <p className="mt-2 text-gray-600">ไม่พบบทความในขณะนี้</p>;
+    return (
+      <div className="text-center py-12">
+        <div className="text-red-500 text-lg">{error}</div>
+        <button
+          onClick={() => window.location.reload()}
+          className="mt-4 px-6 py-2 bg-orange-500 text-white rounded-full hover:bg-orange-600 transition-colors"
+        >
+          ลองใหม่อีกครั้ง
+        </button>
+      </div>
+    );
   }
 
   return (
@@ -45,27 +95,23 @@ export default function BlogList() {
   return (
     <section className="py-12 bg-orange-50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="text-center mb-8">
-          <h2 className="text-3xl md:text-4xl font-bold text-center mb-2 text-gray-800">
+        <div className="text-center mb-12">
+          <h2 className="text-3xl md:text-4xl font-bold text-gray-800 mb-2">
             Featured Articles
           </h2>
           <h2 className="text-3xl font-bold text-gray-900">บทความ</h2>
           <p className="mt-2 text-gray-600">เรื่องราวดีดีจาก ผู้คน และวัฒนธรรม</p>
+          <div className="w-24 h-1 bg-orange-500 mx-auto mt-4" />
         </div>
 
-        <Suspense fallback={<BlogContent />}>
-          <BlogContent />
-        </Suspense>
+        <BlogContent />
 
-        <div className="text-center mt-8">
+        <div className="text-center mt-12">
           <Link
             href="/sdnblog"
-            className="inline-flex items-center text-orange-500 hover:text-orange-600 transition-colors"
+            className="inline-flex items-center px-6 py-2 bg-orange-500 text-white rounded-full hover:bg-orange-600 transition-all duration-300"
           >
-            อ่านบทความทั้งหมด
-            <svg className="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 5l7 7-7 7" />
-            </svg>
+            <span>อ่านบทความทั้งหมด</span>
           </Link>
         </div>
       </div>

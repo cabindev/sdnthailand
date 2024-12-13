@@ -4,105 +4,145 @@
 import { Suspense, lazy } from "react";
 import { motion } from "framer-motion";
 import Vision from "./Vision";
+import Campaigns from "@/app/features/components/Campaigns";
+import LogoShowcase from "@/app/features/components/LogoShowcase";
 
 // Lazy load components
-const NewsCarousel = lazy(() => import("@/app/features/news/components/NewsCarousel"));
+const NewsLatest = lazy(() => import("@/app/features/news/components/NewsLatest"));
 const BlogList = lazy(() => import("@/app/features/blog/components/BlogList"));
 const Support = lazy(() => import("./Support"));
 
-// Loading components สำหรับแต่ละส่วน
+// Loading components แบบ Skeleton สำหรับ News Section
 const NewsLoadingFallback = () => (
-  <div className="max-w-7xl mx-auto px-4 animate-pulse">
-    <div className="h-64 bg-gray-200 rounded-xl"></div>
-  </div>
-);
-
-const BlogLoadingFallback = () => (
-  <div className="max-w-7xl mx-auto px-4">
-    <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-      {[1, 2, 3].map((i) => (
-        <div key={i} className="animate-pulse">
-          <div className="h-48 bg-gray-200 rounded-xl mb-4"></div>
-          <div className="h-4 bg-gray-200 rounded w-3/4 mb-2"></div>
-          <div className="h-4 bg-gray-200 rounded w-1/2"></div>
+  <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div className="text-center mb-12 animate-pulse">
+      <div className="h-8 bg-gray-200 rounded-full w-64 mx-auto mb-4"></div>
+      <div className="h-6 bg-gray-200 rounded-full w-48 mx-auto"></div>
+    </div>
+    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6">
+      {[...Array(4)].map((_, index) => (
+        <div key={index} className="bg-white rounded-2xl overflow-hidden shadow-sm">
+          <div className="animate-pulse">
+            <div className="aspect-[4/3] bg-gray-200"></div>
+            <div className="p-4">
+              <div className="h-4 bg-gray-200 rounded w-3/4 mb-3"></div>
+              <div className="h-4 bg-gray-200 rounded w-full mb-2"></div>
+              <div className="h-4 bg-gray-200 rounded w-2/3"></div>
+            </div>
+          </div>
         </div>
       ))}
     </div>
   </div>
 );
 
-const SupportLoadingFallback = () => (
-  <div className="max-w-7xl mx-auto px-4 animate-pulse">
-    <div className="h-48 bg-gray-200 rounded-xl"></div>
+// Blog Loading Fallback ที่ปรับปรุงแล้ว
+const BlogLoadingFallback = () => (
+  <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div className="text-center mb-12 animate-pulse">
+      <div className="h-8 bg-gray-200 rounded-full w-64 mx-auto mb-4"></div>
+    </div>
+    <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+      {[1, 2, 3].map((i) => (
+        <div key={i} className="bg-white rounded-2xl overflow-hidden shadow-sm animate-pulse">
+          <div className="aspect-video bg-gray-200"></div>
+          <div className="p-4">
+            <div className="h-4 bg-gray-200 rounded w-3/4 mb-3"></div>
+            <div className="h-4 bg-gray-200 rounded w-full mb-2"></div>
+            <div className="h-4 bg-gray-200 rounded w-2/3"></div>
+          </div>
+        </div>
+      ))}
+    </div>
   </div>
 );
 
 // Animation variants
 const fadeInUp = {
-  initial: { y: 60, opacity: 0 },
+  initial: { y: 40, opacity: 0 },
   animate: {
     y: 0,
     opacity: 1,
-    transition: { duration: 0.6, ease: "easeOut" }
+    transition: { 
+      duration: 0.5, 
+      ease: [0.4, 0, 0.2, 1] 
+    }
   }
 };
 
 export default function AnimatedHome() {
   return (
-    <div className="min-h-screen">
-      {/* Hero Section - โหลดทันที */}
-      <motion.div 
+    <main className="min-h-screen">
+      {/* Hero Section */}
+      <motion.section 
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
-        transition={{ duration: 0.8 }}
-        className="relative bg-gradient-to-b from-orange-100 to-white"
+        transition={{ duration: 0.6 }}
+        className="relative bg-gradient-to-b from-orange-50 to-white"
       >
-        <div className="absolute inset-0 bg-orange-500 opacity-5 pattern-grid-lg"></div>
+        <div className="absolute inset-0 bg-orange-500/5 pattern-grid-lg"></div>
         <Vision />
-      </motion.div>
+      </motion.section>
 
-      {/* News Section - lazy load */}
-      <motion.div 
+      {/* <motion.section
         variants={fadeInUp}
         initial="initial"
         whileInView="animate"
-        viewport={{ once: true, margin: "-100px" }}
-        className="py-12 bg-white"
+        viewport={{ once: true, margin: "-50px" }}
+      >
+        <Campaigns />
+      </motion.section> */}
+      {/* News Section */}
+      <motion.section 
+        variants={fadeInUp}
+        initial="initial"
+        whileInView="animate"
+        viewport={{ once: true, margin: "-50px" }}
       >
         <Suspense fallback={<NewsLoadingFallback />}>
-          <NewsCarousel />
+          <NewsLatest />
         </Suspense>
-      </motion.div>
+      </motion.section>
 
-      {/* Blog Section - lazy load */}
-      <motion.div 
+      {/* Blog Section */}
+      <motion.section 
         variants={fadeInUp}
         initial="initial"
         whileInView="animate"
-        viewport={{ once: true, margin: "-100px" }}
-        className="py-16 bg-orange-50"
+        viewport={{ once: true, margin: "-50px" }}
+        className="bg-orange-50"
       >
         <Suspense fallback={<BlogLoadingFallback />}>
           <BlogList />
         </Suspense>
-      </motion.div>
+      </motion.section>
 
-      {/* Support Section - load directly */}
-      <motion.div 
+      {/* Support Section */}
+      <motion.section 
         variants={fadeInUp}
         initial="initial"
         whileInView="animate"
-        viewport={{ once: true, margin: "-100px" }}
-        className="relative py-16 bg-gradient-to-b from-white to-orange-50 overflow-hidden"
+        viewport={{ once: true, margin: "-50px" }}
+        className="relative bg-gradient-to-b from-white to-orange-50"
       >
         <div className="absolute inset-0 pointer-events-none">
           <div className="absolute inset-0 bg-gradient-to-r from-orange-500/10 to-amber-400/10"></div>
-          <div className="absolute inset-0 bg-[url('/pattern.png')] opacity-5"></div>
+          {/* <div className="absolute inset-0 bg-[url('/sdn1.svg')] opacity-5"></div> */}
         </div>
-        <div className="relative z-10">
-          <Support />
-        </div>
-      </motion.div>
-    </div>
+        <Suspense fallback={<NewsLoadingFallback />}>
+          <div className="relative z-10">
+            <Support />
+          </div>
+        </Suspense>
+      </motion.section>
+      <motion.section
+        variants={fadeInUp}
+        initial="initial"
+        whileInView="animate"
+        viewport={{ once: true }}
+      >
+        <LogoShowcase />
+      </motion.section>
+    </main>
   );
 }
