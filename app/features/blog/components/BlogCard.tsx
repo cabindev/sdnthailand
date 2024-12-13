@@ -1,6 +1,21 @@
 // BlogCard.tsx
 import Link from "next/link";
-import { BlogPost } from "../types/blog.types";
+
+interface BlogPost {
+  id: number;
+  title: {
+    rendered: string;
+  };
+  uagb_excerpt: string;
+  uagb_featured_image_src?: {
+    full?: string[];
+  };
+  _embedded?: {
+    'wp:featuredmedia'?: Array<{
+      source_url: string;
+    }>;
+  };
+}
 
 interface BlogCardProps {
   post: BlogPost;
@@ -13,9 +28,9 @@ export default function BlogCard({ post, isLarge = false }: BlogCardProps) {
     post._embedded?.["wp:featuredmedia"]?.[0]?.source_url ||
     "/images/default-blog.jpg";
 
-  // ในหน้าจอเล็กจะแสดงแบบเดียวกันหมด
+  // Mobile Card
   const mobileCard = (
-    <div className="block bg-white rounded-xl overflow-hidden">
+    <div className="block bg-white rounded-xl overflow-hidden shadow-sm hover:shadow-md transition-all duration-300">
       <div className="relative aspect-video">
         <img
           src={featuredImage}
@@ -28,14 +43,16 @@ export default function BlogCard({ post, isLarge = false }: BlogCardProps) {
           className="font-bold text-gray-900 mb-2 line-clamp-2"
           dangerouslySetInnerHTML={{ __html: post.title.rendered }}
         />
-        <span className="text-orange-500 text-sm">อ่านเพิ่มเติม...</span>
+        <span className="text-orange-500 text-sm group-hover:text-orange-600 transition-colors">
+          อ่านเพิ่มเติม
+        </span>
       </div>
     </div>
   );
 
-  // การ์ดใหญ่สำหรับหน้าจอ desktop
+  // Desktop Large Card
   const desktopLargeCard = (
-    <div className="hidden md:flex md:h-[450px] bg-white rounded-xl overflow-hidden">
+    <div className="hidden md:flex md:h-[450px] bg-white rounded-xl overflow-hidden shadow-lg hover:shadow-xl transition-all duration-300">
       <div className="relative w-2/3">
         <img
           src={featuredImage}
@@ -53,7 +70,7 @@ export default function BlogCard({ post, isLarge = false }: BlogCardProps) {
           dangerouslySetInnerHTML={{ __html: post.uagb_excerpt }}
         />
         <span className="text-orange-500 hover:text-orange-600 transition-colors">
-          อ่านเพิ่มเติม...
+          อ่านเพิ่มเติม
         </span>
       </div>
     </div>
@@ -61,23 +78,15 @@ export default function BlogCard({ post, isLarge = false }: BlogCardProps) {
 
   if (isLarge) {
     return (
-      <Link href={`/sdnblog/${post.id}`}>
-        <>
-          {/* แสดงการ์ดแบบ mobile ในหน้าจอเล็ก */}
-          <div className="md:hidden">{mobileCard}</div>
-          {/* แสดงการ์ดใหญ่ในหน้าจอ desktop */}
-          {desktopLargeCard}
-        </>
+      <Link href={`/sdnblog/${post.id}`} className="group">
+        <div className="md:hidden">{mobileCard}</div>
+        {desktopLargeCard}
       </Link>
     );
   }
 
-  // Normal card
   return (
-    <Link
-      href={`/sdnblog/${post.id}`}
-      className="block hover:shadow-md transition-shadow"
-    >
+    <Link href={`/sdnblog/${post.id}`} className="group">
       {mobileCard}
     </Link>
   );
