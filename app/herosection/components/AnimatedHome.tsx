@@ -6,6 +6,7 @@ import { motion } from "framer-motion";
 import Vision from "./Vision";
 import Campaigns from "@/app/features/components/Campaigns";
 import LogoShowcase from "@/app/features/components/LogoShowcase";
+import Campaign from "./Campaign";
 
 // Lazy load components
 const NewsLatest = lazy(() => import("@/app/features/news/components/NewsLatest"));
@@ -75,14 +76,12 @@ export default function AnimatedHome() {
     <main className="min-h-screen">
       {/* Hero Section */}
       <motion.section 
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ duration: 0.6 }}
-        className="relative bg-gradient-to-b from-orange-50 to-white"
-      >
-        <div className="absolute inset-0 bg-orange-500/5 pattern-grid-lg"></div>
-        <Vision />
-      </motion.section>
+  initial={{ opacity: 0 }}
+  animate={{ opacity: 1 }}
+  transition={{ duration: 0.6 }}
+>
+  <Campaign />
+</motion.section>
 
       {/* <motion.section
         variants={fadeInUp}
