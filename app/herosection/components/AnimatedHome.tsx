@@ -80,7 +80,9 @@ export default function AnimatedHome() {
   animate={{ opacity: 1 }}
   transition={{ duration: 0.6 }}
 >
-  <Campaign />
+<Suspense fallback={null}>
+        <Campaign />
+      </Suspense>
 </motion.section>
 
       {/* <motion.section
@@ -98,9 +100,9 @@ export default function AnimatedHome() {
         whileInView="animate"
         viewport={{ once: true, margin: "-50px" }}
       >
-        <Suspense fallback={<NewsLoadingFallback />}>
-          <NewsLatest />
-        </Suspense>
+       <Suspense fallback={<NewsLoadingFallback />}>
+        <NewsLatest />
+      </Suspense>
       </motion.section>
 
       {/* Blog Section */}
@@ -111,9 +113,9 @@ export default function AnimatedHome() {
         viewport={{ once: true, margin: "-50px" }}
         className="bg-orange-50"
       >
-        <Suspense fallback={<BlogLoadingFallback />}>
-          <BlogList />
-        </Suspense>
+         <Suspense fallback={<BlogLoadingFallback />}>
+        <BlogList />
+      </Suspense>
       </motion.section>
 
       {/* Support Section */}

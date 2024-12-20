@@ -1,174 +1,39 @@
 // app/sdnblog/[id]/BlogPostDetail.tsx
-'use client'
-
-import { useEffect, useState, useMemo } from 'react'
+import { Suspense } from 'react'
 import Link from 'next/link'
 import { Toaster } from 'react-hot-toast'
-import { FaEye } from 'react-icons/fa'
 import { Post } from '../types'
 import TextToSpeechControls from '../components/TextToSpeechControls'
 import ShareButtons from '../components/ShareButtons'
-import RelatedPosts from '../components/RelatedPosts'
+import RelatedPosts from '../components/RelatedBlogPosts'
+import ViewCounter from '../components/ViewCounter'
+import SafeImage from '../components/SafeImage'
 import LoadingSpinner from '../components/LoadingSpinner'
-
+import RelatedBlogPosts from '../components/RelatedBlogPosts'
 
 const BASE_URL = 'https://sdnthailand.com'
 
-interface ErrorMessageProps {
-  message: string;
-}
-
-function ErrorMessage({ message }: ErrorMessageProps) {
-  return (
-    <div className="container mx-auto px-4 py-20">
-      <div className="max-w-lg mx-auto bg-red-50 text-red-500 p-4 rounded-lg">
-        <p className="flex items-center gap-2">
-          <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" 
-              d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-          </svg>
-          {message}
-        </p>
-      </div>
-    </div>
-  )
-}
-
 interface BlogPostDetailProps {
-  params: {
-    id: string;
-  }
+  post: Post
 }
 
-export default function BlogPostDetail({ params }: BlogPostDetailProps) {
-  const [post, setPost] = useState<Post | null>(null)
-  const [isLoading, setIsLoading] = useState(true)
-  const [error, setError] = useState<string | null>(null)
-  const [viewIncremented, setViewIncremented] = useState(false)
-
-  // Memoized values
-  const categories = useMemo(() => post?._embedded?.['wp:term']?.[0] || [], [post])
-  const authorName = useMemo(() => post?.uagb_author_info?.display_name, [post])
-  const authorLink = useMemo(() => post?.uagb_author_info?.author_link, [post])
-  const featuredImage = useMemo(() => 
-    post?._embedded?.['wp:featuredmedia']?.[0]?.source_url, 
-    [post]
-  )
-  const shareUrl = useMemo(() => `${BASE_URL}/sdnblog/${params.id}`, [params.id])
-
-  useEffect(() => {
-    let isMounted = true
-  
-    const getPost = async () => {
-      if (!params.id) {
-        setError('ไม่พบรหัสบทความ')
-        setIsLoading(false)
-        return
-      }
-      
-      try {
-        const [postResponse, viewResponse] = await Promise.all([
-          fetch(`/api/sdnblog/${params.id}`),
-          fetch(`/api/sdnblog/views/${params.id}`)
-        ])
-        
-        if (!postResponse.ok) {
-          throw new Error(`ไม่สามารถโหลดบทความได้ (${postResponse.status})`)
-        }
-        
-        const postResult = await postResponse.json()
-        const viewResult = await viewResponse.json()
-        
-        if (!postResult.success) {
-          throw new Error(postResult.error || 'ไม่สามารถโหลดบทความได้')
-        }
-        
-        if (isMounted) {
-          setPost({
-            ...postResult.data,
-            viewCount: viewResult.count
-          })
-          
-          if (!viewIncremented) {
-            try {
-              const incrementResponse = await fetch(
-                `/api/sdnblog/views/${params.id}`, 
-                {
-                  method: 'POST',
-                  headers: { 'Content-Type': 'application/json' }
-                }
-              )
-              
-              if (incrementResponse.ok) {
-                const incrementResult = await incrementResponse.json()
-                setViewIncremented(true)
-                setPost(prev => prev ? {
-                  ...prev,
-                  viewCount: incrementResult.count
-                } : null)
-              }
-            } catch (error) {
-              console.error('Error incrementing views:', error)
-            }
-          }
-          
-          // Update views every 60 seconds
-          const intervalId = setInterval(async () => {
-            if (isMounted) {
-              try {
-                const refreshResponse = await fetch(`/api/sdnblog/views/${params.id}`)
-                const refreshResult = await refreshResponse.json()
-                if (refreshResult.success) {
-                  setPost(prev => prev ? {
-                    ...prev,
-                    viewCount: refreshResult.count
-                  } : null)
-                }
-              } catch (error) {
-                console.error('Error refreshing views:', error)
-              }
-            }
-          }, 60000)
-
-          return () => clearInterval(intervalId)
-        }
-      } catch (error) {
-        if (isMounted) {
-          setError(error instanceof Error ? error.message : 'ไม่สามารถโหลดบทความได้')
-        }
-      } finally {
-        if (isMounted) {
-          setIsLoading(false)
-        }
-      }
-    }
-
-    getPost()
-    
-    return () => {
-      isMounted = false
-    }
-  }, [params.id, viewIncremented])
-
-  if (isLoading) return <LoadingSpinner />
-  if (error) return <ErrorMessage message={error} />
-  if (!post) return <ErrorMessage message="ไม่พบบทความ" />
+export default function BlogPostDetail({ post }: BlogPostDetailProps) {
+  const categories = post._embedded?.['wp:term']?.[0] || []
+  const authorName = post.uagb_author_info?.display_name
+  const authorLink = post.uagb_author_info?.author_link
+  const featuredImage = post._embedded?.['wp:featuredmedia']?.[0]?.source_url
+  const shareUrl = `${BASE_URL}/sdnblog/${post.id}`
 
   return (
     <div className="min-h-screen bg-gray-50">
       {/* Hero Image */}
       {featuredImage && (
         <div className="relative w-full h-[40vh] sm:h-[50vh] md:h-[60vh] lg:h-[70vh] mb-4 sm:mb-6 md:mb-8">
-          <img
+          <SafeImage
             src={featuredImage}
             alt={post.title.rendered}
             className="w-full h-full object-cover"
             loading="eager"
-            onError={(e) => {
-              const target = e.target as HTMLImageElement;
-              target.onerror = null;
-              target.src = '/images/default-featured.png'
-            }}
           />
           <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/30 to-transparent" />
         </div>
@@ -222,18 +87,14 @@ export default function BlogPostDetail({ params }: BlogPostDetailProps) {
                   })}
                 </div>
               </div>
-              <div className="flex items-center gap-2 text-gray-500">
-                <FaEye className="w-4 h-4 md:w-5 md:h-5" />
-                <span className="font-ibm text-sm md:text-base">
-                  {post.viewCount?.toLocaleString() || '0'} ครั้ง
-                </span>
-              </div>
+              
+              <ViewCounter postId={post.id.toString()} initialCount={post.viewCount || 0} />
             </div>
 
             {/* Text to Speech Controls */}
-            <TextToSpeechControls 
-              text={post.content.rendered.replace(/<[^>]*>/g, '')} 
-            />
+            <div className="flex-1">
+              <TextToSpeechControls text={post.content.rendered.replace(/<[^>]*>/g, '')} />
+            </div>
 
             {/* Main Content */}
             <div 
@@ -254,34 +115,31 @@ export default function BlogPostDetail({ params }: BlogPostDetailProps) {
             />
 
             {/* Related Posts */}
-            <RelatedPosts currentPostId={post.id} />
+            <Suspense fallback={<LoadingSpinner />}>
+              <RelatedBlogPosts currentPostId={post.id} />
+            </Suspense>
 
             {/* Back Link */}
             <div className="mt-8 md:mt-12 pt-8 border-t border-gray-200">
               <Link 
                 href="/sdnblog"
-                className="inline-flex items-center gap-2"
+                className="inline-flex items-center gap-2 font-ibm text-sm md:text-base bg-gradient-to-r from-orange-300 to-orange-400 text-white px-4 py-2 rounded-full hover:from-orange-600 hover:to-orange-700 transition-all duration-300 shadow-md hover:shadow-lg transform hover:-translate-y-0.5"
               >
-                <span className="inline-flex items-center gap-2 font-ibm text-sm md:text-base bg-gradient-to-r from-orange-300 to-orange-400 text-white px-4 py-2 rounded-full hover:from-orange-600 hover:to-orange-700 transition-all duration-300 shadow-md hover:shadow-lg transform hover:-translate-y-0.5">
-                  บทความทั้งหมด
-                </span>
+                บทความทั้งหมด
               </Link>
             </div>
 
             {/* Desktop Share Buttons */}
             <div className="hidden md:flex fixed right-4 lg:right-8 top-1/2 -translate-y-1/2 flex-col gap-4 z-50">
-              <ShareButtons 
-                url={shareUrl}
-                title={post.title.rendered}
-              />
+              <ShareButtons url={shareUrl} title={post.title.rendered} />
             </div>
 
             {/* Mobile Share Buttons */}
             <div className="block md:hidden w-full">
               <ShareButtons 
-                url={shareUrl}
-                title={post.title.rendered}
-                isMobile={true}
+                url={shareUrl} 
+                title={post.title.rendered} 
+                isMobile={true} 
               />
             </div>
           </div>

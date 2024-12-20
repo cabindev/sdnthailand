@@ -2,28 +2,25 @@
 import axios from 'axios';
 import { NextResponse } from 'next/server';
 
+export const revalidate = 60; // revalidate every 60 seconds
+
 export async function GET(request: Request) {
   const { searchParams } = new URL(request.url);
   const page = searchParams.get('page') || '1';
-  const per_page = searchParams.get('per_page') || '9';
+  const per_page = searchParams.get('per_page') || '4';
 
   try {
-    // ใช้ blog_post endpoint
     const response = await axios.get('https://blog.sdnthailand.com/wp-json/wp/v2/blog_post', {
       params: {
         page,
         per_page,
         status: 'publish',
         _embed: true
+      },
+      headers: {
+        'Cache-Control': 'public, s-maxage=60, stale-while-revalidate=300'
       }
     });
-
-    // ตรวจสอบและ log response เพื่อดู structure
-    // console.log('API Response:', {
-    //   status: response.status,
-    //   headers: response.headers,
-    //   data: response.data
-    // });
 
     const posts = response.data;
 
@@ -32,12 +29,15 @@ export async function GET(request: Request) {
       posts,
       totalPages: Number(response.headers['x-wp-totalpages']),
       total: Number(response.headers['x-wp-total'])
+    }, {
+      headers: {
+        'Cache-Control': 'public, s-maxage=60, stale-while-revalidate=300'
+      }
     });
 
   } catch (error) {
     console.error('API Error:', error);
     if (axios.isAxiosError(error)) {
-      console.log('Error Response:', error.response?.data);
       return NextResponse.json(
         { 
           success: false, 

@@ -1,7 +1,6 @@
 // BlogList.tsx
-'use client';
 
-import { useEffect, useState } from 'react';
+import useSWR from 'swr';
 import Link from 'next/link';
 import BlogCard from './BlogCard';
 
@@ -28,27 +27,19 @@ interface BlogResponse {
   total: number;
 }
 
+const fetcher = (url: string) => fetch(url).then(r => r.json());
+
 function BlogContent() {
-  const [posts, setPosts] = useState<BlogPost[]>([]);
-  const [isLoading, setIsLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
-
-  useEffect(() => {
-    const fetchPosts = async () => {
-      try {
-        setIsLoading(true);
-        const response = await fetch('/api/sdnblog?per_page=4');
-        const data = await response.json();
-        if (data.posts) setPosts(data.posts);
-      } catch (err) {
-        setError('Failed to fetch posts');
-      } finally {
-        setIsLoading(false);
-      }
-    };
-
-    fetchPosts();
-  }, []);
+  const { data, error, isLoading } = useSWR<BlogResponse>(
+    '/api/sdnblog?per_page=4',
+    fetcher,
+    {
+      revalidateOnFocus: false,
+      dedupingInterval: 60000,
+      revalidateIfStale: false,
+      revalidateOnReconnect: false
+    }
+  );
 
   if (isLoading) {
     return (
@@ -68,7 +59,7 @@ function BlogContent() {
   if (error) {
     return (
       <div className="text-center py-12">
-        <div className="text-red-500 text-lg">{error}</div>
+        <div className="text-red-500 text-lg">Failed to load blog posts</div>
         <button
           onClick={() => window.location.reload()}
           className="mt-4 px-6 py-2 bg-orange-500 text-white rounded-full hover:bg-orange-600 transition-colors"
@@ -78,6 +69,8 @@ function BlogContent() {
       </div>
     );
   }
+
+  const posts = data?.posts || [];
 
   return (
     <div className="space-y-8">

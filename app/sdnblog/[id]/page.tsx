@@ -1,47 +1,67 @@
 // app/sdnblog/[id]/page.tsx
+import { Suspense } from 'react'
 import { Metadata } from 'next'
 import BlogPostDetail from './BlogPostDetail'
+import LoadingSpinner from '../components/LoadingSpinner'
 
 interface Props {
- params: { id: string }
+  params: { id: string }
+}
+
+async function getBlogPost(id: string) {
+  try {
+    const [postResponse, viewResponse] = await Promise.all([
+      fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/sdnblog/${id}`),
+      fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/sdnblog/views/${id}`)
+    ])
+
+    if (!postResponse.ok) {
+      throw new Error('Failed to fetch blog post')
+    }
+
+    const postData = await postResponse.json()
+    const viewData = await viewResponse.json()
+
+    return {
+      ...postData.data,
+      viewCount: viewData.count
+    }
+  } catch (error) {
+    console.error('Error fetching blog post:', error)
+    throw error
+  }
 }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   try {
-    const post = await fetch(
-      `${process.env.WORDPRESS_API_URL}/wp-json/wp/v2/blog_post/${params.id}?_embed`,
-      { next: { revalidate: 60 } }
-    ).then(res => res.json())
-
+    const post = await getBlogPost(params.id)
     const featuredImage = post._embedded?.['wp:featuredmedia']?.[0]?.source_url || '/images/default-og.png'
     const description = post.excerpt?.rendered?.replace(/<[^>]+>/g, '') || ''
 
-    const ogImage = {
-      url: featuredImage,
-      width: 1200,
-      height: 630,
-      alt: post.title?.rendered
-    }
-
     return {
       title: post.title?.rendered,
-      description: description,
+      description,
       openGraph: {
         title: post.title?.rendered,
-        description: description,
+        description,
         url: `https://sdnthailand.com/sdnblog/${params.id}`,
         siteName: 'SDN Thailand',
         locale: 'th_TH',
         type: 'article',
         publishedTime: post.date,
-        authors: [post._embedded?.author?.[0]?.name].filter(Boolean),
-        images: [ogImage],
+        authors: [post.uagb_author_info?.display_name].filter(Boolean),
+        images: [{
+          url: featuredImage,
+          width: 1200,
+          height: 630,
+          alt: post.title?.rendered
+        }]
       },
       twitter: {
         card: 'summary_large_image',
         title: post.title?.rendered,
-        description: description,
-        images: [ogImage]
+        description,
+        images: [featuredImage]
       },
       alternates: {
         canonical: `https://sdnthailand.com/sdnblog/${params.id}`
@@ -49,14 +69,34 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     }
   } catch (error) {
     return {
-      title: 'SDN Thailand', 
+      title: 'SDN Thailand',
       description: 'บทความ เรื่องราววิถีชีวิต ผู้คน วัฒนธรรม',
     }
   }
 }
 
-const Page = ({ params }: Props) => {
- return <BlogPostDetail params={params} />  
+export default async function Page({ params }: Props) {
+  try {
+    const post = await getBlogPost(params.id)
+    
+    return (
+      <Suspense fallback={<LoadingSpinner />}>
+        <BlogPostDetail post={post} />
+      </Suspense>
+    )
+  } catch (error) {
+    return (
+      <div className="container mx-auto px-4 py-20">
+        <div className="max-w-lg mx-auto bg-red-50 text-red-500 p-4 rounded-lg">
+          <p className="flex items-center gap-2">
+            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" 
+                d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+            </svg>
+            ไม่พบบทความที่ต้องการ
+          </p>
+        </div>
+      </div>
+    )
+  }
 }
-
-export default Page

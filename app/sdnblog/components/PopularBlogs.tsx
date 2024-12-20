@@ -1,4 +1,4 @@
-// app/sdnpost/components/PopularNews.tsx
+// app/sdnpost/components/PopularBlog.tsx
 'use client'
 
 import { useEffect, useState, useCallback } from 'react'
@@ -18,7 +18,7 @@ interface Post {
  featuredImage?: string;
 }
 
-export default function PopularNews() {
+export default function PopularBlog() {
  const [posts, setPosts] = useState<Post[]>([])
  const [currentIndex, setCurrentIndex] = useState(0)
  const [isLoading, setIsLoading] = useState(true)

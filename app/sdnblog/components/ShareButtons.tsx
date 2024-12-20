@@ -21,10 +21,9 @@ export default function ShareButtons({ url, title, isMobile = false }: ShareButt
  }
 
  const handleFacebookShare = () => {
-  window.open(
-    `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(url)}&t=${encodeURIComponent(title)}`,
-    '_blank'
-  )
+
+    window.open(`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(url)}`, '_blank')
+
 }
 
  const handleTwitterShare = () => {
