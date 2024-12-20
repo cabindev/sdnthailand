@@ -1,5 +1,4 @@
 // NewsCardLatest.tsx
-'use client';
 
 import Link from 'next/link';
 import { NewsPost } from '../types/news.types';

@@ -1,4 +1,4 @@
-// app/sdnblog/components/PostCard.tsx
+// app/sdnblog/components/BlogCard.tsx
 import Link from 'next/link'
 
 interface Post {
@@ -27,7 +27,7 @@ interface PostCardProps {
   post: Post;
 }
 
-export default function PostCard({ post }: PostCardProps) {
+export default function BlogCard({ post }: PostCardProps) {
   const categories = post._embedded?.['wp:term']?.[0] || []
   const excerptHtml = post.excerpt?.rendered || 'ไม่มีเนื้อหา'
   const featuredImage = post.featuredImage || post._embedded?.['wp:featuredmedia']?.[0]?.source_url

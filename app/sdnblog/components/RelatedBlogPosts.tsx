@@ -1,9 +1,9 @@
-// app/sdnpost/components/RelatedPosts.tsx
+// app/sdnblog/components/RelatedBlogPosts.tsx
 'use client'
 
 import useSWR from 'swr'
-import PostCard from './PostCard'
 import LoadingSpinner from './LoadingSpinner'
+import BlogCard from './BlogCard'
 
 interface RelatedPostsProps {
   currentPostId: number
@@ -11,28 +11,21 @@ interface RelatedPostsProps {
 
 const fetcher = (url: string) => fetch(url).then(r => r.json())
 
-export default function RelatedPosts({ currentPostId }: RelatedPostsProps) {
+export default function RelatedBlogPosts({ currentPostId }: RelatedPostsProps) {
   const { data, error, isLoading } = useSWR(
-    `/api/sdnpost/related/${currentPostId}`,
+    `/api/sdnblog/related/${currentPostId}`,
     fetcher,
     {
-      revalidateOnFocus: false, // ไม่ต้อง revalidate เมื่อ focus
-      revalidateOnReconnect: false, // ไม่ต้อง revalidate เมื่อ reconnect
-      dedupingInterval: 60000, // cache ข้อมูลไว้ 1 นาที
+      revalidateIfStale: false, // ไม่ revalidate เมื่อข้อมูลเก่า
+      revalidateOnFocus: false, // ไม่ revalidate เมื่อ focus
+      revalidateOnReconnect: false, // ไม่ revalidate เมื่อ reconnect
+      dedupingInterval: 60000, // cache 60 วินาที
     }
   )
 
-  if (error) {
-    return null // ถ้าเกิด error ไม่แสดงส่วนนี้
-  }
-
-  if (isLoading) {
-    return <LoadingSpinner />
-  }
-
-  if (!data?.success || !data?.posts?.length) {
-    return null
-  }
+  if (error) return null
+  if (isLoading) return <LoadingSpinner />
+  if (!data?.success || !data?.posts?.length) return null
 
   return (
     <div className="mt-12 md:mt-16">
@@ -42,7 +35,7 @@ export default function RelatedPosts({ currentPostId }: RelatedPostsProps) {
       
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
         {data.posts.map((post: any) => (
-          <PostCard 
+          <BlogCard
             key={post.id} 
             post={{
               ...post,

@@ -2,10 +2,11 @@
 'use client'
 
 import { useState } from 'react'
-import PostCard from './components/PostCard'
+import PostCard from './components/BlogCard'
 import { useSearchParams, useRouter } from 'next/navigation'
 import useSWR from 'swr'
 import Link from 'next/link'
+import BlogCard from './components/BlogCard'
 
 interface Post {
   id: number;
@@ -136,7 +137,7 @@ export default function SDNBlogPage() {
               animationDelay: '0.1s'
             }}
           >
-            <PostCard post={post} />
+            <BlogCard post={post} />
           </div>
         ))}
       </div>
