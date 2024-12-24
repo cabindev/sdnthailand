@@ -3,7 +3,7 @@ import { Suspense } from 'react'
 import { Metadata } from 'next'
 import { Post } from '../types'
 import LoadingSpinner from '../components/LoadingSpinner'
-import PostDetail from './PostDetail'
+import PostDetail from '../components/post-detail/PostDetail'
 
 interface Props {
   params: { id: string }
