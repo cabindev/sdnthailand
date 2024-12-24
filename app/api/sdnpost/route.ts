@@ -6,15 +6,12 @@ const WP_API_URL = process.env.WORDPRESS_API_URL
   ? `${process.env.WORDPRESS_API_URL}/wp-json/wp/v2`
   : 'https://blog.sdnthailand.com/wp-json/wp/v2';
 
-// เพิ่ม cache config
-export const revalidate = 60; // revalidate every 60 seconds
-
 export async function GET(request: Request) {
   console.log('Using WP_API_URL:', WP_API_URL)
   
   const { searchParams } = new URL(request.url)
   const page = searchParams.get('page') || '1'
-  const per_page = searchParams.get('per_page') || '12'
+  const per_page = searchParams.get('per_page') || '4'
 
   try {
     const response = await axios.get(`${WP_API_URL}/posts`, {
