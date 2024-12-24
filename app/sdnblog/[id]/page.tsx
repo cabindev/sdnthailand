@@ -1,7 +1,7 @@
 // app/sdnblog/[id]/page.tsx
 import { Suspense } from 'react'
 import { Metadata } from 'next'
-import BlogPostDetail from './BlogPostDetail'
+import BlogPostDetail from '../components/blog-detail/BlogPostDetail'
 import LoadingSpinner from '../components/LoadingSpinner'
 
 interface Props {

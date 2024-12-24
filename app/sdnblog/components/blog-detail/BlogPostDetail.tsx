@@ -2,14 +2,14 @@
 import { Suspense } from 'react'
 import Link from 'next/link'
 import { Toaster } from 'react-hot-toast'
-import { Post } from '../types'
-import TextToSpeechControls from '../components/TextToSpeechControls'
-import ShareButtons from '../components/ShareButtons'
-import RelatedPosts from '../components/RelatedBlogPosts'
-import ViewCounter from '../components/ViewCounter'
-import SafeImage from '../components/SafeImage'
-import LoadingSpinner from '../components/LoadingSpinner'
-import RelatedBlogPosts from '../components/RelatedBlogPosts'
+import { Post } from '../../types'
+import TextToSpeechControls from './TextToSpeechControls'
+import ShareButtons from './ShareButtons'
+import RelatedBlogPosts from '../RelatedBlogPosts'
+import ViewCounter from './ViewCounter'
+import SafeImage from '../SafeImage'
+import LoadingSpinner from '../LoadingSpinner'
+
 
 const BASE_URL = 'https://sdnthailand.com'
 
