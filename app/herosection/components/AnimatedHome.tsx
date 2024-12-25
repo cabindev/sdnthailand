@@ -12,7 +12,7 @@ import Campaign from "./Campaign";
 const NewsLatest = lazy(() => import("@/app/features/news/components/NewsLatest"));
 const BlogList = lazy(() => import("@/app/features/blog/components/BlogList"));
 const Support = lazy(() => import("./Support"));
-
+const VideoLatest = lazy(() => import("@/app/features/video/components/VideoLatest"));
 // Loading components แบบ Skeleton สำหรับ News Section
 const NewsLoadingFallback = () => (
   <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -116,6 +116,17 @@ export default function AnimatedHome() {
          <Suspense fallback={<BlogLoadingFallback />}>
         <BlogList />
       </Suspense>
+      </motion.section>
+
+      <motion.section 
+        variants={fadeInUp}
+        initial="initial"
+        whileInView="animate"
+        viewport={{ once: true }}
+      >
+        <Suspense fallback={<BlogLoadingFallback />}>
+          <VideoLatest />
+        </Suspense>
       </motion.section>
 
       {/* Support Section */}
