@@ -80,7 +80,7 @@ const Navbar: React.FC = () => {
 
  const navItems: MenuItem[] = [
    { href: '/', label: 'Home' },
-   { href: 'https://healthy-sobriety.sdnthailand.com/', label: 'SoberSheres' },
+   
    { 
      label: 'Artwork',
      subItems: [
@@ -105,6 +105,7 @@ const Navbar: React.FC = () => {
        { href: 'https://soberheartteam.sdnthailand.com/', label: 'ร้อยคนหัวใจเพชร' },
        { href: 'https://post.sdnthailand.com/sdn/admin/', label: 'SDN DB Systems' },
        { href: 'https://avs.sdnthailand.com/avs/index.php', label: 'AVS' },
+       { href: 'https://healthy-sobriety.sdnthailand.com/', label: 'SoberSheres' },
      ]
    },
    { href: 'https://support.sdnthailand.com/about/contact', label: 'Contact' }
