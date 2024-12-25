@@ -9,6 +9,12 @@ export interface VideoPost {
       rendered: string;
       protected: boolean;
     };
+    excerpt?: {  // เพิ่ม excerpt
+      rendered: string;
+    };
+    acf?: {      // เพิ่ม acf fields
+      video_duration: string;
+    };
     uagb_featured_image_src?: {
       full: [string, number, number, boolean];
       thumbnail: [string, number, number, boolean];
