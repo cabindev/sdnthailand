@@ -79,11 +79,6 @@ export default function PostDetail({ post }: PostDetailProps) {
                </div>
              </div>
              
-             {/* View Counter */}
-             <ViewCounter 
-               postId={post.id.toString()} 
-               initialCount={post.viewCount || 0} 
-             />
            </div>
 
            {/* Text to Speech Controls */}
@@ -126,6 +121,12 @@ export default function PostDetail({ post }: PostDetailProps) {
              dangerouslySetInnerHTML={{ __html: post.content.rendered }}
            />
 
+            {/* View Counter */}
+              <ViewCounter 
+               postId={post.id.toString()} 
+               initialCount={post.viewCount || 0} 
+             />
+             
            {/* Related Posts */}
            <Suspense fallback={<LoadingSpinner />}>
              <RelatedPosts currentPostId={post.id} />

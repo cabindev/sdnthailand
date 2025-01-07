@@ -88,7 +88,7 @@ export default function BlogPostDetail({ post }: BlogPostDetailProps) {
                 </div>
               </div>
               
-              <ViewCounter postId={post.id.toString()} initialCount={post.viewCount || 0} />
+              
             </div>
 
             {/* Text to Speech Controls */}
@@ -113,6 +113,8 @@ export default function BlogPostDetail({ post }: BlogPostDetailProps) {
                 prose-li:font-ibm prose-li:text-gray-600"
               dangerouslySetInnerHTML={{ __html: post.content.rendered }}
             />
+
+              <ViewCounter postId={post.id.toString()} initialCount={post.viewCount || 0} />
 
             {/* Related Posts */}
             <Suspense fallback={<LoadingSpinner />}>

@@ -75,86 +75,51 @@ export default function AnimatedHome() {
   return (
     <main className="min-h-screen">
       {/* Hero Section */}
-      <motion.section 
-  initial={{ opacity: 0 }}
-  animate={{ opacity: 1 }}
-  transition={{ duration: 0.6 }}
->
-<Suspense fallback={null}>
-        <Campaign />
-      </Suspense>
-</motion.section>
-
-      {/* <motion.section
-        variants={fadeInUp}
-        initial="initial"
-        whileInView="animate"
-        viewport={{ once: true, margin: "-50px" }}
-      >
-        <Campaigns />
-      </motion.section> */}
-      {/* News Section */}
-      <motion.section 
-        variants={fadeInUp}
-        initial="initial"
-        whileInView="animate"
-        viewport={{ once: true, margin: "-50px" }}
-      >
-       <Suspense fallback={<NewsLoadingFallback />}>
-        <NewsLatest />
-      </Suspense>
+      <motion.section>
+        <Suspense fallback={null}>
+          <Campaign />
+        </Suspense>
       </motion.section>
 
-      {/* Blog Section */}
-      <motion.section 
-        variants={fadeInUp}
-        initial="initial"
-        whileInView="animate"
-        viewport={{ once: true, margin: "-50px" }}
-        className="bg-orange-50"
-      >
-         <Suspense fallback={<BlogLoadingFallback />}>
-        <BlogList />
-      </Suspense>
-      </motion.section>
+      {/* News Section - Priority Load */}
+      <Suspense fallback={<NewsLoadingFallback />}>
+        <motion.section 
+          variants={fadeInUp}
+          initial="initial"
+          whileInView="animate"
+          viewport={{ once: true, margin: "-50px" }}
+        >
+          <NewsLatest />
+        </motion.section>
 
-      <motion.section 
-        variants={fadeInUp}
-        initial="initial"
-        whileInView="animate"
-        viewport={{ once: true }}
-      >
+        {/* Blog Section - Load after News */}
         <Suspense fallback={<BlogLoadingFallback />}>
-          <VideoLatest />
-        </Suspense>
-      </motion.section>
+          <motion.section 
+            variants={fadeInUp}
+            initial="initial"
+            whileInView="animate"
+            viewport={{ once: true, margin: "-50px" }}
+            className="bg-orange-50"
+          >
+            <BlogList />
+          </motion.section>
 
-      {/* Support Section */}
-      <motion.section 
-        variants={fadeInUp}
-        initial="initial"
-        whileInView="animate"
-        viewport={{ once: true, margin: "-50px" }}
-        className="relative bg-gradient-to-b from-white to-orange-50"
-      >
-        <div className="absolute inset-0 pointer-events-none">
-          <div className="absolute inset-0 bg-gradient-to-r from-orange-500/10 to-amber-400/10"></div>
-          {/* <div className="absolute inset-0 bg-[url('/sdn1.svg')] opacity-5"></div> */}
-        </div>
-        <Suspense fallback={<NewsLoadingFallback />}>
-          <div className="relative z-10">
-            <Support />
-          </div>
+          {/* Other sections - Load last */}
+          <Suspense>
+            <motion.section>
+              <VideoLatest />
+            </motion.section>
+
+            <motion.section>
+              <Support />
+            </motion.section>
+
+            <motion.section>
+              <LogoShowcase />
+            </motion.section>
+          </Suspense>
         </Suspense>
-      </motion.section>
-      <motion.section
-        variants={fadeInUp}
-        initial="initial"
-        whileInView="animate"
-        viewport={{ once: true }}
-      >
-        <LogoShowcase />
-      </motion.section>
+      </Suspense>
     </main>
   );
 }
