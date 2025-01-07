@@ -7,7 +7,7 @@ import Vision from "./Vision";
 import Campaigns from "@/app/features/components/Campaigns";
 import LogoShowcase from "@/app/features/components/LogoShowcase";
 import Campaign from "./Campaign";
-import DryJanuary from "./dry-january";
+import DryJanuary from "./Dry-january"
 
 // Lazy load components
 const NewsLatest = lazy(() => import("@/app/features/news/components/NewsLatest"));
