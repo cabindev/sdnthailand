@@ -111,7 +111,7 @@ const DryJanuary: React.FC = () => {
       <ContentWrapper href="/sdnblog/35961">
         <ImageContainer>
           <Image
-            src="/campaign/Dry-January.png"
+            src="/campaign/Dryjan.jpg"
             alt="Dry January Campaign 2024"
             fill
             style={{ objectFit: 'cover' }}
