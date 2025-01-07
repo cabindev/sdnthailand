@@ -7,6 +7,7 @@ import Vision from "./Vision";
 import Campaigns from "@/app/features/components/Campaigns";
 import LogoShowcase from "@/app/features/components/LogoShowcase";
 import Campaign from "./Campaign";
+import DryJanuary from "./dry-january";
 
 // Lazy load components
 const NewsLatest = lazy(() => import("@/app/features/news/components/NewsLatest"));
@@ -77,7 +78,7 @@ export default function AnimatedHome() {
       {/* Hero Section */}
       <motion.section>
         <Suspense fallback={null}>
-          <Campaign />
+          <DryJanuary/>
         </Suspense>
       </motion.section>
 
