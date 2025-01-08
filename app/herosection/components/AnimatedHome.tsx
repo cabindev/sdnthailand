@@ -78,7 +78,7 @@ export default function AnimatedHome() {
       {/* Hero Section */}
       <motion.section>
         <Suspense fallback={null}>
-          <DryJanuary/>
+          <Campaign/>
         </Suspense>
       </motion.section>
 
