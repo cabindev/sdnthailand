@@ -38,7 +38,7 @@ export default function Campaign() {
             ${isLoaded ? 'opacity-100 scale-100 hover:scale-[1.02]' : 'opacity-0 scale-95'}`}
         >
           <Image
-            src="/campaign/Chrismas.svg"
+            src="/campaign/Dryjanuary.png"
             alt="New Year Campaign Mobile"
             fill
             priority
