@@ -35,7 +35,7 @@ const fetcher = async (url: string): Promise<NewsData> => {
 };
 
 export default function NewsLatest() {
-  const { data, error } = useSWR<NewsData>('/api/sdnpost?per_page=4', fetcher, {
+  const { data, error, isLoading } = useSWR<NewsData>('/api/sdnpost?per_page=4', fetcher, {
     revalidateOnFocus: false,
     dedupingInterval: 60000,
     revalidateIfStale: false,
@@ -43,6 +43,32 @@ export default function NewsLatest() {
   });
 
   const posts = useMemo(() => data?.posts || [], [data?.posts]);
+
+  // เพิ่มเช็ค loading state
+  if (isLoading) {
+    return (
+      <section className="py-12 bg-white">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-8">
+            <h2 className="text-3xl font-bold text-gray-900">ข่าวและกิจกรรมล่าสุด</h2>
+            <div className="w-24 h-1 bg-orange-500 mx-auto mt-4"></div>
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+            {[1, 2, 3, 4].map((i) => (
+              <div key={i} className="bg-white rounded-2xl overflow-hidden shadow-sm animate-pulse">
+                <div className="aspect-[4/3] bg-gray-200"></div>
+                <div className="p-4">
+                  <div className="h-4 bg-gray-200 rounded w-3/4 mb-3"></div>
+                  <div className="h-4 bg-gray-200 rounded w-full mb-2"></div>
+                  <div className="h-4 bg-gray-200 rounded w-2/3"></div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+    );
+  }
 
   if (error) {
     return (
@@ -62,8 +88,7 @@ export default function NewsLatest() {
     );
   }
 
-  const hasNews = posts.length > 0;
-
+  // แสดงผลเมื่อโหลดเสร็จแล้วและมีข้อมูล
   return (
     <section className="py-12 bg-white">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -73,7 +98,7 @@ export default function NewsLatest() {
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-          {hasNews ? (
+          {posts.length > 0 ? (
             posts.map(post => <NewsCardLatest key={post.id} post={post} />)
           ) : (
             <div className="col-span-full text-center py-8 text-gray-500">
@@ -82,7 +107,7 @@ export default function NewsLatest() {
           )}
         </div>
         
-        {hasNews && (
+        {posts.length > 0 && (
           <div className="text-center mt-8">
             <Link 
               href="/sdnpost" 
