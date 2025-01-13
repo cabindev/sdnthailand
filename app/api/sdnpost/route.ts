@@ -1,4 +1,3 @@
-// app/api/sdnpost/route.ts
 import { NextResponse } from 'next/server';
 import axios from 'axios';
 
@@ -6,7 +5,7 @@ const WP_API_URL = process.env.WORDPRESS_API_URL
   ? `${process.env.WORDPRESS_API_URL}/wp-json/wp/v2`
   : 'https://blog.sdnthailand.com/wp-json/wp/v2';
 
-export const revalidate = 60; // เพิ่ม revalidate เหมือน blog route
+export const revalidate = 60;
 
 export async function GET(request: Request) {
   const { searchParams } = new URL(request.url);
@@ -18,30 +17,18 @@ export async function GET(request: Request) {
       params: {
         page,
         per_page,
-        status: 'publish', // เพิ่ม status เหมือน blog route
-        _embed: true,
-        orderby: 'date',
-        order: 'desc'
+        status: 'publish',
+        _embed: true
       },
       headers: {
         'Cache-Control': 'public, s-maxage=60, stale-while-revalidate=300'
       }
     });
 
-    const posts = Array.isArray(response.data) 
-      ? response.data.map((post) => ({
-          ...post,
-          featuredImage: 
-            post._embedded?.['wp:featuredmedia']?.[0]?.source_url ||
-            post._embedded?.['wp:featuredmedia']?.[0]?.media_details?.sizes?.large?.source_url ||
-            post._embedded?.['wp:featuredmedia']?.[0]?.media_details?.sizes?.medium?.source_url ||
-            '/images/default-featured.png'
-        }))
-      : [];
-
+    // ลดการแปลงข้อมูล ใช้ข้อมูลจาก response โดยตรง
     return NextResponse.json({
-      success: true, // เพิ่ม success flag เหมือน blog route
-      posts,
+      success: true,
+      posts: response.data,
       totalPages: Number(response.headers['x-wp-totalpages']),
       total: Number(response.headers['x-wp-total'])
     }, {
@@ -56,8 +43,7 @@ export async function GET(request: Request) {
       return NextResponse.json(
         { 
           success: false, 
-          error: error.response?.data?.message || 'Failed to fetch posts',
-          details: error.response?.data
+          error: error.response?.data?.message || 'Failed to fetch posts'
         },
         { status: error.response?.status || 500 }
       );
