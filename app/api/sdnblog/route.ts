@@ -1,8 +1,7 @@
 // app/api/sdnblog/route.ts
 import axios from 'axios';
 import { NextResponse } from 'next/server';
-
-export const revalidate = 60; // revalidate every 60 seconds
+import { revalidatePath } from 'next/cache';
 
 export async function GET(request: Request) {
   const { searchParams } = new URL(request.url);
@@ -16,23 +15,19 @@ export async function GET(request: Request) {
         per_page,
         status: 'publish',
         _embed: true
-      },
-      headers: {
-        'Cache-Control': 'public, s-maxage=60, stale-while-revalidate=300'
       }
     });
 
     const posts = response.data;
+    
+    // Revalidate the blog path
+    revalidatePath('/blog');
 
     return NextResponse.json({
       success: true,
       posts,
       totalPages: Number(response.headers['x-wp-totalpages']),
       total: Number(response.headers['x-wp-total'])
-    }, {
-      headers: {
-        'Cache-Control': 'public, s-maxage=60, stale-while-revalidate=300'
-      }
     });
 
   } catch (error) {

@@ -1,29 +1,42 @@
 import Link from 'next/link'
 
+
 interface PostCardProps {
   post: {
     id: number;
     title: { rendered: string };
     date: string;
     excerpt: { rendered: string };
-    featuredImage?: string;
     _embedded?: {
       author?: Array<{ name: string }>;
       'wp:term'?: Array<Array<{ name: string }>>;
+      'wp:featuredmedia'?: Array<{
+        source_url: string;
+        media_details?: {
+          sizes?: {
+            medium?: { source_url: string };
+            large?: { source_url: string };
+          }
+        }
+      }>;
     };
   }
 }
 
 export default function PostCard({ post }: PostCardProps) {
-  const categories = post._embedded?.['wp:term']?.[0] || []
+  // ดึง featured image จาก _embedded
+  const featuredImage = post._embedded?.['wp:featuredmedia']?.[0]?.media_details?.sizes?.medium?.source_url || 
+  post._embedded?.['wp:featuredmedia']?.[0]?.source_url;
+  
+  const categories = post._embedded?.['wp:term']?.[0] || [];
 
   return (
     <Link href={`/sdnpost/${post.id}`}>
       <div className="bg-white rounded-xl shadow-sm overflow-hidden hover:shadow-md transition-shadow duration-300">
         <div className="aspect-video relative overflow-hidden">
-          {post.featuredImage ? (
+          {featuredImage ? (
             <img
-              src={post.featuredImage}
+              src={featuredImage}
               alt={post.title.rendered}
               className="w-full h-full object-cover transform hover:scale-105 transition-transform duration-300"
               loading="lazy"
