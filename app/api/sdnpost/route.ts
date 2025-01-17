@@ -1,11 +1,10 @@
 import { NextResponse } from 'next/server';
 import axios from 'axios';
+import { revalidatePath } from 'next/cache';
 
 const WP_API_URL = process.env.WORDPRESS_API_URL 
   ? `${process.env.WORDPRESS_API_URL}/wp-json/wp/v2`
   : 'https://blog.sdnthailand.com/wp-json/wp/v2';
-
-export const revalidate = 60;
 
 export async function GET(request: Request) {
   const { searchParams } = new URL(request.url);
@@ -19,22 +18,17 @@ export async function GET(request: Request) {
         per_page,
         status: 'publish',
         _embed: true
-      },
-      headers: {
-        'Cache-Control': 'public, s-maxage=60, stale-while-revalidate=300'
       }
     });
 
-    // ลดการแปลงข้อมูล ใช้ข้อมูลจาก response โดยตรง
+    // Revalidate the sdnpost path
+    revalidatePath('/sdnpost');
+
     return NextResponse.json({
       success: true,
       posts: response.data,
       totalPages: Number(response.headers['x-wp-totalpages']),
       total: Number(response.headers['x-wp-total'])
-    }, {
-      headers: {
-        'Cache-Control': 'public, s-maxage=60, stale-while-revalidate=300'
-      }
     });
 
   } catch (error) {
