@@ -10,6 +10,7 @@ import Campaign from "./Campaign";
 import DryJanuary from "./Dry-january";
 import NewsLoadingFallback from "@/app/herosection/components/loading/NewsLoadingFallback";
 import BlogLoadingFallback from "@/app/herosection/components/loading/BlogLoadingFallback";
+import NetworksSDN from "./Networks-SDN";
 
 // Lazy load components
 const NewsLatest = lazy(() => import("@/app/features/news/components/NewsLatest"));
@@ -62,7 +63,9 @@ export default function AnimatedHome() {
           >
             <BlogList />
           </motion.section>
-
+          <motion.section>
+              <NetworksSDN/>
+            </motion.section>
           {/* Other sections - Load last */}
           <Suspense>
             <motion.section>
