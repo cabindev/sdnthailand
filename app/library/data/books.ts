@@ -93,5 +93,11 @@ export const books: Book[] = [
      title: "คู่มือครู ชุดกิจกรรม", 
      url: "https://post.sdnthailand.com/sdnkid/%E0%B8%8A%E0%B8%B8%E0%B8%94%E0%B8%81%E0%B8%B4%E0%B8%88%E0%B8%81%E0%B8%A3%E0%B8%A3%E0%B8%A1%E0%B8%9B%E0%B8%A5%E0%B8%B9%E0%B8%81%E0%B8%9E%E0%B8%A5%E0%B8%B1%E0%B8%87%E0%B8%9A%E0%B8%A7%E0%B8%81/Contents/Resources/mobile/index.html",
      tags: ["คู่มือกิจกรรม"]
-   }
+   },
+   {
+    img: "/ebook/coverImage/Henry.jpg",
+    title: "แบบฝึกเสริมพลังจิตใต้สำนึกหนูน้อยใจเข้มแข็ง", 
+    url: "/ebook/pdf/compressed_pdf.pdf",
+    tags: storyTags
+  }
 ];
