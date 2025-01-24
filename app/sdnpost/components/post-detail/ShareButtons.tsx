@@ -1,7 +1,9 @@
 // app/sdnpost/components/ShareButtons.tsx
 'use client'
 
+import React from 'react'
 import { FaFacebook, FaXTwitter, FaLine, FaLink } from 'react-icons/fa6'
+import { toast } from 'react-hot-toast'
 
 interface ShareButtonsProps {
  url: string
@@ -10,62 +12,68 @@ interface ShareButtonsProps {
 }
 
 export default function ShareButtons({ url, title, isMobile = false }: ShareButtonsProps) {
- const shareOnFacebook = () => {
+ const handleCopyLink = async () => {
+   try {
+     await navigator.clipboard.writeText(url)
+     toast.success('คัดลอกลิงก์แล้ว')
+   } catch (err) {
+     toast.error('ไม่สามารถคัดลอกลิงก์ได้')
+   }
+ }
+
+ const handleFacebookShare = () => {
    window.open(`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(url)}`, '_blank')
  }
 
- const shareOnTwitter = () => {
-   window.open(`https://twitter.com/intent/tweet?url=${encodeURIComponent(url)}&text=${encodeURIComponent(title)}`, '_blank')
+ const handleTwitterShare = () => {
+   window.open(
+     `https://twitter.com/intent/tweet?url=${encodeURIComponent(url)}&text=${encodeURIComponent(title)}`,
+     '_blank',
+     'width=600,height=400'
+   )
  }
 
- const shareOnLine = () => {
-   window.open(`https://social-plugins.line.me/lineit/share?url=${encodeURIComponent(url)}`, '_blank')
+ const handleLineShare = () => {
+   window.open(
+     `https://line.me/R/msg/text/?${encodeURIComponent(`${title} ${url}`)}`,
+     '_blank'
+   )
  }
 
- const copyLink = () => {
-   navigator.clipboard.writeText(url)
-     .then(() => {
-       alert('ลิงก์ถูกคัดลอกเรียบร้อยแล้ว!')
-     })
-     .catch(() => {
-       alert('ไม่สามารถคัดลอกลิงก์ได้ กรุณาลองอีกครั้ง')
-     })
- }
-
- const containerClassName = isMobile
-   ? "flex flex-row justify-center gap-4 mt-6 px-4"
-   : "flex flex-col gap-4 sticky top-4"
+ const containerClassName = isMobile 
+   ? "flex flex-row justify-center gap-4 mt-6 px-4" 
+   : "flex flex-col gap-4 sticky top-24"
 
  return (
    <div className={containerClassName}>
-     <button 
-       onClick={shareOnFacebook}
-       className="w-10 h-10 rounded-full bg-blue-600 text-white flex items-center justify-center hover:bg-blue-700 transition-colors"
+     <button
+       onClick={handleFacebookShare}
+       className="w-10 h-10 flex items-center justify-center bg-[#1877f2] hover:bg-[#166fe5] text-white rounded-full transition-colors"
        aria-label="Share on Facebook"
      >
        <FaFacebook className="w-5 h-5" />
      </button>
 
-     <button 
-       onClick={shareOnTwitter}
-       className="w-10 h-10 rounded-full bg-black text-white flex items-center justify-center hover:bg-gray-900 transition-colors"
-       aria-label="Share on X (Twitter)"
+     <button
+       onClick={handleTwitterShare}
+       className="w-10 h-10 flex items-center justify-center bg-black hover:bg-gray-900 text-white rounded-full transition-colors"
+       aria-label="Share on Twitter"
      >
        <FaXTwitter className="w-4 h-4" />
      </button>
 
-     <button 
-       onClick={shareOnLine}
-       className="w-10 h-10 rounded-full bg-green-500 text-white flex items-center justify-center hover:bg-green-600 transition-colors"
+     <button
+       onClick={handleLineShare}
+       className="w-10 h-10 flex items-center justify-center bg-[#00b900] hover:bg-[#00a000] text-white rounded-full transition-colors"
        aria-label="Share on Line"
      >
        <FaLine className="w-5 h-5" />
      </button>
 
-     <button 
-       onClick={copyLink}
-       className="w-10 h-10 rounded-full bg-gray-500 text-white flex items-center justify-center hover:bg-gray-600 transition-colors"
-       aria-label="Copy Link"
+     <button
+       onClick={handleCopyLink}
+       className="w-10 h-10 flex items-center justify-center bg-gray-200 hover:bg-gray-300 text-gray-600 rounded-full transition-colors"
+       aria-label="Copy link"
      >
        <FaLink className="w-5 h-5" />
      </button>
