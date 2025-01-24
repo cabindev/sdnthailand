@@ -1,50 +1,30 @@
-import { NextResponse } from 'next/server';
-import axios from 'axios';
-import { revalidatePath } from 'next/cache';
+// app/api/sdnpost/route.ts
+import { NextResponse } from 'next/server'
+import { cache } from 'react'
 
-const WP_API_URL = process.env.WORDPRESS_API_URL 
-  ? `${process.env.WORDPRESS_API_URL}/wp-json/wp/v2`
-  : 'https://blog.sdnthailand.com/wp-json/wp/v2';
+export const dynamic = 'force-dynamic'
+
+const getPosts = cache(async (page = '1', per_page = '4') => {
+ const res = await fetch(
+   `${process.env.WORDPRESS_API_URL || 'https://blog.sdnthailand.com'}/wp-json/wp/v2/posts?page=${page}&per_page=${per_page}&_embed=true`,
+   {
+     cache: 'no-store',
+     headers: { 'Accept': 'application/json' }
+   }
+ )
+ return {
+   posts: await res.json(),
+   totalPages: res.headers.get('x-wp-totalpages'),
+   total: res.headers.get('x-wp-total')
+ }
+})
 
 export async function GET(request: Request) {
-  const { searchParams } = new URL(request.url);
-  const page = searchParams.get('page') || '1';
-  const per_page = searchParams.get('per_page') || '4';
-
-  try {
-    const response = await axios.get(`${WP_API_URL}/posts`, {
-      params: {
-        page,
-        per_page,
-        status: 'publish',
-        _embed: true
-      }
-    });
-
-    // Revalidate the sdnpost path
-    revalidatePath('/sdnpost');
-
-    return NextResponse.json({
-      success: true,
-      posts: response.data,
-      totalPages: Number(response.headers['x-wp-totalpages']),
-      total: Number(response.headers['x-wp-total'])
-    });
-
-  } catch (error) {
-    console.error('API Error:', error);
-    if (axios.isAxiosError(error)) {
-      return NextResponse.json(
-        { 
-          success: false, 
-          error: error.response?.data?.message || 'Failed to fetch posts'
-        },
-        { status: error.response?.status || 500 }
-      );
-    }
-    return NextResponse.json(
-      { success: false, error: 'Failed to fetch posts' },
-      { status: 500 }
-    );
-  }
+ const { searchParams } = new URL(request.url)
+ const data = await getPosts(
+   searchParams.get('page') || '1',
+   searchParams.get('per_page') || '4'
+ )
+ 
+ return NextResponse.json({ success: true, ...data })
 }
