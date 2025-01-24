@@ -1,8 +1,21 @@
 // app/api/sdnblog/[id]/route.ts
-import { NextRequest, NextResponse } from 'next/server';
-import { revalidatePath } from 'next/cache';
+import { NextRequest, NextResponse } from 'next/server'
+import { cache } from 'react'
 
-const WP_API_URL = 'https://blog.sdnthailand.com/wp-json/wp/v2';
+const WP_API_URL = 'https://blog.sdnthailand.com/wp-json/wp/v2'
+
+export const dynamic = 'force-dynamic'
+
+const getPost = cache(async (id: string) => {
+  const res = await fetch(
+    `${WP_API_URL}/blog_post/${id}?_embed=wp:featuredmedia,wp:term,author`,
+    { 
+      cache: 'no-store',
+      headers: { 'Accept': 'application/json' }
+    }
+  )
+  return res.json()
+})
 
 export async function GET(
   request: NextRequest,
@@ -12,39 +25,16 @@ export async function GET(
     return NextResponse.json(
       { success: false, error: 'Blog ID is required' },
       { status: 400 }
-    );
+    )
   }
 
   try {
-    const response = await fetch(
-      `${WP_API_URL}/blog_post/${params.id}?_embed=wp:featuredmedia,wp:term,author`,
-      {
-        headers: {
-          'Accept': 'application/json'
-        }
-      }
-    );
-
-    if (!response.ok) {
-      throw new Error('Failed to fetch blog post');
-    }
-
-    const post = await response.json();
-    
-    // Revalidate both the specific post page and the blog listing
-    revalidatePath(`/blog/${params.id}`);
-    revalidatePath('/blog');
-
-    return NextResponse.json({
-      success: true,
-      data: post
-    });
-
+    const post = await getPost(params.id)
+    return NextResponse.json({ success: true, data: post })
   } catch (error) {
-    console.error('Error fetching blog post:', error);
     return NextResponse.json(
       { success: false, error: 'Failed to fetch blog post' },
       { status: 500 }
-    );
+    )
   }
 }
