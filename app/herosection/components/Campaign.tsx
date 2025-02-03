@@ -11,21 +11,22 @@ export default function Campaign() {
 
  // เพิ่มอาร์เรย์ข้อมูลแคมเปญ
  const campaigns = [
-  {
-    id: '35961',
-    desktopImage: '/campaign/Dryjan.jpg',
-    mobileImage: '/campaign/Dryjanuary.png',
-    title: 'Dry January Campaign',
-    link: '/sdnblog/35961'
-  },
-  {
-    id: '35969',  // เปลี่ยน id ให้ตรงกับ link
-    desktopImage: '/campaign/rada.jpg',
-    mobileImage: '/campaign/rada.jpg', 
-    title: 'Rada Campaign',
-    link: '/sdnblog/35969'  // แก้ไขลิงก์ตามที่ต้องการ
-  }
-];
+    {
+      id: '1',
+      desktopImage: '/campaign/4-2-2558.webp',
+      mobileImage: '/campaign/4-2-2558.webp',
+      title: '4 February 2025 Campaign',
+      link: '/sdnblog/1'
+    },
+    {
+      id: '2',
+      desktopImage: '/campaign/22.jpg',
+      mobileImage: '/campaign/22.jpg',
+      title: 'Campaign 22',
+      link: '/sdnblog/2'
+    }
+  ];
+
 
  useEffect(() => {
    setIsLoaded(true);
