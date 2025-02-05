@@ -96,6 +96,7 @@ const Navbar: React.FC = () => {
      subItems: [
        { href: 'https://support.sdnthailand.com/support', label: 'ขอสื่อรณรงค์' },
        { href: 'https://support.sdnthailand.com/procurement', label: 'จัดซื้อ' },
+       { href: 'https://support.sdnthailand.com/products', label: 'Store' },
      ]
    },
    { 
