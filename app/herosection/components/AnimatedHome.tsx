@@ -8,7 +8,7 @@ import Campaigns from "@/app/features/components/Campaigns";
 import LogoShowcase from "@/app/features/components/LogoShowcase";
 import Campaign from "./Campaign";
 import DryJanuary from "./Dry-january";
-import NewsLoadingFallback from "@/app/herosection/components/loading/Loading";
+import NewsLoadingFallback from "@/app/herosection/components/loading/NewsLoadingFallback";
 import BlogLoadingFallback from "@/app/herosection/components/loading/BlogLoadingFallback";
 import NetworksSDN from "./Networks-SDN";
 
