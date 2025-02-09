@@ -1,10 +1,7 @@
-// app/features/news/components/NewsLatest.tsx
-'use client';
-
-import { useEffect, useState } from 'react';
+import { useMemo } from 'react';
+import useSWR from 'swr';
 import NewsCardLatest from './NewsCardLatest';
 import Link from 'next/link';
-import Loading from '@/app/herosection/components/loading/Loading';
 
 interface Post {
   id: number;
@@ -25,30 +22,52 @@ interface Post {
   };
 }
 
+interface NewsData {
+  posts: Post[];
+  totalPages: number;
+  total: number;
+}
+
+const fetcher = async (url: string): Promise<NewsData> => {
+  const res = await fetch(url);
+  if (!res.ok) throw new Error('Failed to fetch');
+  return res.json();
+};
+
 export default function NewsLatest() {
-  const [posts, setPosts] = useState<Post[]>([]);
-  const [isLoading, setIsLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
+  const { data, error, isLoading } = useSWR<NewsData>('/api/sdnpost?per_page=4', fetcher, {
+    revalidateOnFocus: false,
+    dedupingInterval: 60000,
+    revalidateIfStale: false,
+    revalidateOnReconnect: false
+  });
 
-  useEffect(() => {
-    async function fetchPosts() {
-      try {
-        const res = await fetch('/api/sdnpost?per_page=4');
-        if (!res.ok) throw new Error('Failed to fetch');
-        const data = await res.json();
-        setPosts(data.posts);
-      } catch (err) {
-        setError(err instanceof Error ? err.message : 'Failed to load posts');
-      } finally {
-        setIsLoading(false);
-      }
-    }
+  const posts = useMemo(() => data?.posts || [], [data?.posts]);
 
-    fetchPosts();
-  }, []);
-
+  // เพิ่มเช็ค loading state
   if (isLoading) {
-    return <Loading />;
+    return (
+      <section className="py-12 bg-white">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-8">
+            <h2 className="text-3xl font-bold text-gray-900">ข่าวและกิจกรรมล่าสุด</h2>
+            <div className="w-24 h-1 bg-orange-500 mx-auto mt-4"></div>
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+            {[1, 2, 3, 4].map((i) => (
+              <div key={i} className="bg-white rounded-2xl overflow-hidden shadow-sm animate-pulse">
+                <div className="aspect-[4/3] bg-gray-200"></div>
+                <div className="p-4">
+                  <div className="h-4 bg-gray-200 rounded w-3/4 mb-3"></div>
+                  <div className="h-4 bg-gray-200 rounded w-full mb-2"></div>
+                  <div className="h-4 bg-gray-200 rounded w-2/3"></div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+    );
   }
 
   if (error) {
@@ -69,6 +88,7 @@ export default function NewsLatest() {
     );
   }
 
+  // แสดงผลเมื่อโหลดเสร็จแล้วและมีข้อมูล
   return (
     <section className="py-12 bg-white">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
