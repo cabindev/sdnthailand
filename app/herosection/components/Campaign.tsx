@@ -8,12 +8,7 @@ export default function Campaign() {
   const [currentImage, setCurrentImage] = useState(0);
 
   const campaigns = [
-    {
-      id: '1',
-      desktopImage: '/campaign/4-2-2558.webp',
-      mobileImage: '/campaign/4-2-2558.webp',
-      title: '4 February 2025 Campaign'
-    },
+
     {
       id: '2',
       desktopImage: '/campaign/22.svg',
