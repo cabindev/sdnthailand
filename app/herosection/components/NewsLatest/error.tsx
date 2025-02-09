@@ -75,7 +75,7 @@ export default function NewsLatestError({ error, reset }: ErrorProps) {
                   />
                 </svg>
                 กลับหน้าหลัก
-              </button>
+              </a>
             </div>
           </div>
         </div>
