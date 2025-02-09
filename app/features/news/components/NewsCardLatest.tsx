@@ -1,7 +1,7 @@
 // NewsCardLatest.tsx
 
 import Link from 'next/link';
-import { NewsPost } from '../types/news.types';
+import { NewsPost } from './types/news.types';
 
 interface NewsCardLatestProps {
   post: NewsPost;
