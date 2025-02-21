@@ -34,16 +34,15 @@ const fetcher = async (url: string): Promise<NewsData> => {
   return res.json();
 };
 
-export default function NewsLatest() {
-  const { data, error, isLoading } = useSWR<NewsData>('/api/sdnpost?per_page=4', fetcher, {
-    revalidateOnFocus: false,
-    dedupingInterval: 60000,
-    revalidateIfStale: false,
-    revalidateOnReconnect: false
-  });
-
-  const posts = useMemo(() => data?.posts || [], [data?.posts]);
-
+  export default function NewsLatest() {
+    const { data, error, isLoading } = useSWR<NewsData>('/api/sdn-latest?per_page=4', fetcher, {
+      revalidateOnFocus: false,
+      dedupingInterval: 300000, // เพิ่มเวลา cache เป็น 5 นาที 
+      revalidateIfStale: false,
+      revalidateOnReconnect: false
+    });
+  
+    const posts = useMemo(() => data?.posts || [], [data?.posts]);
   // เพิ่มเช็ค loading state
   if (isLoading) {
     return (
