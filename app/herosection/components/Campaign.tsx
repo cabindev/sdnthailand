@@ -8,13 +8,20 @@ export default function Campaign() {
   const [currentImage, setCurrentImage] = useState(0);
 
   const campaigns = [
-
+    {
+      id: '1',
+      desktopImage: '/campaign/Loud-for-change.png',
+      mobileImage: '/campaign/Loud-for-change.png',
+      title: 'Campaign Be loud for change',
+      link: 'https://sdnthailand.com/sdnpost/36100'
+    },
     {
       id: '2',
-      desktopImage: '/campaign/22.svg',
-      mobileImage: '/campaign/22.svg',
-      title: 'Campaign 22'
-    }
+      desktopImage: '/campaign/cancer.jpg',
+      mobileImage: '/campaign/cancer.jpg',
+      title: 'Campaign Artboard 1',
+      link: 'https://sdnthailand.com/sdnblog/36054'
+    },
   ];
 
   useEffect(() => {
@@ -49,19 +56,21 @@ export default function Campaign() {
             className={`absolute inset-0 transition-all duration-1000 ease-out transform
               ${currentImage === index ? 'opacity-100 visible' : 'opacity-0 invisible'}`}
           >
-            <div 
-              className={`w-full h-full transition-all duration-1000 ease-out transform
-                ${isLoaded ? 'opacity-100 scale-100' : 'opacity-0 scale-95'}`}
-            >
-              <Image
-                src={campaign.desktopImage}
-                alt={campaign.title}
-                fill
-                priority
-                className="object-cover object-center"
-                sizes="100vw"
-              />
-            </div>
+            <a href={campaign.link} className="block w-full h-full">
+              <div 
+                className={`w-full h-full transition-all duration-1000 ease-out transform
+                  ${isLoaded ? 'opacity-100 scale-100' : 'opacity-0 scale-95'}`}
+              >
+                <Image
+                  src={campaign.desktopImage}
+                  alt={campaign.title}
+                  fill
+                  priority
+                  className="object-cover object-center"
+                  sizes="100vw"
+                />
+              </div>
+            </a>
           </div>
         ))}
       </div>
@@ -74,19 +83,21 @@ export default function Campaign() {
             className={`absolute inset-0 transition-all duration-1000 ease-out transform
               ${currentImage === index ? 'opacity-100 visible' : 'opacity-0 invisible'}`}
           >
-            <div 
-              className={`w-full h-full transition-all duration-1000 ease-out transform
-                ${isLoaded ? 'opacity-100 scale-100' : 'opacity-0 scale-95'}`}
-            >
-              <Image
-                src={campaign.mobileImage}
-                alt={campaign.title}
-                fill
-                priority
-                className="object-cover object-center"
-                sizes="100vw"
-              />
-            </div>
+            <a href={campaign.link} className="block w-full h-full">
+              <div 
+                className={`w-full h-full transition-all duration-1000 ease-out transform
+                  ${isLoaded ? 'opacity-100 scale-100' : 'opacity-0 scale-95'}`}
+              >
+                <Image
+                  src={campaign.mobileImage}
+                  alt={campaign.title}
+                  fill
+                  priority
+                  className="object-cover object-center"
+                  sizes="100vw"
+                />
+              </div>
+            </a>
           </div>
         ))}
       </div>

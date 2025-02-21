@@ -61,7 +61,7 @@ export default function SDNPostPage() {
       setIsLoading(true)
       setError(null)
       try {
-        const res = await fetch(`/api/sdnpost?page=${currentPage}`)
+        const res = await fetch(`/api/sdn-latest?page=${currentPage}`)
         if (!res.ok) throw new Error('Failed to fetch posts')
         const data = await res.json() as PostsResponse
         
