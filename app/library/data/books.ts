@@ -89,15 +89,27 @@ export const books: Book[] = [
      tags: ["คู่มือกิจกรรม"]
    },
    {
-     img: "https://blog.sdnthailand.com/wp-content/uploads/2024/11/ชุดกิจกรรมปลูกพลังบวก.jpg", 
-     title: "คู่มือครู ชุดกิจกรรม", 
-     url: "https://post.sdnthailand.com/sdnkid/%E0%B8%8A%E0%B8%B8%E0%B8%94%E0%B8%81%E0%B8%B4%E0%B8%88%E0%B8%81%E0%B8%A3%E0%B8%A3%E0%B8%A1%E0%B8%9B%E0%B8%A5%E0%B8%B9%E0%B8%81%E0%B8%9E%E0%B8%A5%E0%B8%B1%E0%B8%87%E0%B8%9A%E0%B8%A7%E0%B8%81/Contents/Resources/mobile/index.html",
-     tags: ["คู่มือกิจกรรม"]
+    img: "https://blog.sdnthailand.com/wp-content/uploads/2025/03/แบบฝึกเสริมพลังจิตใต้สำนึกหนูน้อยใจเข้มแข็ง.jpg",
+    title: "แบบฝึกเสริมพลังจิตใต้สำนึกหนูน้อยใจเข้มแข็ง", 
+    url: "https://blog.sdnthailand.com/wp-content/uploads/2025/03/แบบฝึกเสริมพลังจิตใต้สำนึกหนูน้อยใจเข้มแข็ง.pdf",
+    tags: storyTags
    },
    {
-    img: "/ebook/coverImage/Henry.jpg",
-    title: "แบบฝึกเสริมพลังจิตใต้สำนึกหนูน้อยใจเข้มแข็ง", 
-    url: "/ebook/pdf/compressed_pdf.pdf",
-    tags: storyTags
-  }
+    img: "https://blog.sdnthailand.com/wp-content/uploads/2025/03/กิจกรรมห่างไกลเหล้า.jpg",
+    title: "คู่มือชุดกิจกรรมห่างไกลเหล้า", 
+    url: "https://blog.sdnthailand.com/wp-content/uploads/2025/03/หนังสือ-คู่มือชุดกิจกรรมห่างไกลเหล้า_compressed.pdf",
+    tags: ["คู่มือกิจกรรม"]
+   },
+   {
+    img: "https://blog.sdnthailand.com/wp-content/uploads/2025/03/คู่มือชุดกิจกรรมห่างไกลบุหรี่.jpg",
+    title: "คู่มือชุดกิจกรรมห่างไกลบุหรี่", 
+    url: "https://blog.sdnthailand.com/wp-content/uploads/2025/03/คู่มือชุดกิจกรรมห่างไกลบุหรี่.pdf",
+    tags: ["คู่มือกิจกรรม"]
+   },
+   {
+    img: "https://blog.sdnthailand.com/wp-content/uploads/2025/03/คู่มือชุดกิจกรรม.jpg",
+    title: "คู่มือครู ชุดกิจกรรมปลูกพลังบวก", 
+    url: "https://blog.sdnthailand.com/wp-content/uploads/2025/03/หนังสือ-คู่มือครู-ชุดกิจกรรมปลูกพลังบวก_compressed.pdf",
+    tags: ["คู่มือกิจกรรม"]
+   }
 ];
