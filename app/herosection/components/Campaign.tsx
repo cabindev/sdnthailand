@@ -10,10 +10,10 @@ export default function Campaign() {
   const campaigns = [
     {
       id: '1',
-      desktopImage: '/campaign/Loud-for-change.png',
-      mobileImage: '/campaign/Loud-for-change.png',
-      title: 'Campaign Be loud for change',
-      link: 'https://sdnthailand.com/sdnpost/36100'
+      desktopImage: '/campaign/SDN Futsal No L CUP.jpg',
+      mobileImage: '/campaign/SDN Futsal No L CUP.jpg',
+      title: 'Campaign SDN Futsal No L CUP',
+      link: 'https://web.facebook.com/sdnfutsalNoL'
     },
     {
       id: '2',
