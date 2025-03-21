@@ -11,6 +11,7 @@ import DryJanuary from "./Dry-january";
 import NewsLoadingFallback from "@/app/herosection/components/loading/NewsLoadingFallback";
 import BlogLoadingFallback from "@/app/herosection/components/loading/BlogLoadingFallback";
 import NetworksSDN from "./Networks-SDN";
+import LivePopup from "@/app/popup/page";
 
 // Lazy load components
 const NewsLatest = lazy(() => import("@/app/features/news/components/NewsLatest"));
@@ -33,7 +34,9 @@ const fadeInUp = {
 
 export default function AnimatedHome() {
   return (
+    
     <main className="min-h-screen">
+      {/* <LivePopup/> */}
       {/* Hero Section */}
       <motion.section>
         <Suspense fallback={null}>

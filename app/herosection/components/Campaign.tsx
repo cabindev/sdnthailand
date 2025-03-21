@@ -29,6 +29,13 @@ export default function Campaign() {
       title: 'ฝุ่น PM 2.5 ภัยเงียบที่คร่าชีวิตคนไทย',
       link: 'https://sdnthailand.com/sdnblog/36084'
     },
+    {
+      id: '4',
+      desktopImage: '/campaign/muhamud-ruesao.jpg',
+      mobileImage: '/campaign/muhamud-ruesao.jpg',
+      title: 'Muhamud Ruesao',
+      link: 'https://sdnthailand.com/sdnblog/36330'
+    },
   ];
 
   useEffect(() => {
