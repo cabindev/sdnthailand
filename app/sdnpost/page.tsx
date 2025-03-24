@@ -55,13 +55,15 @@ export default function SDNPostPage() {
   const searchParams = useSearchParams()
   const router = useRouter()
   const currentPage = Number(searchParams.get('page')) || 1
-
+  const [postsPerPage] = useState(12)
+  
   useEffect(() => {
     const fetchPosts = async () => {
       setIsLoading(true)
       setError(null)
       try {
-        const res = await fetch(`/api/sdn-latest?page=${currentPage}`)
+        // เพิ่ม per_page parameter
+        const res = await fetch(`/api/sdn-latest?page=${currentPage}&per_page=${postsPerPage}`)
         if (!res.ok) throw new Error('Failed to fetch posts')
         const data = await res.json() as PostsResponse
         
@@ -78,7 +80,7 @@ export default function SDNPostPage() {
       }
     }
     fetchPosts()
-  }, [currentPage])
+  }, [currentPage, postsPerPage])
 
   const handlePageChange = (page: number) => {
     router.push(`/sdnpost?page=${page}`)

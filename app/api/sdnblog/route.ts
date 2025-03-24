@@ -1,21 +1,31 @@
-// app/api/sdnblog/route.ts 
+// app/api/sdnblog/route.ts
 import { NextResponse } from 'next/server'
 import { cache } from 'react'
 
 export const dynamic = 'force-dynamic'
 
 const getPosts = cache(async (page = '1', per_page = '12') => {
+  // เปลี่ยนจาก WP standard API เป็น custom endpoint
   const res = await fetch(
-    `https://blog.sdnthailand.com/wp-json/wp/v2/blog_post?page=${page}&per_page=${per_page}&status=publish&_embed=true`,
+    `${process.env.WORDPRESS_API_URL || 'https://blog.sdnthailand.com'}/wp-json/sdn/v1/blog-posts?page=${page}&per_page=${per_page}`,
     {
       cache: 'no-store',
       headers: { 'Accept': 'application/json' }
     }
   )
+  
+  // ตรวจสอบสถานะการตอบกลับ
+  if (!res.ok) {
+    throw new Error(`API error: ${res.status}`);
+  }
+
+  const jsonData = await res.json();
+  
+  // ปรับให้เข้ากับรูปแบบที่ต้องการใน frontend
   return {
-    posts: await res.json(),
-    totalPages: res.headers.get('x-wp-totalpages'),
-    total: res.headers.get('x-wp-total')
+    posts: jsonData.posts,
+    totalPages: jsonData.totalPages,
+    total: jsonData.total
   }
 })
 
@@ -30,9 +40,10 @@ export async function GET(request: Request) {
       success: true,
       ...data
     })
-  } catch (error) {
+  } catch (error: any) {
+    console.error('Error fetching blog posts:', error);
     return NextResponse.json(
-      { success: false, error: 'Failed to fetch blog posts' },
+      { success: false, error: error.message || 'Failed to fetch blog posts' },
       { status: 500 }
     )
   }
