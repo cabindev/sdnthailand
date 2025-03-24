@@ -51,12 +51,12 @@ export default function LivePopup() {
         
         {/* ข้อความด้านล่าง */}
         <div className="text-center mt-6 z-10">
-          <p className="text-white text-xl font-medium mb-2 cyberpunk-text">
+        <p className="text-white text-xl font-medium mb-2 cyberpunk-text">
             ติดตามได้ที่ 
-            <span className="text-blue-300 font-bold mx-1 glitch-text" data-text="sdnfutsalNoL">sdnfutsalNoL</span> 
+            <a href="https://web.facebook.com/sdnfutsalNoL" className="text-blue-300 font-bold mx-1 glitch-text" data-text="sdnfutsalNoL">sdnfutsalNoL</a> 
             และ 
-            <span className="text-blue-300 font-bold mx-1 glitch-text" data-text="Thai PBS">Thai PBS</span>
-          </p>
+            <a href="https://web.facebook.com/ThaiPBS" className="text-blue-300 font-bold mx-1 glitch-text" data-text="Thai PBS">Thai PBS</a>
+        </p>
         </div>
         
         {/* ปุ่มปิด */}

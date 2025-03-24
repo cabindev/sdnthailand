@@ -10,8 +10,8 @@ export default function Campaign() {
   const campaigns = [
     {
       id: '1',
-      desktopImage: '/campaign/SDN Futsal.jpg',
-      mobileImage: '/campaign/SDN Futsal.jpg',
+      desktopImage: '/campaign/champions.jpg',
+      mobileImage: '/campaign/champions.jpg',
       title: 'Campaign SDN Futsal No L CUP',
       link: 'https://web.facebook.com/sdnfutsalNoL'
     },
@@ -37,7 +37,7 @@ export default function Campaign() {
       link: 'https://sdnthailand.com/sdnblog/36330'
     },
   ];
-
+  
   useEffect(() => {
     setIsLoaded(true);
 
