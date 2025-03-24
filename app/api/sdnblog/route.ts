@@ -4,7 +4,7 @@ import { cache } from 'react'
 
 export const dynamic = 'force-dynamic'
 
-const getPosts = cache(async (page = '1', per_page = '4') => {
+const getPosts = cache(async (page = '1', per_page = '12') => {
   const res = await fetch(
     `https://blog.sdnthailand.com/wp-json/wp/v2/blog_post?page=${page}&per_page=${per_page}&status=publish&_embed=true`,
     {
@@ -22,7 +22,7 @@ const getPosts = cache(async (page = '1', per_page = '4') => {
 export async function GET(request: Request) {
   const { searchParams } = new URL(request.url)
   const page = searchParams.get('page') || '1'
-  const per_page = searchParams.get('per_page') || '4'
+  const per_page = searchParams.get('per_page') || '12'
 
   try {
     const data = await getPosts(page, per_page)
