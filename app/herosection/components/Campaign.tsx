@@ -17,20 +17,27 @@ export default function Campaign() {
     },
     {
       id: '2',
+      desktopImage: '/campaign/songkran3.svg',
+      mobileImage: '/campaign/songkran3.svg',
+      title: 'สุขสันต์วันสงกรานต์',
+      link: 'https://www.facebook.com/profile.php?id=100077226455080'
+    },
+    {
+      id: '3',
       desktopImage: '/campaign/cancer.jpg',
       mobileImage: '/campaign/cancermobile.jpg',
       title: 'Campaign Artboard 1',
       link: 'https://sdnthailand.com/sdnblog/36054'
     },
     {
-      id: '3',
+      id: '4',
       desktopImage: '/campaign/PM 2.5.jpg',
       mobileImage: '/campaign/pm2.5.jpg',
       title: 'ฝุ่น PM 2.5 ภัยเงียบที่คร่าชีวิตคนไทย',
       link: 'https://sdnthailand.com/sdnblog/36084'
     },
     {
-      id: '4',
+      id: '5',
       desktopImage: '/campaign/muhamud-ruesao.jpg',
       mobileImage: '/campaign/muhamud-ruesao.jpg',
       title: 'Muhamud Ruesao',
