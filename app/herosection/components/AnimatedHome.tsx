@@ -12,6 +12,7 @@ import NewsLoadingFallback from "@/app/herosection/components/loading/NewsLoadin
 import BlogLoadingFallback from "@/app/herosection/components/loading/BlogLoadingFallback";
 import NetworksSDN from "./Networks-SDN";
 import LivePopup from "@/app/popup/page";
+import SDNInfo from "@/app/about/page";
 
 // Lazy load components
 const NewsLatest = lazy(() => import("@/app/features/news/components/NewsLatest"));
@@ -34,7 +35,6 @@ const fadeInUp = {
 
 export default function AnimatedHome() {
   return (
-    
     <main className="min-h-screen">
       {/* <LivePopup/> */}
       {/* Hero Section */}
@@ -66,9 +66,21 @@ export default function AnimatedHome() {
           >
             <BlogList />
           </motion.section>
+          
+          {/* About Section - Import from SDNInfo */}
+          <motion.section
+            variants={fadeInUp}
+            initial="initial"
+            whileInView="animate"
+            viewport={{ once: true, margin: "-50px" }}
+          >
+            <SDNInfo />
+          </motion.section>
+          
           <motion.section>
-              <NetworksSDN/>
-            </motion.section>
+            <NetworksSDN/>
+          </motion.section>
+          
           {/* Other sections - Load last */}
           <Suspense>
             <motion.section>

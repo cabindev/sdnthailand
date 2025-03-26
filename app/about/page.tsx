@@ -1,94 +1,83 @@
 // app/sdninfo/page.tsx
-"use client";
+'use client';
 
-import Image from "next/image";
-import Link from 'next/link';
-import { FaInfoCircle, FaChartLine, FaUsers, FaBullseye } from 'react-icons/fa';
+import Link from "next/link";
+import { FaUsers, FaBullseye, FaFileAlt, FaProjectDiagram, FaPhone } from "react-icons/fa";
+import { motion } from "framer-motion";
 
-export default function SdnInfo() {
- return (
-   <div className="min-h-screen bg-white">
-     {/* Hero Section */}
-     <div className="relative bg-gradient-to-r from-orange-50 to-orange-100 pt-28 pb-16">
-       <div className="container mx-auto px-4">
-         <div className="flex flex-col items-center text-center">
-           <Image
-             src="/images/logoสคล.png"
-             alt="Logo"
-             width={120} 
-             height={120}
-             className="mb-8"
-             priority
-           />
-           <h1 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4 max-w-3xl mx-auto">
-             เราคือสำนักงานเครือข่ายองค์กรงดเหล้า (สคล.)
-           </h1>
-           <p className="text-gray-600 text-lg max-w-2xl mx-auto mb-8">
-             องค์กรที่มุ่งมั่นสร้างสังคมปลอดภัย ปลอดเหล้า เพื่อคุณภาพชีวิตที่ดีของคนไทย
-           </p>
-           <div className="h-1 w-24 bg-orange-500 mx-auto"></div>
-         </div>
-       </div>
-     </div>
+export default function SDNInfo() {
+  const aboutLinks = [
+    {
+      title: "โครงสร้างองค์กร",
+      description: "โครงสร้างสำนักงานเครือข่ายองค์กรงดเหล้า",
+      icon: <FaUsers className="text-orange-500 text-2xl" />,
+      href: "/about/chart",
+      color: "bg-blue-50"
+    },
+    {
+      title: "พันธกิจและวิสัยทัศน์",
+      description: "เราเกิดมาเพื่ออะไร และอะไรคือเป้าหมายของเรา",
+      icon: <FaBullseye className="text-orange-500 text-2xl" />,
+      href: "/about/mission",
+      color: "bg-green-50"
+    },
+    {
+      title: "แนวคิดหลัก",
+      description: "12 แนวคิดหลักของเครือข่ายงดเหล้า",
+      icon: <FaFileAlt className="text-orange-500 text-2xl" />,
+      href: "/about/principle",
+      color: "bg-yellow-50"
+    },
+    {
+      title: "โครงการที่ดำเนินงาน",
+      description: "โครงการที่ดำเนินงานประจำปี 2567",
+      icon: <FaProjectDiagram className="text-orange-500 text-2xl" />,
+      href: "/about/project2567",
+      color: "bg-purple-50"
+    },
+    {
+      title: "ติดต่อเรา",
+      description: "ข้อมูลการติดต่อและที่ตั้งสำนักงาน",
+      icon: <FaPhone className="text-orange-500 text-2xl" />,
+      href: "/about/contact",
+      color: "bg-pink-50"
+    }
+  ];
 
-     {/* Navigation Cards */}
-     <div className="container mx-auto px-4 py-16">
-       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 max-w-7xl mx-auto">
-         <Link href="/sdninfo/mission" 
-           className="group bg-white rounded-xl border border-gray-200 p-6 hover:border-orange-500 hover:shadow-lg transition-all duration-200">
-           <FaInfoCircle className="text-3xl text-orange-500 mb-4" />
-           <h3 className="text-xl font-semibold mb-2 text-gray-900">ปณิธาน</h3>
-           <p className="text-gray-600 text-sm">
-             เรียนรู้เกี่ยวกับวิสัยทัศน์และพันธกิจของเรา
-           </p>
-         </Link>
+  return (
+    <section className="py-16 bg-white">
+      <div className="container mx-auto px-4">
+        <div className="text-center mb-12">
+          <h2 className="text-3xl font-bold text-gray-900">เกี่ยวกับเรา</h2>
+          <div className="h-1 w-24 bg-orange-500 mx-auto mt-4"></div>
+          <p className="mt-4 text-gray-600 max-w-2xl mx-auto">
+            เรียนรู้เพิ่มเติมเกี่ยวกับสำนักงานเครือข่ายองค์กรงดเหล้า วิสัยทัศน์ พันธกิจ และการทำงานของเรา
+          </p>
+        </div>
 
-         <Link href="/sdninfo/principle"
-           className="group bg-white rounded-xl border border-gray-200 p-6 hover:border-orange-500 hover:shadow-lg transition-all duration-200">
-           <FaBullseye className="text-3xl text-orange-500 mb-4" />
-           <h3 className="text-xl font-semibold mb-2 text-gray-900">หลักการ</h3>
-           <p className="text-gray-600 text-sm">
-             12 แนวคิดหลักของเครือข่ายงดเหล้า
-           </p>
-         </Link>
-
-         <Link href="/sdninfo/chart"
-           className="group bg-white rounded-xl border border-gray-200 p-6 hover:border-orange-500 hover:shadow-lg transition-all duration-200">
-           <FaUsers className="text-3xl text-orange-500 mb-4" />
-           <h3 className="text-xl font-semibold mb-2 text-gray-900">โครงสร้างองค์กร</h3>
-           <p className="text-gray-600 text-sm">
-             ทำความรู้จักทีมงานและโครงสร้างการทำงาน
-           </p>
-         </Link>
-
-         <Link href="/sdninfo/17project"
-           className="group bg-white rounded-xl border border-gray-200 p-6 hover:border-orange-500 hover:shadow-lg transition-all duration-200">
-           <FaChartLine className="text-3xl text-orange-500 mb-4" />
-           <h3 className="text-xl font-semibold mb-2 text-gray-900">โครงการ</h3>
-           <p className="text-gray-600 text-sm">
-             โครงการที่ดำเนินงานประจำปี 2567
-           </p>
-         </Link>
-       </div>
-     </div>
-
-     {/* Contact Info */}
-     <div className="bg-gray-50 py-16">
-       <div className="container mx-auto px-4">
-         <div className="max-w-3xl mx-auto text-center">
-           <h2 className="text-2xl font-bold text-gray-900 mb-8">ติดต่อเรา</h2>
-           <p className="text-gray-600 mb-8">
-             สำนักงานเครือข่ายองค์กรงดเหล้า<br />
-             110/287-288 ม.6 ซอยโพธิ์แก้ว แยก 4<br />
-             ถ.โพธิ์แก้ว แขวงคลองกุ่ม เขตบึงกุ่ม กทม. 10240
-           </p>
-           <Link href="/sdninfo/contact" 
-             className="inline-flex items-center justify-center px-6 py-3 border border-transparent text-base font-medium rounded-md text-white bg-orange-500 hover:bg-orange-600 transition-colors">
-             ดูข้อมูลการติดต่อทั้งหมด
-           </Link>
-         </div>
-       </div>
-     </div>
-   </div>
- );
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-5xl mx-auto">
+          {aboutLinks.map((link, index) => (
+            <motion.div
+              key={index}
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, delay: index * 0.1 }}
+              viewport={{ once: true }}
+            >
+              <Link 
+                href={link.href}
+                className={`${link.color} rounded-xl shadow-sm border border-gray-100 p-6 transition-all hover:shadow-md hover:scale-105 block h-full`}
+              >
+                <div className="flex flex-col items-center text-center h-full">
+                  <div className="mb-4 p-3 rounded-full bg-white shadow-sm">{link.icon}</div>
+                  <h3 className="font-bold text-lg text-gray-900 mb-2">{link.title}</h3>
+                  <p className="text-gray-600 text-sm">{link.description}</p>
+                </div>
+              </Link>
+            </motion.div>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
 }
