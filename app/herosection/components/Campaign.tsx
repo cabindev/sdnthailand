@@ -10,8 +10,8 @@ export default function Campaign() {
   const campaigns = [
     {
       id: '1',
-      desktopImage: '/campaign/Champions.jpg',
-      mobileImage: '/campaign/Champions.jpg',
+      desktopImage: '/campaign/Champions1.jpg',
+      mobileImage: '/campaign/Champions1.jpg',
       title: 'Campaign SDN Futsal No L CUP',
       link: 'https://web.facebook.com/sdnfutsalNoL'
     },
