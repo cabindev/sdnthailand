@@ -36,7 +36,7 @@ const fadeInUp = {
 export default function AnimatedHome() {
   return (
     <main className="min-h-screen">
-      <LivePopup/>
+      {/* <LivePopup/> */}
       {/* Hero Section */}
       <motion.section>
         <Suspense fallback={null}>
