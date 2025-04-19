@@ -10,10 +10,10 @@ export default function Campaign() {
   const campaigns = [
     {
       id: '1',
-      desktopImage: '/campaign/Champions1.jpg',
-      mobileImage: '/campaign/Champions1.jpg',
-      title: 'Campaign SDN Futsal No L CUP',
-      link: 'https://web.facebook.com/sdnfutsalNoL'
+      desktopImage: '/campaign/Heate.png',
+      mobileImage: '/campaign/Heate.png',
+      title: 'อันตรายจากโรคลมร้อน',
+      link: 'https://sdnthailand.com/sdnblog/36587'
     },
     {
       id: '2',

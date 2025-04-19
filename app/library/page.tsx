@@ -1,12 +1,13 @@
 // app/library/page.tsx
 'use client';
 
-import { useState, useEffect } from 'react';
-import { books } from './data/books';
-import SearchBar from './components/SearchBar';
-import BookCard from './components/BookCard';
+import MaintenancePage from './components/MaintenancePage';
 
 export default function Library() {
+  // ใช้หน้าปิดปรับปรุงชั่วคราวแทน
+  return <MaintenancePage />;
+  
+  /* โค้ดเดิมถูกคอมเมนต์ไว้เพื่อเก็บไว้ใช้ภายหลัง
   const [isLoading, setIsLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState('');
 
@@ -61,4 +62,5 @@ export default function Library() {
       </div>
     </main>
   );
+  */
 }
