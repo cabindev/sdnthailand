@@ -24,7 +24,7 @@ interface BlogCardProps {
 }
 
 export default function BlogCard({ post, isLarge = false }: BlogCardProps) {
-  // ใช้ตรรกะดึงภาพที่อาจมีคุณภาพสูงที่สุดก่อน
+  // ใช้ภาพความละเอียดสูงที่สุดที่มี
   const featuredImage =
     post.uagb_featured_image_src?.full?.[0] ||
     post._embedded?.["wp:featuredmedia"]?.[0]?.source_url ||
@@ -41,6 +41,7 @@ export default function BlogCard({ post, isLarge = false }: BlogCardProps) {
           sizes="(max-width: 768px) 100vw, 33vw"
           className="object-cover"
           priority={isLarge}
+          quality={90}
         />
       </div>
       <div className="p-4 bg-orange-100">
@@ -55,22 +56,20 @@ export default function BlogCard({ post, isLarge = false }: BlogCardProps) {
     </div>
   );
 
-  // Desktop Large Card
+  // Desktop Large Card - ปรับแต่งให้ภาพคมชัดที่สุด
   const desktopLargeCard = (
     <div className="hidden md:flex md:h-[450px] bg-white rounded-xl overflow-hidden shadow-lg hover:shadow-xl transition-all duration-300">
       <div className="relative w-2/3">
-        {isLarge && (
-          <Image
-            src={featuredImage}
-            alt={post.title.rendered.replace(/<[^>]*>/g, '')}
-            fill
-            sizes="(min-width: 768px) 66vw"
-            className="object-contain md:object-cover object-center"
-            priority={true}
-            quality={100}
-            unoptimized={true}
-          />
-        )}
+        <Image
+          src={featuredImage}
+          alt={post.title.rendered.replace(/<[^>]*>/g, '')}
+          fill
+          sizes="(min-width: 768px) 66vw"
+          className="object-cover object-center"
+          priority={true}
+          quality={100}
+          unoptimized={true}
+        />
       </div>
       <div className="w-1/3 p-6 bg-orange-100">
         <h3

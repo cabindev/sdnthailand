@@ -1,13 +1,12 @@
 // app/library/page.tsx
 'use client';
 
-import MaintenancePage from './components/MaintenancePage';
+import { useState, useEffect } from 'react';
+import { books } from './data/books';
+import SearchBar from './components/SearchBar';
+import BookCard from './components/BookCard';
 
 export default function Library() {
-  // ใช้หน้าปิดปรับปรุงชั่วคราวแทน
-  return <MaintenancePage />;
-  
-  /* โค้ดเดิมถูกคอมเมนต์ไว้เพื่อเก็บไว้ใช้ภายหลัง
   const [isLoading, setIsLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState('');
 
@@ -22,7 +21,8 @@ export default function Library() {
 
   if (isLoading) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-[#FFF5F7]">
+      <div className="min-h-screen flex items-center justify-center bg-[
+#FFF5F7]">
         <div className="text-center">
           <div className="animate-bounce mb-4">
             <span className="text-6xl">📚</span>
@@ -36,7 +36,8 @@ export default function Library() {
   }
 
   return (
-    <main className="min-h-screen bg-[#FFF5F7] pt-24">
+    <main className="min-h-screen bg-[
+#FFF5F7] pt-24">
       <div className="max-w-7xl mx-auto px-4 py-12">
         <header className="text-center mb-16">
           <h1 className="text-5xl md:text-6xl font-bold text-pink-500 mb-4">
@@ -53,7 +54,7 @@ export default function Library() {
             <BookCard key={index} book={book} />
           ))}
         </div>
-        
+
         {filteredBooks.length === 0 && (
           <div className="text-center py-12">
             <p className="text-xl text-gray-500">ไม่พบนิทานที่คุณค้นหา</p>
@@ -62,5 +63,4 @@ export default function Library() {
       </div>
     </main>
   );
-  */
 }
