@@ -1,5 +1,4 @@
 // BlogList.tsx
-
 import useSWR from 'swr';
 import Link from 'next/link';
 import BlogCard from './BlogCard';
@@ -43,14 +42,30 @@ function BlogContent() {
 
   if (isLoading) {
     return (
-      <div className="space-y-8">
-        <div className="animate-pulse">
-          <div className="h-[450px] bg-gray-200 rounded-xl mb-8" />
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-            {[1, 2, 3].map((i) => (
-              <div key={i} className="h-64 bg-gray-200 rounded-xl" />
-            ))}
+      <div className="space-y-12">
+        {/* Large card skeleton */}
+        <div className="animate-pulse bg-white rounded-xl overflow-hidden shadow-lg">
+          <div className="md:flex">
+            <div className="bg-gray-200 h-[250px] md:h-[450px] md:w-2/3"></div>
+            <div className="p-6 md:w-1/3 bg-gray-100">
+              <div className="h-8 bg-gray-200 rounded-md mb-4"></div>
+              <div className="h-24 bg-gray-200 rounded-md"></div>
+              <div className="mt-4 h-6 w-1/3 bg-gray-200 rounded-full"></div>
+            </div>
           </div>
+        </div>
+        
+        {/* Smaller cards skeleton */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+          {[1, 2, 3].map((i) => (
+            <div key={i} className="bg-white rounded-xl overflow-hidden shadow-sm">
+              <div className="bg-gray-200 aspect-video"></div>
+              <div className="p-4 bg-gray-100">
+                <div className="h-6 bg-gray-200 rounded-md mb-2"></div>
+                <div className="h-4 w-1/3 bg-gray-200 rounded-full"></div>
+              </div>
+            </div>
+          ))}
         </div>
       </div>
     );
