@@ -10,39 +10,34 @@ export default function Campaign() {
   const campaigns = [
     {
       id: '1',
-      desktopImage: '/campaign/Heate.png',
-      mobileImage: '/campaign/Heate.png',
+      desktopImage: '/campaign/rip1.png',
+      mobileImage: '/campaign/rip1.png',
+      title: 'ค่าใช้จ่ายในงานศพ',
+      link: 'https://https://sdnthailand.com/sdnblog/36644'
+    },
+    {
+      id: '2',
+      desktopImage: '/campaign/EVALI.jpg',
+      mobileImage: '/campaign/EVALI.jpg',
+      title: 'ค่าใช้จ่ายในงานศพ',
+      link: 'https://sdnthailand.com/sdnblog/36617'
+    },
+    {
+      id: '3',
+      desktopImage: '/campaign/Heat.jpg',
+      mobileImage: '/campaign/Heat.jpg',
       title: 'อันตรายจากโรคลมร้อน',
       link: 'https://sdnthailand.com/sdnblog/36587'
     },
     {
-      id: '2',
-      desktopImage: '/campaign/songkran3.svg',
-      mobileImage: '/campaign/songkran3.svg',
-      title: 'สุขสันต์วันสงกรานต์',
-      link: 'https://www.facebook.com/profile.php?id=100077226455080'
-    },
-    {
-      id: '3',
+      id: '4',
       desktopImage: '/campaign/cancer.jpg',
       mobileImage: '/campaign/cancermobile.jpg',
       title: 'Campaign Artboard 1',
       link: 'https://sdnthailand.com/sdnblog/36054'
     },
-    {
-      id: '4',
-      desktopImage: '/campaign/PM 2.5.jpg',
-      mobileImage: '/campaign/pm2.5.jpg',
-      title: 'ฝุ่น PM 2.5 ภัยเงียบที่คร่าชีวิตคนไทย',
-      link: 'https://sdnthailand.com/sdnblog/36084'
-    },
-    {
-      id: '5',
-      desktopImage: '/campaign/muhamud-ruesao.jpg',
-      mobileImage: '/campaign/muhamud-ruesao.jpg',
-      title: 'Muhamud Ruesao',
-      link: 'https://sdnthailand.com/sdnblog/36330'
-    },
+
+
   ];
   
   useEffect(() => {
