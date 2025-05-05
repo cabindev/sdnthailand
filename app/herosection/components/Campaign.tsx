@@ -13,7 +13,7 @@ export default function Campaign() {
       desktopImage: '/campaign/rip1.png',
       mobileImage: '/campaign/rip1.png',
       title: 'ค่าใช้จ่ายในงานศพ',
-      link: 'https://https://sdnthailand.com/sdnblog/36644'
+      link: 'https://sdnthailand.com/sdnblog/36644'
     },
     {
       id: '2',
