@@ -18,7 +18,7 @@ export default function Campaign() {
     {
       id: '2',
       desktopImage: '/campaign/EVALI1.jpg',
-      mobileImage: '/campaign/evali.jpg',
+      mobileImage: '/campaign/evali2.jpg',
       title: 'โรคปอดอักเสบเฉียบพลัน',
       link: 'https://sdnthailand.com/sdnblog/36617'
     },
