@@ -88,25 +88,7 @@ export default function Home2025() {
           </motion.div>
         </div>
         
-        {/* Scroll Indicator */}
-        <AnimatePresence>
-          {!isScrolled && (
-            <motion.div 
-              className="absolute bottom-10 left-1/2 transform -translate-x-1/2 flex flex-col items-center"
-              initial={{ opacity: 0, y: -20 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0 }}
-              transition={{ delay: 1.2 }}
-            >
-              <span className="text-sm font-medium mb-2 text-[var(--foreground)] backdrop-blur-sm px-3 py-1 rounded-full bg-[var(--accent)]/20">เลื่อนลงเพื่อดูข้อมูลเพิ่มเติม</span>
-              <motion.div 
-                className="w-6 h-6 border-b-2 border-r-2 border-[var(--accent)]/80 transform rotate-45"
-                animate={{ y: [0, 10, 0] }}
-                transition={{ repeat: Infinity, duration: 1.5 }}
-              />
-            </motion.div>
-          )}
-        </AnimatePresence>
+        {/* ตัดส่วน Scroll Indicator ออก */}
       </section>
 
       {/* ใช้ Navigation Menu */}
