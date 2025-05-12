@@ -11,33 +11,17 @@ export default function Campaign() {
     {
       id: '1',
       desktopImage: '/campaign/rip1.png',
-      mobileImage: '/campaign/rip1.png',
+      mobileImage: '/campaign/rip1.jpg',
       title: 'ค่าใช้จ่ายในงานศพ',
       link: 'https://sdnthailand.com/sdnblog/36644'
     },
     {
       id: '2',
       desktopImage: '/campaign/EVALI.jpg',
-      mobileImage: '/campaign/EVALI.jpg',
-      title: 'ค่าใช้จ่ายในงานศพ',
+      mobileImage: '/campaign/evali.jpg',
+      title: 'โรคปอดอักเสบเฉียบพลัน',
       link: 'https://sdnthailand.com/sdnblog/36617'
     },
-    {
-      id: '3',
-      desktopImage: '/campaign/Heat.jpg',
-      mobileImage: '/campaign/Heat.jpg',
-      title: 'อันตรายจากโรคลมร้อน',
-      link: 'https://sdnthailand.com/sdnblog/36587'
-    },
-    {
-      id: '4',
-      desktopImage: '/campaign/cancer.jpg',
-      mobileImage: '/campaign/cancermobile.jpg',
-      title: 'Campaign Artboard 1',
-      link: 'https://sdnthailand.com/sdnblog/36054'
-    },
-
-
   ];
   
   useEffect(() => {
@@ -48,6 +32,32 @@ export default function Campaign() {
     }, 5000);
 
     return () => clearInterval(interval);
+  }, [campaigns.length]);
+
+  // คำนวณความสูงของรูปภาพในหน้าจอเล็กตามอัตราส่วน 9:16
+  const [mobileHeight, setMobileHeight] = useState('calc(100vh - 120px)');
+  
+  useEffect(() => {
+    const updateMobileHeight = () => {
+      // คำนวณความสูงตามอัตราส่วน 9:16 จากความกว้างของหน้าจอ
+      // อัตราส่วน 9:16 หมายถึง ความสูง = (ความกว้าง * 16) / 9
+      const screenWidth = window.innerWidth;
+      const calculatedHeight = (screenWidth * 16) / 9;
+      
+      // จำกัดความสูงไม่ให้เกิน 90% ของความสูงหน้าจอ
+      const maxHeight = window.innerHeight * 0.9;
+      const finalHeight = Math.min(calculatedHeight, maxHeight);
+      
+      setMobileHeight(`${finalHeight}px`);
+    };
+
+    // เรียกใช้ฟังก์ชันครั้งแรกและเมื่อมีการปรับขนาดหน้าจอ
+    updateMobileHeight();
+    window.addEventListener('resize', updateMobileHeight);
+    
+    return () => {
+      window.removeEventListener('resize', updateMobileHeight);
+    };
   }, []);
 
   return (
@@ -91,8 +101,11 @@ export default function Campaign() {
         ))}
       </div>
 
-      {/* Mobile Screen Images */}
-      <div className="block md:hidden relative w-full h-[400px]">
+      {/* Mobile Screen Images - สัดส่วน 9:16 แนวตั้ง */}
+      <div 
+        className="block md:hidden relative w-full"
+        style={{ height: mobileHeight }}
+      >
         {campaigns.map((campaign, index) => (
           <div
             key={campaign.id}
