@@ -105,9 +105,11 @@ const Navbar: React.FC = () => {
        { href: 'https://lanna.sdnthailand.com/pages/login.php', label: 'Lanna Document' },
        { href: 'https://soberheartteam.sdnthailand.com/', label: 'ร้อยคนหัวใจเพชร' },
        { href: 'https://post.sdnthailand.com/sdn/admin/', label: 'SDN DB Systems' },
-       { href: 'https://avs.sdnthailand.com/avs/index.php', label: 'AVS' },
-       { href: 'https://healthy-sobriety.sdnthailand.com/', label: 'SoberSheres' },
+       { href: 'https://avs2.sdnthailand.com/index.php', label: 'AVS+' },
        { href: 'https://sdnmapportal.sdnthailand.com/', label: 'SDN Map-portal' },
+       { href: 'https://database.ssnthailand.com/', label: 'SSN Thailand' },
+       { href: 'https://sdnfutsal.com/', label: 'SDN Futsal NO L CUP' },
+       { href: 'https://ordain-chi.vercel.app/ordain/stats/', label: 'Sangha Foundation' },
      ]
    },
    { href: 'https://support.sdnthailand.com/about/contact', label: 'Contact' }
