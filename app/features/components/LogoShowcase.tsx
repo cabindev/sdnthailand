@@ -18,7 +18,7 @@ const logos: Logo[] = [
  {
    id: 1,
    image: "/allLogo/All logo-01.png", 
-   alt: "ไรพูเง อคาเดมี่",
+   alt: "สสส",
    url: "https://raipoong.com"
  },
  {
