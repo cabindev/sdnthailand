@@ -132,32 +132,35 @@ const NavigationMenu = ({ activeSection }: NavigationMenuProps) => {
                 <FaBars className="w-4 h-4" />
               </button>
 
-              {isHamburgerOpen && (
-                <div className="fixed top-20 right-4 p-4 bg-white rounded-lg shadow-xl border border-gray-100 z-[9999]">
-                  <div className="grid grid-cols-2 sm:grid-cols-3 gap-4">
-                    {externalLinks.map((link) => (
-                      <Link
-                        key={link.id}
-                        href={link.url}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="block hover:shadow-md transition-all rounded-md overflow-hidden"
-                      >
-                        <div className="w-[150px] h-[70px] bg-white rounded-md overflow-hidden flex items-center justify-center">
-                          <Image
-                            src={link.image}
-                            alt={link.title}
-                            width={140}
-                            height={60}
-                            loading="lazy"
-                            style={{ objectFit: 'contain' }}
-                          />
-                        </div>
-                      </Link>
-                    ))}
-                  </div>
-                </div>
-              )}
+{isHamburgerOpen && (
+  <div className="fixed top-20 right-4 p-4 bg-white rounded-lg shadow-xl border border-gray-100 z-[9999]">
+    <div className="grid grid-cols-2 sm:grid-cols-3 gap-4">
+      {externalLinks.map((link) => (
+        <Link
+          key={link.id}
+          href={link.url}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="block hover:shadow-md transition-all rounded-md overflow-hidden text-center"
+        >
+          <div className="w-[150px] h-[70px] bg-white rounded-md overflow-hidden flex items-center justify-center">
+            <Image
+              src={link.image}
+              alt={link.title}
+              width={140}
+              height={60}
+              loading="lazy"
+              className="object-contain"
+            />
+          </div>
+          {/* แสดง label เฉพาะบนหน้าจอเล็ก */}
+          <div className="text-xs mt-1 sm:hidden text-black">{link.title}</div>
+        </Link>
+      ))}
+    </div>
+  </div>
+)}
+
             </div>
           </div>
         </nav>
