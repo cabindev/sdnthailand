@@ -4,7 +4,6 @@
 import { Suspense, lazy } from "react";
 import { motion } from "framer-motion";
 import Vision from "./Vision";
-import Campaigns from "@/app/features/components/Campaigns";
 import LogoShowcase from "@/app/features/components/LogoShowcase";
 import Campaign from "./Campaign";
 import DryJanuary from "./Dry-january";
