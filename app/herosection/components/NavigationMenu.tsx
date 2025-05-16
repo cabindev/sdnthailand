@@ -1,24 +1,15 @@
-// app/herosection/components/NavigationMenu.tsx
 'use client';
 
 import { useState, useRef, useEffect } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
-import { 
-  FaRegNewspaper, 
-  FaVideo, 
-  FaHandsHelping, 
-  FaUsers,
-  FaBars,
-  FaTimes
-} from 'react-icons/fa';
+import { FaRegNewspaper, FaVideo, FaHandsHelping, FaUsers, FaBars } from 'react-icons/fa';
 
-// กำหนดข้อมูลลิงก์สำหรับเมนู Hamburger
 const externalLinks = [
   {
     id: 1,
     title: "ที่โรงเรียนคำพ่อสอน", 
-    url: "https://xn--42cf1cjb3azgb8e6ab5d9ad8o5a1il1h.com/%e0%b8%ab%e0%b8%99%e0%b9%89%e0%b8%b2%e0%b9%81%e0%b8%a3%e0%b8%81/",
+    url: "https://xn--42cf1cjb3azgb8e6ab5d9ad8o5a1il1h.com/หน้าแรก/",
     image: "/Link/School.png"
   },
   {
@@ -57,11 +48,10 @@ interface NavigationMenuProps {
   activeSection: string;
 }
 
-export default function NavigationMenu({ activeSection }: NavigationMenuProps) {
+const NavigationMenu = ({ activeSection }: NavigationMenuProps) => {
   const [isHamburgerOpen, setIsHamburgerOpen] = useState(false);
   const menuRef = useRef<HTMLDivElement>(null);
 
-  // ปิดเมนูเมื่อคลิกนอกเมนู
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       if (menuRef.current && !menuRef.current.contains(event.target as Node)) {
@@ -83,249 +73,97 @@ export default function NavigationMenu({ activeSection }: NavigationMenuProps) {
   };
 
   return (
-    <>
-      {/* Desktop Navigation */}
-      <div className="sticky top-0 z-40 backdrop-blur-xl bg-white shadow-md border-b border-[var(--accent)]/10">
-        <div className="max-w-7xl mx-auto">
-          <div className="overflow-x-auto hide-scrollbar">
-            <nav className="flex items-center justify-between py-4 px-4 sm:px-6 lg:px-8">
-              <div className="flex space-x-2 md:space-x-4 overflow-x-auto hide-scrollbar py-2">
-                {/* เมนูหลักเหมือนเดิม */}
-                <Link 
-                  href="#news"
-                  className={`group flex items-center whitespace-nowrap px-4 py-2 rounded-full text-sm font-medium transition-all ${
-                    activeSection === "news" 
-                    ? "bg-[var(--accent)] text-[var(--accent-foreground)] shadow-lg shadow-[var(--accent)]/20" 
+    <div className="sticky top-0 z-40 backdrop-blur-xl bg-white shadow-md border-b border-[var(--accent)]/10">
+      <div className="max-w-7xl mx-auto px-4">
+        <nav className="flex items-center justify-between py-4">
+          <div className="flex space-x-2 md:space-x-4 overflow-x-auto hide-scrollbar py-2">
+            {/* เมนู Link ต่าง ๆ */}
+            {[
+              { id: "news", icon: <FaRegNewspaper />, label: "ข่าวสาร" },
+              { id: "blogs", icon: (
+                  <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9a2 2 0 00-2-2h-2m-4-3H9M7 16h6M7 8h6v4H7V8z" />
+                  </svg>
+                ), label: "บทความ" },
+              { id: "ordain", icon: (
+                  <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z" />
+                  </svg>
+                ), label: "โครงการบวชสร้างสุข" },
+              { id: "about", icon: (
+                  <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                  </svg>
+                ), label: "เกี่ยวกับเรา" },
+              { id: "networks", icon: <FaUsers />, label: "เครือข่าย" },
+              { id: "videos", icon: <FaVideo />, label: "วิดีโอ" },
+              { id: "support", icon: <FaHandsHelping />, label: "สนับสนุน" },
+            ].map(({ id, icon, label }) => (
+              <Link
+                key={id}
+                href={`#${id}`}
+                className={`group flex items-center whitespace-nowrap px-4 py-2 rounded-full text-sm font-medium transition-all ${
+                  activeSection === id
+                    ? "bg-[var(--accent)] text-[var(--accent-foreground)] shadow-lg shadow-[var(--accent)]/20"
                     : "text-[var(--foreground)] hover:bg-[var(--hover-bg)] hover:scale-105"
-                  }`}
-                  onClick={(e) => {
-                    e.preventDefault();
-                    handleSectionClick("news");
-                  }}
-                >
-                  <span className="mr-2"><FaRegNewspaper className="transition-transform group-hover:scale-110" /></span>
-                  ข่าวสาร
-                </Link>
-                
-                <Link 
-                  href="#blogs"
-                  className={`group flex items-center whitespace-nowrap px-4 py-2 rounded-full text-sm font-medium transition-all ${
-                    activeSection === "blogs" 
-                    ? "bg-[var(--accent)] text-[var(--accent-foreground)] shadow-lg shadow-[var(--accent)]/20" 
-                    : "text-[var(--foreground)] hover:bg-[var(--hover-bg)] hover:scale-105"
-                  }`}
-                  onClick={(e) => {
-                    e.preventDefault();
-                    handleSectionClick("blogs");
-                  }}
-                >
-                  <span className="mr-2">
-                    <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 transition-transform group-hover:scale-110" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9a2 2 0 00-2-2h-2m-4-3H9M7 16h6M7 8h6v4H7V8z" />
-                    </svg>
-                  </span>
-                  บทความ
-                </Link>
-                
-                <Link 
-                  href="#ordain"
-                  className={`group flex items-center whitespace-nowrap px-4 py-2 rounded-full text-sm font-medium transition-all ${
-                    activeSection === "ordain" 
-                    ? "bg-[var(--accent)] text-[var(--accent-foreground)] shadow-lg shadow-[var(--accent)]/20" 
-                    : "text-[var(--foreground)] hover:bg-[var(--hover-bg)] hover:scale-105"
-                  }`}
-                  onClick={(e) => {
-                    e.preventDefault();
-                    handleSectionClick("ordain");
-                  }}
-                >
-                  <span className="mr-2">
-                    <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 transition-transform group-hover:scale-110" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z" />
-                    </svg>
-                  </span>
-                  โครงการบวชสร้างสุข
-                </Link>
-                
-                <Link 
-                  href="#about"
-                  className={`group flex items-center whitespace-nowrap px-4 py-2 rounded-full text-sm font-medium transition-all ${
-                    activeSection === "about" 
-                    ? "bg-[var(--accent)] text-[var(--accent-foreground)] shadow-lg shadow-[var(--accent)]/20" 
-                    : "text-[var(--foreground)] hover:bg-[var(--hover-bg)] hover:scale-105"
-                  }`}
-                  onClick={(e) => {
-                    e.preventDefault();
-                    handleSectionClick("about");
-                  }}
-                >
-                  <span className="mr-2">
-                    <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 transition-transform group-hover:scale-110" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                    </svg>
-                  </span>
-                  เกี่ยวกับเรา
-                </Link>
-                
-                <Link 
-                  href="#networks"
-                  className={`group flex items-center whitespace-nowrap px-4 py-2 rounded-full text-sm font-medium transition-all ${
-                    activeSection === "networks" 
-                    ? "bg-[var(--accent)] text-[var(--accent-foreground)] shadow-lg shadow-[var(--accent)]/20" 
-                    : "text-[var(--foreground)] hover:bg-[var(--hover-bg)] hover:scale-105"
-                  }`}
-                  onClick={(e) => {
-                    e.preventDefault();
-                    handleSectionClick("networks");
-                  }}
-                >
-                  <span className="mr-2"><FaUsers className="transition-transform group-hover:scale-110" /></span>
-                  เครือข่าย
-                </Link>
-                
-                <Link 
-                  href="#videos"
-                  className={`group flex items-center whitespace-nowrap px-4 py-2 rounded-full text-sm font-medium transition-all ${
-                    activeSection === "videos" 
-                    ? "bg-[var(--accent)] text-[var(--accent-foreground)] shadow-lg shadow-[var(--accent)]/20" 
-                    : "text-[var(--foreground)] hover:bg-[var(--hover-bg)] hover:scale-105"
-                  }`}
-                  onClick={(e) => {
-                    e.preventDefault();
-                    handleSectionClick("videos");
-                  }}
-                >
-                  <span className="mr-2"><FaVideo className="transition-transform group-hover:scale-110" /></span>
-                  วิดีโอ
-                </Link>
-                
-                <Link 
-                  href="#support"
-                  className={`group flex items-center whitespace-nowrap px-4 py-2 rounded-full text-sm font-medium transition-all ${
-                    activeSection === "support" 
-                    ? "bg-[var(--accent)] text-[var(--accent-foreground)] shadow-lg shadow-[var(--accent)]/20" 
-                    : "text-[var(--foreground)] hover:bg-[var(--hover-bg)] hover:scale-105"
-                  }`}
-                  onClick={(e) => {
-                    e.preventDefault();
-                    handleSectionClick("support");
-                  }}
-                >
-                  <span className="mr-2"><FaHandsHelping className="transition-transform group-hover:scale-110" /></span>
-                  สนับสนุน
-                </Link>
-                
-                {/* ปุ่ม Hamburger */}
-                <div className="relative inline-block" ref={menuRef}>
-                  <button
-                    onClick={() => setIsHamburgerOpen(!isHamburgerOpen)}
-                    className={`flex items-center justify-center w-10 h-10 rounded-full ${
-                      isHamburgerOpen
-                      ? "bg-[#FF6633] text-white"
-                      : "bg-[#FF6633] text-white hover:bg-[#FF5522]"
-                    } transition-colors ml-2`}
-                    aria-label={isHamburgerOpen ? "ปิดเมนู" : "เปิดเมนู"}
-                  >
-                    {isHamburgerOpen ? <FaTimes className="w-4 h-4" /> : <FaBars className="w-4 h-4" />}
-                  </button>
-                  
-                  {/* Dropdown Menu */}
-                  {isHamburgerOpen && (
-                    <div
-                      className="fixed top-20 right-4 p-4 bg-white rounded-lg shadow-xl border border-gray-100"
-                      style={{ zIndex: 9999 }}
-                    >
-                      <div className="grid grid-cols-2 sm:grid-cols-3 gap-4">
-                        {externalLinks.map((link) => (
-                          <Link
-                            key={link.id}
-                            href={link.url}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="block hover:shadow-md transition-all rounded-md overflow-hidden"
-                          >
-                            <div className="w-[150px] h-[70px] bg-white rounded-md overflow-hidden flex items-center justify-center">
-                              <Image
-                                src={link.image}
-                                alt={link.title || "External link"}
-                                width={140}
-                                height={60}
-                                style={{ objectFit: 'contain' }}
-                              />
-                            </div>
-                          </Link>
-                        ))}
-                      </div>
-                    </div>
-                  )}
+                }`}
+                onClick={(e) => {
+                  e.preventDefault();
+                  handleSectionClick(id);
+                }}
+              >
+                <span className="mr-2 transition-transform group-hover:scale-110">{icon}</span>
+                {label}
+              </Link>
+            ))}
+
+            {/* Hamburger Menu */}
+            <div className="relative" ref={menuRef}>
+              <button
+                type="button"
+                onClick={() => setIsHamburgerOpen(!isHamburgerOpen)}
+                className={`flex items-center justify-center w-10 h-10 rounded-full ${
+                  isHamburgerOpen
+                    ? "bg-[#FF6633] text-white"
+                    : "bg-[#FF6633] text-white hover:bg-[#FF5522]"
+                } transition-colors ml-2`}
+                aria-label={isHamburgerOpen ? "ปิดเมนู" : "เปิดเมนู"}
+              >
+                <FaBars className="w-4 h-4" />
+              </button>
+
+              {isHamburgerOpen && (
+                <div className="fixed top-20 right-4 p-4 bg-white rounded-lg shadow-xl border border-gray-100 z-[9999]">
+                  <div className="grid grid-cols-2 sm:grid-cols-3 gap-4">
+                    {externalLinks.map((link) => (
+                      <Link
+                        key={link.id}
+                        href={link.url}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="block hover:shadow-md transition-all rounded-md overflow-hidden"
+                      >
+                        <div className="w-[150px] h-[70px] bg-white rounded-md overflow-hidden flex items-center justify-center">
+                          <Image
+                            src={link.image}
+                            alt={link.title}
+                            width={140}
+                            height={60}
+                            loading="lazy"
+                            style={{ objectFit: 'contain' }}
+                          />
+                        </div>
+                      </Link>
+                    ))}
+                  </div>
                 </div>
-              </div>
-            </nav>
-          </div>
-        </div>
-      </div>
-
-      {/* Mobile Fixed Hamburger Button */}
-      <div className="block md:hidden">
-        <div className="fixed bottom-4 right-4 z-50">
-          <button
-            onClick={() => setIsHamburgerOpen(!isHamburgerOpen)}
-            className={`flex items-center justify-center w-14 h-14 rounded-full shadow-lg ${
-              isHamburgerOpen
-              ? "bg-[#FF6633] text-white"
-              : "bg-[#FF6633] text-white hover:bg-[#FF5522]"
-            } transition-colors`}
-            aria-label={isHamburgerOpen ? "ปิดเมนู" : "เปิดเมนู"}
-          >
-            {isHamburgerOpen ? <FaTimes className="w-6 h-6" /> : <FaBars className="w-6 h-6" />}
-          </button>
-        </div>
-
-        {/* Mobile Dropdown Menu */}
-        {isHamburgerOpen && (
-          <div
-            className="fixed inset-0 bg-black bg-opacity-50 z-40"
-            onClick={() => setIsHamburgerOpen(false)}
-          >
-            <div 
-              className="absolute right-4 bottom-20 p-4 bg-white rounded-lg shadow-xl border border-gray-100 w-[85%] max-w-md"
-              style={{ zIndex: 9999 }}
-              onClick={(e) => e.stopPropagation()}
-            >
-              <div className="flex justify-between items-center mb-4 border-b pb-2">
-                <h3 className="text-lg font-medium text-gray-800">เว็บไซต์อื่นๆ</h3>
-                <button 
-                  onClick={() => setIsHamburgerOpen(false)}
-                  className="p-1 rounded-full hover:bg-gray-100"
-                >
-                  <FaTimes className="w-5 h-5 text-gray-600" />
-                </button>
-              </div>
-              <div className="grid grid-cols-2 gap-3">
-                {externalLinks.map((link) => (
-                  <Link
-                    key={link.id}
-                    href={link.url}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="block hover:shadow-md transition-all rounded-md overflow-hidden"
-                  >
-                    <div className="bg-white rounded-md shadow-sm border border-gray-100 overflow-hidden flex items-center justify-center p-2 h-16">
-                      <Image
-                        src={link.image}
-                        alt={link.title || "External link"}
-                        width={120}
-                        height={45}
-                        style={{ objectFit: 'contain' }}
-                      />
-                    </div>
-                  </Link>
-                ))}
-              </div>
+              )}
             </div>
           </div>
-        )}
+        </nav>
       </div>
-    </>
+    </div>
   );
-}
+};
+
+export default NavigationMenu;
