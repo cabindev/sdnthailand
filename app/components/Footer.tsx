@@ -17,7 +17,10 @@ export default function Footer() {
                   สำนักงานเครือข่ายองค์กรงดเหล้า
                 </h3>
                 <p className="text-md text-white italic">
-                  StopDrink Network 
+                  SDN Thailand 
+                </p>
+                <p className="text-sm text-white">
+                  ดำเนินการภายใต้มูลนิธิวิถีสุข
                 </p>
               </div>
             </div>
