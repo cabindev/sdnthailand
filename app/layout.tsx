@@ -40,7 +40,7 @@ export const metadata: Metadata = {
     default: 'SDN Thailand',
     template: '%s | SDN Thailand'
   },
-  description: 'ข่าว และกิจกรรมเครือข่ายภาคประชาสังคม',
+  description: 'สำนักงานเครือข่ายองค์กรงดเหล้า (สคล)',
   openGraph: {
     type: 'website',
     locale: 'th_TH',
