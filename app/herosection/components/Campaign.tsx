@@ -10,13 +10,27 @@ export default function Campaign() {
   const campaigns = [
     {
       id: '1',
+      desktopImage: '/campaign/publictv.jpeg',
+      mobileImage: '/campaign/type public.jpg',
+      title: 'Public TV Campaign',
+      link: 'https://sdnthailand.com/sdnblog/36837'
+    },
+    {
+      id: '2',
+      desktopImage: '/campaign/durain+drinker_TV.jpeg',
+      mobileImage: '/campaign/durain+drinker.jpg',
+      title: 'ทุเรียนกับแอลกอฮอล์ อันตรายถึงชีวิต',
+      link: 'https://sdnthailand.com/sdnblog/36832'
+    },
+    {
+      id: '3',
       desktopImage: '/campaign/rip1.png',
       mobileImage: '/campaign/rip1.jpg',
       title: 'ค่าใช้จ่ายในงานศพ',
       link: 'https://sdnthailand.com/sdnblog/36644'
     },
     {
-      id: '2',
+      id: '4',
       desktopImage: '/campaign/EVALI1.jpg',
       mobileImage: '/campaign/evali2.jpg',
       title: 'โรคปอดอักเสบเฉียบพลัน',
