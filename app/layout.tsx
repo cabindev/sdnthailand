@@ -4,7 +4,6 @@ import SessionProvider from "./components/SessionProvider";
 import { getServerSession } from "next-auth";
 import authOptions from "./lib/configs/auth/authOptions";
 import ConditionalNavbar from "./components/ConditionalNavbar";
-import 'antd/dist/reset.css';
 import { IBM_Plex_Sans_Thai_Looped } from 'next/font/google'
 import localFont from 'next/font/local'
 import { Toaster } from 'react-hot-toast'
