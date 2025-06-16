@@ -1,19 +1,21 @@
 'use client'
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { useSession, signOut } from "next-auth/react";
-import { useRouter, usePathname } from 'next/navigation';
-import { HiMenuAlt3 } from "react-icons/hi";
+import { usePathname } from 'next/navigation';
+import { HiMenuAlt3, HiDatabase } from "react-icons/hi";
 import { IoIosArrowDown } from "react-icons/io";
 
+interface SubMenuItem {
+  name: string;
+  href: string;
+}
+
 interface MenuItem {
+  name: string;
   href?: string;
-  label: string;
-  subItems?: Array<{
-    href: string;
-    label: string;
-  }>;
+  submenu?: SubMenuItem[];
 }
 
 interface ExternalLinkProps {
@@ -23,154 +25,187 @@ interface ExternalLinkProps {
   onClick?: () => void;
 }
 
-const ExternalLink: React.FC<ExternalLinkProps> = ({ 
-  href, 
-  children, 
-  className,
-  onClick 
-}) => (
-  <a 
-    href={href}
-    target="_blank"
-    rel="noopener noreferrer" 
-    className={className}
-    onClick={onClick}
-  >
-    {children}
-  </a>
-);
+interface InternalLinkProps {
+  href: string;
+  children: React.ReactNode;
+  className?: string;
+  onClick?: () => void;
+}
 
 const Navbar: React.FC = () => {
   const { data: session } = useSession();
-  const router = useRouter();
   const pathname = usePathname();
-  const [isMenuOpen, setIsMenuOpen] = useState<boolean>(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState<boolean>(false);
-  const [activeSubmenu, setActiveSubmenu] = useState<string | null>(null);
-  const menuRef = useRef<HTMLDivElement>(null);
-  const submenuRefs = useRef<{ [key: string]: HTMLDivElement | null }>({});
-  const hoverTimeoutRef = useRef<NodeJS.Timeout | null>(null);
+  const [isProfileMenuOpen, setIsProfileMenuOpen] = useState<boolean>(false);
+  const [openSubmenu, setOpenSubmenu] = useState<string>('');
+  const [hoverTimeout, setHoverTimeout] = useState<NodeJS.Timeout | null>(null);
 
+  // Close menus when clicking outside
   useEffect(() => {
-    const handleClickOutside = (e: MouseEvent) => {
-      const target = e.target as Node;
-      let clickedInsideAnySubmenu = false;
-      
-      Object.values(submenuRefs.current).forEach(ref => {
-        if (ref && ref.contains(target)) {
-          clickedInsideAnySubmenu = true;
-        }
-      });
-
-      const clickedInsideMainMenu = menuRef.current && menuRef.current.contains(target);
-
-      if (!clickedInsideAnySubmenu && !clickedInsideMainMenu) {
-        setActiveSubmenu(null);
-      }
+    const handleClickOutside = () => {
+      setIsProfileMenuOpen(false);
     };
-
-    document.addEventListener('mousedown', handleClickOutside);
-    return () => document.removeEventListener('mousedown', handleClickOutside);
+    document.addEventListener('click', handleClickOutside);
+    return () => document.removeEventListener('click', handleClickOutside);
   }, []);
 
-  const leftNavItems: MenuItem[] = [
-    { href: '/', label: 'Home' },
-    { 
-      label: 'Artwork',
-      subItems: [
-        { href: 'https://sdn-workspaces.sdnthailand.com/', label: 'SDN Artwork' },
-        { href: 'https://blog.sdnthailand.com/sdnthailand-logo-2023', label: 'คู่มือการใช้ logo SDN Thailand' },
+  // Cleanup timeout on unmount
+  useEffect(() => {
+    return () => {
+      if (hoverTimeout) {
+        clearTimeout(hoverTimeout);
+      }
+    };
+  }, [hoverTimeout]);
+
+  const menuItems: MenuItem[] = [
+    { name: 'Home', href: '/' },
+    {
+      name: 'Artwork',
+      submenu: [
+        { name: 'SDN Artwork', href: 'https://sdn-workspaces.sdnthailand.com/' },
+        { name: 'คู่มือการใช้ logo SDN Thailand', href: 'https://blog.sdnthailand.com/sdnthailand-logo-2023' },
       ]
     },
-    { href: '/library', label: 'Ebook' },
-    { href: 'https://ebook.sdnthailand.com/', label: 'Library' },
-    { href: 'https://knowledges.sdnthailand.com/', label: 'SDN Knowledges' },
-    { 
-      label: 'Support',
-      subItems: [
-        { href: 'https://support.sdnthailand.com/support', label: 'ขอสื่อรณรงค์' },
-        { href: 'https://support.sdnthailand.com/procurement', label: 'จัดซื้อ' },
-        { href: 'https://support.sdnthailand.com/products', label: 'Store' },
+    { name: 'Ebook', href: '/library' },
+    { name: 'Library', href: 'https://ebook.sdnthailand.com/' },
+    { name: 'SDN Knowledges', href: 'https://knowledges.sdnthailand.com/' },
+    {
+      name: 'Support',
+      submenu: [
+        { name: 'ขอสื่อรณรงค์', href: 'https://support.sdnthailand.com/support' },
+        { name: 'จัดซื้อ', href: 'https://support.sdnthailand.com/procurement' },
+        { name: 'Store', href: 'https://support.sdnthailand.com/products' },
       ]
     },
-    { href: 'https://support.sdnthailand.com/about/contact', label: 'Contact' }
+    { name: 'Contact', href: 'https://support.sdnthailand.com/about/contact' }
   ];
 
-  const dataCenterMenu: MenuItem = { 
-    label: 'Data Center',
-    subItems: [
-      { href: 'https://lanna.sdnthailand.com/pages/login.php', label: 'Lanna Document' },
-      { href: 'https://soberheartteam.sdnthailand.com/', label: 'ร้อยคนหัวใจเพชร' },
-      { href: 'https://post.sdnthailand.com/sdn/admin/', label: 'SDN DB Systems' },
-      { href: 'https://avs2.sdnthailand.com/index.php', label: 'AVS+' },
-      { href: 'https://sdnmapportal.sdnthailand.com/', label: 'SDN Map-portal' },
-      { href: 'https://database.ssnthailand.com/', label: 'SSN Thailand' },
-      { href: 'https://sdnfutsal.com/', label: 'SDN Futsal NO L CUP' },
-      { href: 'https://ordain-chi.vercel.app/ordain/stats/', label: 'Sangha Foundation' },
-    ]
-  };
+  const dataCenterItems: SubMenuItem[] = [
+    { name: 'Lanna Document', href: 'https://lanna.sdnthailand.com/pages/login.php' },
+    { name: 'ร้อยคนหัวใจเพชร', href: 'https://soberheartteam.sdnthailand.com/' },
+    { name: 'SDN DB Systems', href: 'https://post.sdnthailand.com/sdn/admin/' },
+    { name: 'AVS+', href: 'https://avs2.sdnthailand.com/index.php' },
+    { name: 'SDN Map-portal', href: 'https://sdnmapportal.sdnthailand.com/' },
+    { name: 'SSN Thailand', href: 'https://database.ssnthailand.com/' },
+    { name: 'SDN Futsal NO L CUP', href: 'https://sdnfutsal.com/' },
+    { name: 'Sangha Foundation', href: 'https://ordain-chi.vercel.app/ordain/stats/' },
+  ];
 
-  // ปรับปรุง hover logic ให้ดีขึ้น
-  const handleMenuEnter = (menuLabel: string) => {
-    if (hoverTimeoutRef.current) {
-      clearTimeout(hoverTimeoutRef.current);
+  // Handle submenu hover
+  const handleMouseEnter = (menuName: string) => {
+    if (hoverTimeout) {
+      clearTimeout(hoverTimeout);
+      setHoverTimeout(null);
     }
-    setActiveSubmenu(menuLabel);
+    setOpenSubmenu(menuName);
   };
 
-  const handleMenuLeave = (menuLabel: string) => {
-    hoverTimeoutRef.current = setTimeout(() => {
-      if (activeSubmenu === menuLabel) {
-        setActiveSubmenu(null);
-      }
-    }, 300); // เพิ่มเวลาให้เพียงพอในการเลื่อนเมาส์
+  const handleMouseLeave = () => {
+    const timeout = setTimeout(() => {
+      setOpenSubmenu('');
+    }, 300);
+    setHoverTimeout(timeout);
   };
 
-  const handleSubmenuEnter = (menuLabel: string) => {
-    if (hoverTimeoutRef.current) {
-      clearTimeout(hoverTimeoutRef.current);
-    }
-    setActiveSubmenu(menuLabel);
+  // Handle mobile submenu toggle
+  const toggleMobileSubmenu = (menuName: string) => {
+    setOpenSubmenu(openSubmenu === menuName ? '' : menuName);
   };
 
-  const handleSubmenuLeave = () => {
-    hoverTimeoutRef.current = setTimeout(() => {
-      setActiveSubmenu(null);
-    }, 200);
+  // Close mobile menu
+  const closeMobileMenu = () => {
+    setIsMobileMenuOpen(false);
+    setOpenSubmenu('');
   };
 
-  const renderMenuItem = (item: MenuItem, index: number) => {
-    if (item.subItems) {
+  // External link component
+  const ExternalLink: React.FC<ExternalLinkProps> = ({ href, children, className, onClick }) => {
+    const handleClick = (e: React.MouseEvent<HTMLButtonElement>) => {
+      e.preventDefault();
+      window.open(href, '_blank', 'noopener,noreferrer');
+      if (onClick) onClick();
+    };
+
+    return (
+      <button onClick={handleClick} className={className} type="button">
+        {children}
+      </button>
+    );
+  };
+
+  // Internal link component
+  const InternalLink: React.FC<InternalLinkProps> = ({ href, children, className, onClick }) => (
+    <Link href={href} className={className} onClick={onClick}>
+      {children}
+    </Link>
+  );
+
+  // Render menu item
+  const renderMenuItem = (item: MenuItem, isMobile: boolean = false) => {
+    const isActive = pathname === item.href;
+    const hasSubmenu = Boolean(item.submenu);
+    const isSubmenuOpen = openSubmenu === item.name;
+
+    if (hasSubmenu && item.submenu) {
       return (
-        <div 
-          key={`${item.label}-${index}`}
-          className="relative group"
-          ref={(el) => { submenuRefs.current[item.label] = el; }}
+        <div
+          key={item.name}
+          className="relative"
+          onMouseEnter={() => !isMobile && handleMouseEnter(item.name)}
+          onMouseLeave={() => !isMobile && handleMouseLeave()}
         >
           <button
-            onMouseEnter={() => handleMenuEnter(item.label)}
-            onMouseLeave={() => handleMenuLeave(item.label)}
-            className={`inline-flex items-center px-3 py-2 text-sm font-light transition-colors duration-200 
-              ${pathname === item.href ? "text-orange-600" : "text-gray-700 hover:text-orange-600"}`}
+            onClick={() => isMobile && toggleMobileSubmenu(item.name)}
+            className={`flex items-center px-3 py-2 text-sm font-light transition-colors duration-200 ${
+              isActive ? 'text-orange-600' : 'text-gray-700 hover:text-orange-600'
+            } ${isMobile ? 'w-full justify-between text-base' : ''}`}
+            type="button"
           >
-            {item.label}
-            <IoIosArrowDown className="ml-1 w-3 h-3 transition-transform" />
+            <span className="flex items-center">
+              {item.name === 'Data Center' && <HiDatabase className="mr-2 w-4 h-4" />}
+              {item.name}
+            </span>
+            <IoIosArrowDown
+              className={`ml-1 w-3 h-3 transition-transform ${
+                isSubmenuOpen ? 'rotate-180' : ''
+              }`}
+            />
           </button>
-          {activeSubmenu === item.label && (
-            <div 
-              className={`absolute top-full w-64 bg-white shadow-lg border border-gray-100 py-1 z-50 rounded-sm
-                ${item.label === 'Data Center' ? 'right-0' : 'left-0'}`}
-              onMouseEnter={() => handleSubmenuEnter(item.label)}
-              onMouseLeave={handleSubmenuLeave}
+
+          {/* Desktop Submenu */}
+          {!isMobile && isSubmenuOpen && (
+            <div
+              className={`absolute top-full w-64 bg-white shadow-lg border border-gray-100 py-1 z-50 rounded-sm ${
+                item.name === 'Data Center' ? 'right-0' : 'left-0'
+              }`}
+              onMouseEnter={() => handleMouseEnter(item.name)}
+              onMouseLeave={handleMouseLeave}
             >
-              {item.subItems.map((subItem, subIndex) => (
+              {item.submenu.map((subItem) => (
                 <ExternalLink
-                  key={`${subItem.href}-${subIndex}`}
+                  key={subItem.name}
                   href={subItem.href}
-                  className="block px-4 py-2.5 text-sm font-light text-gray-700 hover:bg-gray-50 hover:text-orange-600 transition-colors"
-                  onClick={() => setActiveSubmenu(null)}
+                  className="block w-full text-left px-4 py-2.5 text-sm font-light text-gray-700 hover:bg-gray-50 hover:text-orange-600 transition-colors"
+                  onClick={() => setOpenSubmenu('')}
                 >
-                  {subItem.label}
+                  {subItem.name}
+                </ExternalLink>
+              ))}
+            </div>
+          )}
+
+          {/* Mobile Submenu */}
+          {isMobile && isSubmenuOpen && (
+            <div className="bg-gray-50 py-2 rounded mt-1">
+              {item.submenu.map((subItem) => (
+                <ExternalLink
+                  key={subItem.name}
+                  href={subItem.href}
+                  className="block w-full text-left pl-6 pr-4 py-3 text-sm font-light text-gray-600 hover:text-orange-600 hover:bg-gray-100 transition-colors"
+                  onClick={closeMobileMenu}
+                >
+                  {subItem.name}
                 </ExternalLink>
               ))}
             </div>
@@ -179,85 +214,95 @@ const Navbar: React.FC = () => {
       );
     }
 
-    return item.href?.startsWith('http') ? (
-      <ExternalLink
-        key={`${item.label}-${index}`}
-        href={item.href}
-        className={`inline-flex items-center px-3 py-2 text-sm font-light transition-colors duration-200
-          ${pathname === item.href ? "text-orange-600" : "text-gray-700 hover:text-orange-600"}`}
-      >
-        {item.label}
+    // Regular menu item
+    if (!item.href) return null;
+    
+    const isExternal = item.href.startsWith('http');
+    const linkProps = {
+      href: item.href,
+      className: `block px-3 py-2 text-sm font-light transition-colors duration-200 ${
+        isActive ? 'text-orange-600' : 'text-gray-700 hover:text-orange-600'
+      } ${isMobile ? 'text-base' : ''}`,
+      onClick: isMobile ? closeMobileMenu : undefined,
+    };
+
+    return isExternal ? (
+      <ExternalLink key={item.name} {...linkProps}>
+        {item.name}
       </ExternalLink>
     ) : (
-      <Link
-        key={`${item.label}-${index}`}
-        href={item.href || '/'}
-        className={`inline-flex items-center px-3 py-2 text-sm font-light transition-colors duration-200
-          ${pathname === item.href ? "text-orange-600" : "text-gray-700 hover:text-orange-600"}`}
-      >
-        {item.label}
-      </Link>
+      <InternalLink key={item.name} {...linkProps}>
+        {item.name}
+      </InternalLink>
     );
   };
-
-  // ทำความสะอาด timeout เมื่อ component unmount
-  useEffect(() => {
-    return () => {
-      if (hoverTimeoutRef.current) {
-        clearTimeout(hoverTimeoutRef.current);
-      }
-    };
-  }, []);
 
   return (
     <nav className="bg-white shadow-sm border-b border-gray-200">
       <div className="w-full px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-14">
+          {/* Logo */}
           <div className="flex items-center">
-            <div className="flex-shrink-0 flex items-center">
-              <Link href="/" className="flex items-center space-x-3">
-                <Image src="/logo.png" alt="Logo" width={40} height={40} priority />
-                <span className="hidden sm:block font-light text-gray-900 text-base tracking-tight">SDN THAILAND</span>
-              </Link>
-            </div>
+            <Link href="/" className="flex items-center space-x-3">
+              <Image src="/logo.png" alt="Logo" width={40} height={40} priority />
+              <span className="hidden sm:block font-light text-gray-900 text-base tracking-tight">
+                SDN THAILAND
+              </span>
+            </Link>
 
-            <div ref={menuRef} className="hidden lg:flex items-center ml-8">
-              {leftNavItems.map((item, index) => renderMenuItem(item, index))}
+            {/* Desktop Menu */}
+            <div className="hidden lg:flex items-center ml-8">
+              {menuItems.map((item) => renderMenuItem(item, false))}
             </div>
           </div>
 
+          {/* Right side */}
           <div className="flex items-center space-x-3">
+            {/* Data Center Menu - Desktop */}
             <div className="hidden lg:block">
-              {renderMenuItem(dataCenterMenu, 999)}
+              {renderMenuItem({
+                name: 'Data Center',
+                submenu: dataCenterItems,
+              }, false)}
             </div>
 
+            {/* Profile Menu */}
             {session && (
               <div className="relative hidden md:block">
-                <button 
-                  onClick={() => setIsMenuOpen(!isMenuOpen)} 
+                <button
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    setIsProfileMenuOpen(!isProfileMenuOpen);
+                  }}
                   className="flex items-center space-x-2 text-sm focus:outline-none px-3 py-2 rounded hover:bg-gray-50"
+                  type="button"
                 >
-                  <img 
-                    src={session.user?.image || "/default-avatar.png"} 
-                    alt="Profile" 
-                    className="h-7 w-7 rounded-full" 
+                  <img
+                    src={session.user?.image || "/default-avatar.png"}
+                    alt="Profile"
+                    className="h-7 w-7 rounded-full"
                   />
                   <span className="text-gray-700 font-light">{session.user?.firstName}</span>
-                  <IoIosArrowDown className={`w-3 h-3 text-gray-500 transition-transform ${isMenuOpen ? 'rotate-180' : ''}`} />
+                  <IoIosArrowDown
+                    className={`w-3 h-3 text-gray-500 transition-transform ${
+                      isProfileMenuOpen ? 'rotate-180' : ''
+                    }`}
+                  />
                 </button>
-                
-                {isMenuOpen && (
+
+                {isProfileMenuOpen && (
                   <div className="absolute right-0 mt-1 w-48 bg-white rounded-sm border border-gray-100 shadow-lg py-1 z-50">
-                    <Link 
-                      href="/profile" 
-                      className="block px-4 py-2.5 text-sm font-light text-gray-700 hover:bg-gray-50 hover:text-orange-600 transition-colors" 
-                      onClick={() => setIsMenuOpen(false)}
+                    <Link
+                      href="/profile"
+                      className="block px-4 py-2.5 text-sm font-light text-gray-700 hover:bg-gray-50 hover:text-orange-600 transition-colors"
+                      onClick={() => setIsProfileMenuOpen(false)}
                     >
                       โปรไฟล์
                     </Link>
-                    <button 
-                      onClick={() => signOut()} 
+                    <button
+                      onClick={() => signOut()}
                       className="block w-full text-left px-4 py-2.5 text-sm font-light text-gray-700 hover:bg-gray-50 hover:text-orange-600 transition-colors"
+                      type="button"
                     >
                       ออกจากระบบ
                     </button>
@@ -266,9 +311,11 @@ const Navbar: React.FC = () => {
               </div>
             )}
 
-            <button 
-              onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)} 
+            {/* Mobile menu button */}
+            <button
+              onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
               className="lg:hidden p-2 rounded hover:bg-gray-100 transition-colors"
+              type="button"
             >
               <HiMenuAlt3 className="h-5 w-5 text-gray-700" />
             </button>
@@ -280,56 +327,14 @@ const Navbar: React.FC = () => {
       {isMobileMenuOpen && (
         <div className="lg:hidden bg-white border-t border-gray-100 shadow-lg">
           <div className="px-2 pt-2 pb-3 space-y-1">
-            {[...leftNavItems, dataCenterMenu].map((item, index) => (
-              <div key={`mobile-${item.label}-${index}`}>
-                {item.subItems ? (
-                  <>
-                    <button
-                      onClick={() => setActiveSubmenu(activeSubmenu === item.label ? null : item.label)}
-                      className="w-full flex justify-between items-center px-3 py-2.5 text-base font-light text-gray-700 hover:bg-gray-50 hover:text-orange-600 rounded transition-colors"
-                    >
-                      {item.label}
-                      <IoIosArrowDown className={`w-4 h-4 transition-transform ${activeSubmenu === item.label ? 'rotate-180' : ''}`} />
-                    </button>
-                    {activeSubmenu === item.label && (
-                      <div className="bg-gray-50 py-2 rounded mt-1">
-                        {item.subItems.map((subItem, subIndex) => (
-                          <ExternalLink
-                            key={`mobile-sub-${subItem.href}-${subIndex}`}
-                            href={subItem.href}
-                            className="block pl-6 pr-4 py-2.5 text-sm font-light text-gray-600 hover:text-orange-600 transition-colors"
-                            onClick={() => {
-                              setActiveSubmenu(null);
-                              setIsMobileMenuOpen(false);
-                            }}
-                          >
-                            {subItem.label}
-                          </ExternalLink>
-                        ))}
-                      </div>
-                    )}
-                  </>
-                ) : (
-                  item.href?.startsWith('http') ? (
-                    <ExternalLink
-                      href={item.href}
-                      className="block px-3 py-2.5 text-base font-light text-gray-700 hover:bg-gray-50 hover:text-orange-600 rounded transition-colors"
-                      onClick={() => setIsMobileMenuOpen(false)}
-                    >
-                      {item.label}
-                    </ExternalLink>
-                  ) : (
-                    <Link
-                      href={item.href || '/'}
-                      className="block px-3 py-2.5 text-base font-light text-gray-700 hover:bg-gray-50 hover:text-orange-600 rounded transition-colors"
-                      onClick={() => setIsMobileMenuOpen(false)}
-                    >
-                      {item.label}
-                    </Link>
-                  )
-                )}
-              </div>
-            ))}
+            {/* Regular menu items */}
+            {menuItems.map((item) => renderMenuItem(item, true))}
+            
+            {/* Data Center menu for mobile */}
+            {renderMenuItem({
+              name: 'Data Center',
+              submenu: dataCenterItems,
+            }, true)}
           </div>
         </div>
       )}
