@@ -1,4 +1,4 @@
-// app/sdnblog/[id]/BlogPostDetail.tsx
+// app/components/blog-detail/BlogPostDetail.tsx
 import { Suspense } from 'react'
 import Link from 'next/link'
 import { Toaster } from 'react-hot-toast'

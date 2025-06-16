@@ -15,6 +15,13 @@ interface BlogPost {
   _embedded?: {
     'wp:featuredmedia'?: Array<{
       source_url: string;
+      media_details?: {
+        sizes?: {
+          full?: { source_url: string };
+          large?: { source_url: string };
+          medium_large?: { source_url: string };
+        };
+      };
     }>;
   };
 }
@@ -30,7 +37,7 @@ const fetcher = (url: string) => fetch(url).then(r => r.json());
 
 function BlogContent() {
   const { data, error, isLoading } = useSWR<BlogResponse>(
-    '/api/sdnblog?per_page=4',
+    '/api/sdnblog?per_page=4&_embed=1', // เพิ่ม _embed=1 เพื่อให้ได้ข้อมูลภาพครบถ้วน
     fetcher,
     {
       revalidateOnFocus: false,
@@ -46,11 +53,11 @@ function BlogContent() {
         {/* Large card skeleton */}
         <div className="animate-pulse bg-white rounded-xl overflow-hidden shadow-lg">
           <div className="md:flex">
-            <div className="bg-gray-200 h-[250px] md:h-[450px] md:w-2/3"></div>
-            <div className="p-6 md:w-1/3 bg-gray-100">
-              <div className="h-8 bg-gray-200 rounded-md mb-4"></div>
-              <div className="h-24 bg-gray-200 rounded-md"></div>
-              <div className="mt-4 h-6 w-1/3 bg-gray-200 rounded-full"></div>
+            <div className="bg-gradient-to-r from-gray-200 to-gray-300 h-[250px] md:h-[450px] md:w-2/3"></div>
+            <div className="p-6 md:w-1/3 bg-orange-50">
+              <div className="h-8 bg-gray-200 rounded-md mb-4 animate-pulse"></div>
+              <div className="h-24 bg-gray-200 rounded-md animate-pulse"></div>
+              <div className="mt-4 h-6 w-1/3 bg-orange-200 rounded-full animate-pulse"></div>
             </div>
           </div>
         </div>
@@ -58,11 +65,11 @@ function BlogContent() {
         {/* Smaller cards skeleton */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
           {[1, 2, 3].map((i) => (
-            <div key={i} className="bg-white rounded-xl overflow-hidden shadow-sm">
-              <div className="bg-gray-200 aspect-video"></div>
-              <div className="p-4 bg-gray-100">
+            <div key={i} className="bg-white rounded-xl overflow-hidden shadow-sm animate-pulse">
+              <div className="bg-gradient-to-r from-gray-200 to-gray-300 aspect-video"></div>
+              <div className="p-4 bg-orange-50">
                 <div className="h-6 bg-gray-200 rounded-md mb-2"></div>
-                <div className="h-4 w-1/3 bg-gray-200 rounded-full"></div>
+                <div className="h-4 w-1/3 bg-orange-200 rounded-full"></div>
               </div>
             </div>
           ))}
@@ -117,9 +124,12 @@ export default function BlogList() {
         <div className="text-center mt-12">
           <Link
             href="/sdnblog"
-            className="inline-flex items-center px-6 py-2 bg-orange-500 text-white rounded-full hover:bg-orange-600 transition-all duration-300"
+            className="inline-flex items-center px-6 py-2 bg-orange-500 text-white rounded-full hover:bg-orange-600 transition-all duration-300 shadow-lg hover:shadow-xl"
           >
             <span>อ่านบทความทั้งหมด</span>
+            <svg className="ml-2 w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
+            </svg>
           </Link>
         </div>
       </div>
