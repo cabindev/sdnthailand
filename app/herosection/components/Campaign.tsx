@@ -13,7 +13,7 @@ export default function Campaign() {
       id: '1',
       desktopImage: '/campaign/publictv.jpeg',
       mobileImage: '/campaign/type public.jpg',
-      title: 'Public TV Campaign',
+      title: 'Campaign',
       link: 'https://sdnthailand.com/sdnblog/36837'
     },
     {
