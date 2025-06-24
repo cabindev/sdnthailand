@@ -115,7 +115,7 @@ export default function BlogPostDetail({ post }: BlogPostDetailProps) {
                 prose-h2:text-lg sm:prose-h2:text-xl md:prose-h2:text-3xl
                 prose-h3:text-base sm:prose-h3:text-lg md:prose-h3:text-2xl
                 prose-p:font-ibm prose-p:text-gray-600 prose-p:leading-relaxed
-                prose-a:text-orange-500 hover:prose-a:text-orange-600
+                prose-a:text-orange-500 hover:prose-a:text-orange-700
                 prose-img:rounded-xl prose-img:shadow-lg
                 prose-img:w-full prose-img:max-w-3xl prose-img:mx-auto
                 prose-img:h-auto prose-img:object-cover

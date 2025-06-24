@@ -54,7 +54,6 @@ export async function PUT(
         await writeFile(filePath, buffer);
         imageUrl = `/images/${fileName}`;
       }
-
       const updatedUser = await prisma.user.update({
         where: { id: Number(params.id) },
         data: {
