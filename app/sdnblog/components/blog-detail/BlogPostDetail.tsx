@@ -3,13 +3,12 @@ import { Suspense } from 'react'
 import Link from 'next/link'
 import { Toaster } from 'react-hot-toast'
 import { Post } from '../../types'
-import TextToSpeechControls from './TextToSpeechControls'
+import SimpleTTS from './SimpleTTS'
 import ShareButtons from './ShareButtons'
 import RelatedBlogPosts from '../RelatedBlogPosts'
 import ViewCounter from './ViewCounter'
 import SafeImage from '../SafeImage'
 import LoadingSpinner from '../LoadingSpinner'
-
 
 const BASE_URL = 'https://sdnthailand.com'
 
@@ -23,6 +22,22 @@ export default function BlogPostDetail({ post }: BlogPostDetailProps) {
   const authorLink = post.uagb_author_info?.author_link
   const featuredImage = post._embedded?.['wp:featuredmedia']?.[0]?.source_url
   const shareUrl = `${BASE_URL}/sdnblog/${post.id}`
+
+  // Clean text for TTS - reusing same logic from sdnpost
+  const cleanTextForTTS = (html: string) => {
+    return html
+      .replace(/<[^>]*>/g, '')
+      .replace(/&nbsp;/g, ' ')
+      .replace(/&amp;/g, '&')
+      .replace(/&lt;/g, '<')
+      .replace(/&gt;/g, '>')
+      .replace(/&quot;/g, '"')
+      .replace(/&#39;/g, "'")
+      .replace(/\s+/g, ' ')
+      .trim()
+  }
+
+  const ttsText = cleanTextForTTS(post.content.rendered)
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -58,13 +73,16 @@ export default function BlogPostDetail({ post }: BlogPostDetailProps) {
               </div>
             )}
 
-            {/* Title */}
-            <h1 
-              className="text-xl sm:text-2xl md:text-4xl font-seppuri font-bold mb-4 leading-relaxed text-gray-800"
-              dangerouslySetInnerHTML={{ __html: post.title.rendered }}
-            />
+            {/* Title with TTS Icon */}
+            <div className="flex items-start gap-3 mb-4">
+              <h1 
+                className="text-xl sm:text-2xl md:text-4xl font-seppuri font-bold leading-relaxed text-gray-800 flex-1"
+                dangerouslySetInnerHTML={{ __html: post.title.rendered }}
+              />
+              <SimpleTTS text={ttsText} />
+            </div>
 
-            {/* Author & View Count */}
+            {/* Author & Date */}
             <div className="flex flex-col sm:flex-row sm:items-center justify-between mb-6 md:mb-8 pb-6 md:pb-8 border-b border-gray-200 gap-4">
               <div className="flex items-center gap-4">
                 {authorLink ? (
@@ -87,13 +105,6 @@ export default function BlogPostDetail({ post }: BlogPostDetailProps) {
                   })}
                 </div>
               </div>
-              
-              
-            </div>
-
-            {/* Text to Speech Controls */}
-            <div className="flex-1">
-              <TextToSpeechControls text={post.content.rendered.replace(/<[^>]*>/g, '')} />
             </div>
 
             {/* Main Content */}
@@ -114,7 +125,7 @@ export default function BlogPostDetail({ post }: BlogPostDetailProps) {
               dangerouslySetInnerHTML={{ __html: post.content.rendered }}
             />
 
-              <ViewCounter postId={post.id.toString()} initialCount={post.viewCount || 0} />
+            <ViewCounter postId={post.id.toString()} initialCount={post.viewCount || 0} />
 
             {/* Related Posts */}
             <Suspense fallback={<LoadingSpinner />}>

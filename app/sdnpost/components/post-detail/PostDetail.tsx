@@ -1,9 +1,9 @@
-// app/sdnpost/[id]/PostDetail.tsx
+// app/sdnpost/components/post-detail/PostDetail.tsx
 import { Suspense } from 'react'
 import Link from 'next/link'
 import { Toaster } from 'react-hot-toast'
 import { Post } from '../../types'
-import TextToSpeechControls from './TextToSpeechControls'
+import SimpleTTS from './SimpleTTS'
 import ShareButtons from './ShareButtons'
 import RelatedPosts from '../RelatedPosts'
 import ViewCounter from './ViewCounter'
@@ -24,6 +24,21 @@ export default function PostDetail({ post }: PostDetailProps) {
    featuredMedia?.media_details?.sizes?.full?.source_url
  
  const shareUrl = `${BASE_URL}/sdnpost/${post.id}`
+
+ const cleanTextForTTS = (html: string) => {
+   return html
+     .replace(/<[^>]*>/g, '')
+     .replace(/&nbsp;/g, ' ')
+     .replace(/&amp;/g, '&')
+     .replace(/&lt;/g, '<')
+     .replace(/&gt;/g, '>')
+     .replace(/&quot;/g, '"')
+     .replace(/&#39;/g, "'")
+     .replace(/\s+/g, ' ')
+     .trim()
+ }
+
+ const ttsText = cleanTextForTTS(post.content.rendered)
 
  return (
    <div className="container max-w-5xl mx-auto px-4 py-12 md:py-20">
@@ -46,13 +61,16 @@ export default function PostDetail({ post }: PostDetailProps) {
              </div>
            )}
 
-           {/* Title */}
-           <h1 
-             className="text-2xl md:text-4xl font-seppuri font-bold mb-4 leading-relaxed text-gray-800"
-             dangerouslySetInnerHTML={{ __html: post.title.rendered }}
-           />
+           {/* Title with TTS Icon */}
+           <div className="flex items-start gap-3 mb-4">
+             <h1 
+               className="text-2xl md:text-4xl font-seppuri font-bold leading-relaxed text-gray-800 flex-1"
+               dangerouslySetInnerHTML={{ __html: post.title.rendered }}
+             />
+             <SimpleTTS text={ttsText} />
+           </div>
 
-           {/* Author and View Count */}
+           {/* Author and Date */}
            <div className="flex flex-col md:flex-row md:items-center justify-between mb-6 md:mb-8 pb-6 md:pb-8 border-b border-gray-200 gap-4">
              <div className="flex items-center gap-4">
                {author?.avatar_urls?.['96'] && (
@@ -78,14 +96,6 @@ export default function PostDetail({ post }: PostDetailProps) {
                  </div>
                </div>
              </div>
-             
-           </div>
-
-           {/* Text to Speech Controls */}
-           <div className="flex-1 mb-8">
-             <TextToSpeechControls
-               text={post.content.rendered.replace(/<[^>]*>/g, '')}
-             />
            </div>
 
            {/* Featured Image */}
@@ -101,31 +111,34 @@ export default function PostDetail({ post }: PostDetailProps) {
              </div>
            )}
 
-           {/* Content */}
+           {/* Content - ปรับแต่งให้ตัวหนังสือบางและเล็ก */}
            <div 
-             className="prose prose-base md:prose-lg max-w-none
-               prose-headings:font-seppuri prose-headings:text-gray-800
-               prose-h1:text-2xl md:prose-h1:text-4xl
-               prose-h2:text-xl md:prose-h2:text-3xl
-               prose-h3:text-lg md:prose-h3:text-2xl
-               prose-p:font-ibm prose-p:text-gray-600 prose-p:leading-relaxed
-               prose-a:text-orange-500 hover:prose-a:text-orange-600
+             className="prose prose-sm md:prose-base max-w-none
+               prose-headings:font-seppuri prose-headings:text-gray-800 prose-headings:font-semibold
+               prose-h1:text-xl md:prose-h1:text-3xl prose-h1:font-medium
+               prose-h2:text-lg md:prose-h2:text-2xl prose-h2:font-medium
+               prose-h3:text-base md:prose-h3:text-xl prose-h3:font-medium
+               prose-p:font-ibm prose-p:text-gray-600 prose-p:leading-relaxed prose-p:font-light prose-p:text-sm md:prose-p:text-base
+               prose-a:text-orange-500 hover:prose-a:text-orange-600 prose-a:font-light
                prose-img:rounded-xl prose-img:shadow-lg
                prose-img:w-full prose-img:max-w-3xl prose-img:mx-auto
                prose-img:h-auto prose-img:object-cover
-               prose-strong:text-gray-800
+               prose-strong:text-gray-800 prose-strong:font-medium
                prose-ul:list-disc prose-ol:list-decimal
-               prose-li:font-ibm prose-li:text-gray-600
+               prose-li:font-ibm prose-li:text-gray-600 prose-li:font-light prose-li:text-sm md:prose-li:text-base
+               prose-blockquote:border-orange-200 prose-blockquote:text-gray-600 prose-blockquote:font-light prose-blockquote:text-sm md:prose-blockquote:text-base
+               prose-code:bg-gray-100 prose-code:text-gray-700 prose-code:font-light prose-code:text-xs md:prose-code:text-sm
+               text-sm md:text-base font-light leading-relaxed
                mb-8 md:mb-12
                [&>*]:mx-auto [&>*]:max-w-3xl"
              dangerouslySetInnerHTML={{ __html: post.content.rendered }}
            />
 
-            {/* View Counter */}
-              <ViewCounter 
-               postId={post.id.toString()} 
-               initialCount={post.viewCount || 0} 
-             />
+           {/* View Counter */}
+           <ViewCounter 
+             postId={post.id.toString()} 
+             initialCount={post.viewCount || 0} 
+           />
              
            {/* Related Posts */}
            <Suspense fallback={<LoadingSpinner />}>
