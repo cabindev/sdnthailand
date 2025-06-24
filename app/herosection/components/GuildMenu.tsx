@@ -7,7 +7,9 @@ import {
   ChartBarIcon, 
   UserGroupIcon, 
   HeartIcon, 
-  MapIcon 
+  MapIcon,
+  ServerIcon,
+  CircleStackIcon
 } from '@heroicons/react/24/solid';
 
 const GuildMenu: React.FC = () => {
@@ -47,6 +49,18 @@ const GuildMenu: React.FC = () => {
       title: "SDN Map Portal",
       url: "https://sdnmapportal.sdnthailand.com/",
       icon: MapIcon
+    },
+    {
+      id: 7,
+      title: "SSN Thailand",
+      url: "https://database.ssnthailand.com/",
+      icon: ServerIcon
+    },
+    {
+      id: 8,
+      title: "SDN DB System",
+      url: "https://post.sdnthailand.com/sdn/admin/",
+      icon: CircleStackIcon
     }
   ];
 
@@ -54,7 +68,7 @@ const GuildMenu: React.FC = () => {
     <section className="bg-white pt-2 pb-6">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Grid Layout - Microsoft Style */}
-        <div className="grid grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-6">
+        <div className="grid grid-cols-3 md:grid-cols-4 lg:grid-cols-8 gap-6">
           {externalLinks.map((link) => {
             const IconComponent = link.icon;
             return (
