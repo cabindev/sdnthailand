@@ -32,11 +32,12 @@ export default function Campaign() {
     },
     {
       id: '4',
-      desktopImage: '/campaign/EVALI1.jpg',
-      mobileImage: '/campaign/evali2.jpg',
-      title: 'โรคปอดอักเสบเฉียบพลัน',
-      link: 'https://sdnthailand.com/sdnblog/36617'
+      desktopImage: '/campaign/register.png',
+      mobileImage: '/campaign/regist-mobile.png',
+      title: 'ลงทะเบียนเลิกแอลกอฮอล์',
+      link: 'https://noalcohol.ddc.moph.go.th/'
     },
+
   ];
 
   // Handle auto-slide functionality

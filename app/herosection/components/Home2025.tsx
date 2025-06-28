@@ -2,7 +2,8 @@
 
 import { useState, useEffect, Suspense, lazy } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import GuildMenu from "./GuildMenu"; // เพิ่ม import GuildMenu
+import GuildMenu from "./GuildMenu";
+import BuddhistProjectIntroPage from "./BuddhistProjectIntroPage"; // เพิ่ม import
 
 // Lazy load components
 const Campaign = lazy(() => import("./Campaign"));
@@ -63,19 +64,24 @@ export default function Home2025() {
 
   return (
     <main className="min-h-screen bg-white">
-      {/* Hero Section */}
+      
+      {/* Top Section: Buddhist Project (Compact) + Campaign */}
       <section className="relative w-full bg-white">
         <motion.div
-          className="w-full max-w-[1920px] mx-auto"
+          className="w-full"
           variants={ANIMATIONS.heroScale}
           initial="initial"
           animate="animate"
         >
-          <div className="w-full">
+          {/* Buddhist Project Intro - Compact */}
+          <BuddhistProjectIntroPage />
+          
+          {/* Campaign Section */}
+          {/* <div className="w-full max-w-[1920px] mx-auto">
             <Suspense fallback={<div className="h-[630px] w-full bg-gray-50 animate-pulse" />}>
               <Campaign />
             </Suspense>
-          </div>
+          </div> */}
         </motion.div>
       </section>
 
