@@ -150,15 +150,13 @@ const IntegratedHeroSection: React.FC = () => {
                 <div className="flex flex-col sm:flex-row gap-4">
                   {/* Primary Button */}
                   <div className="relative inline-block group">
-                    <div className="absolute inset-0 bg-gradient-to-r from-amber-200 to-orange-200 rounded-xl opacity-60 group-hover:opacity-80 transition-opacity duration-300"></div>
                     <a
                       href="https://noalcohol.ddc.moph.go.th/"
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="relative inline-flex items-center bg-gradient-to-r from-amber-500 to-orange-500 hover:from-orange-400 hover:to-amber-400 text-white font-semibold py-3 px-8 rounded-xl transition-all duration-300 hover:scale-105 group shadow-lg"
+                      className="relative inline-flex items-center bg-gradient-to-r from-amber-500 to-orange-500 hover:from-orange-400 hover:to-amber-400 text-white font-semibold py-2 px-5 rounded-xl transition-all duration-300 hover:scale-105 group text-sm"
                     >
-                      <span className="mr-3">เข้าร่วมโครงการ</span>
-                      <ArrowRight className="w-5 h-5 transition-transform duration-300 group-hover:translate-x-1" />
+                      เข้าร่วมโครงการ
                     </a>
                   </div>
 
@@ -168,10 +166,10 @@ const IntegratedHeroSection: React.FC = () => {
                       href="https://healthy-sobriety.sdnthailand.com/Buddhist-Lent"
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="inline-flex items-center bg-white hover:bg-stone-50 text-stone-700 hover:text-stone-900 font-medium py-3 px-8 rounded-xl border-2 border-stone-200 hover:border-stone-300 transition-all duration-300 hover:scale-105 group shadow-sm"
+                      className="inline-flex items-center bg-white hover:bg-stone-50 text-stone-700 hover:text-stone-900 font-medium py-2 px-5 rounded-xl border border-stone-200 hover:border-stone-300 transition-all duration-300 hover:scale-105 group shadow-sm text-sm"
                     >
-                      <span className="mr-3">เรียนรู้เพิ่มเติม</span>
-                      <ArrowRight className="w-4 h-4 transition-transform duration-300 group-hover:translate-x-1" />
+                      <Award className="w-4 h-4 mr-2 text-amber-500" />
+                      เรียนรู้เพิ่มเติม
                     </a>
                   </div>
                 </div>
