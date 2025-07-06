@@ -1,4 +1,4 @@
-// app/api/text-to-speech/route.ts
+// app/api/text-to-speech/route.ts - แก้ไขให้ใช้ Azure แทน Google
 import { NextRequest, NextResponse } from 'next/server'
 
 // Rate limiting configuration
@@ -10,7 +10,7 @@ interface RateLimitEntry {
 const rateLimitMap = new Map<string, RateLimitEntry>()
 const RATE_LIMIT_WINDOW = 60 * 1000 // 1 minute
 const RATE_LIMIT_MAX_REQUESTS = 10 // 10 requests per minute per IP
-const MAX_TEXT_LENGTH = 3000
+const MAX_TEXT_LENGTH = 2000 // ลดลงเป็น 2000 characters
 
 // Rate limiting function
 function isRateLimited(ip: string): boolean {
@@ -74,6 +74,27 @@ function validateText(text: string): { isValid: boolean; sanitized: string; erro
   return { isValid: true, sanitized }
 }
 
+// Generate SSML for Azure - ต้องมี voice tag เสมอ
+function generateSSML(text: string, voiceName?: string): string {
+  // Escape text for XML
+  const escapedText = text
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&apos;')
+    .replace(/[\u0000-\u0008\u000B\u000C\u000E-\u001F\u007F-\u0084\u0086-\u009F]/g, '')
+
+  // Azure requires voice tag - ใช้ voice ที่ทำงานได้
+  const voice = voiceName || 'th-TH-NiwatNeural'
+  
+  return `<speak version="1.0" xmlns="http://www.w3.org/2001/10/synthesis" xml:lang="th-TH">
+<voice name="${voice}">
+${escapedText}
+</voice>
+</speak>`
+}
+
 export async function POST(request: NextRequest) {
   const startTime = Date.now()
   
@@ -102,11 +123,11 @@ export async function POST(request: NextRequest) {
     const { 
       text, 
       languageCode = 'th-TH', 
-      voiceName = 'th-TH-Standard-A', 
-      ssmlGender = 'FEMALE',
-      speakingRate = 1.0,
-      pitch = 0.0,
-      volumeGainDb = 0.0
+      voiceName = 'th-TH-NiwatNeural', // ใช้ voice ที่ทำงานได้!
+      ssmlGender = 'Male', // NiwatNeural เป็นเสียงผู้ชาย
+      speakingRate = 0.9,
+      pitch = '0st',
+      volume = 'default'
     } = body
 
     // Validate text
@@ -118,67 +139,43 @@ export async function POST(request: NextRequest) {
       )
     }
 
-    // Validate parameters
-    if (speakingRate < 0.25 || speakingRate > 4.0) {
-      return NextResponse.json(
-        { error: 'Speaking rate must be between 0.25 and 4.0' },
-        { status: 400 }
-      )
-    }
-
-    if (pitch < -20.0 || pitch > 20.0) {
-      return NextResponse.json(
-        { error: 'Pitch must be between -20.0 and 20.0' },
-        { status: 400 }
-      )
-    }
-
-    // Check Google API key
-    const googleApiKey = process.env.GOOGLE_CLOUD_API_KEY
-    if (!googleApiKey) {
-      console.error('Google Cloud API key not configured')
+    // Check Azure credentials
+    const azureSpeechKey = process.env.AZURE_SPEECH_KEY
+    const azureSpeechRegion = process.env.AZURE_SPEECH_REGION
+    
+    if (!azureSpeechKey || !azureSpeechRegion) {
+      console.error('Azure Speech credentials not configured')
       return NextResponse.json(
         { error: 'Text-to-Speech service not available' },
         { status: 503 }
       )
     }
 
-    const googleApiUrl = `https://texttospeech.googleapis.com/v1/text:synthesize?key=${googleApiKey}`
+    // Generate SSML แบบง่าย
+    const ssml = generateSSML(textValidation.sanitized, voiceName)
 
-    const requestBody = {
-      input: { text: textValidation.sanitized },
-      voice: {
-        languageCode: languageCode,
-        name: voiceName,
-        ssmlGender: ssmlGender
-      },
-      audioConfig: {
-        audioEncoding: 'MP3',
-        speakingRate: Math.max(0.25, Math.min(4.0, speakingRate)), // Clamp values
-        pitch: Math.max(-20.0, Math.min(20.0, pitch)),
-        volumeGainDb: volumeGainDb
-      }
-    }
-
-    console.log(`Google TTS Request from ${clientIP}:`, {
+    console.log(`Azure TTS Request from ${clientIP}:`, {
       textLength: textValidation.sanitized.length,
-      voice: voiceName,
-      speakingRate,
-      pitch,
+      voice: voiceName || 'auto',
+      ssml: ssml.substring(0, 200) + '...', // แสดง SSML ตัวอย่าง
       truncated: textValidation.error ? true : false
     })
 
-    // Call Google TTS API with timeout
+    // Call Azure Speech API with timeout
     const controller = new AbortController()
     const timeoutId = setTimeout(() => controller.abort(), 30000) // 30 second timeout
 
-    const response = await fetch(googleApiUrl, {
+    const azureUrl = `https://${azureSpeechRegion}.tts.speech.microsoft.com/cognitiveservices/v1`
+
+    const response = await fetch(azureUrl, {
       method: 'POST',
       headers: {
-        'Content-Type': 'application/json',
+        'Ocp-Apim-Subscription-Key': azureSpeechKey,
+        'Content-Type': 'application/ssml+xml',
+        'X-Microsoft-OutputFormat': 'audio-24khz-48kbitrate-mono-mp3',
         'User-Agent': 'SDNThailand-TTS/1.0'
       },
-      body: JSON.stringify(requestBody),
+      body: ssml,
       signal: controller.signal
     })
 
@@ -186,7 +183,7 @@ export async function POST(request: NextRequest) {
 
     if (!response.ok) {
       const errorText = await response.text()
-      console.error(`Google TTS API Error (${response.status}):`, errorText)
+      console.error(`Azure TTS API Error (${response.status}):`, errorText)
       
       // Log for monitoring
       console.error(`TTS API Error for IP ${clientIP}:`, {
@@ -195,17 +192,10 @@ export async function POST(request: NextRequest) {
         voice: voiceName
       })
       
-      let errorData = {}
-      try {
-        errorData = JSON.parse(errorText)
-      } catch (e) {
-        // Response is not JSON
-      }
-      
       // Return user-friendly error messages
       if (response.status === 403) {
         return NextResponse.json(
-          { error: 'API access denied. Please check API key configuration.' },
+          { error: 'API access denied. Please check Azure API key configuration.' },
           { status: 403 }
         )
       } else if (response.status === 400) {
@@ -226,24 +216,22 @@ export async function POST(request: NextRequest) {
       }
     }
 
-    const data = await response.json()
-    
-    if (!data.audioContent) {
-      console.error('No audio content received from Google API')
+    // Azure returns binary audio data directly
+    const audioBuffer = await response.arrayBuffer()
+    const processingTime = Date.now() - startTime
+
+    if (!audioBuffer || audioBuffer.byteLength === 0) {
+      console.error('No audio content received from Azure API')
       return NextResponse.json(
         { error: 'Failed to generate audio content.' },
         { status: 500 }
       )
     }
 
-    // Convert base64 to buffer
-    const audioBuffer = Buffer.from(data.audioContent, 'base64')
-    const processingTime = Date.now() - startTime
-
     // Log successful request for monitoring
-    console.log(`Google TTS Success for ${clientIP}:`, {
+    console.log(`Azure TTS Success for ${clientIP}:`, {
       textLength: textValidation.sanitized.length,
-      audioSize: audioBuffer.length,
+      audioSize: audioBuffer.byteLength,
       processingTime: `${processingTime}ms`,
       voice: voiceName
     })
@@ -252,7 +240,7 @@ export async function POST(request: NextRequest) {
       status: 200,
       headers: {
         'Content-Type': 'audio/mpeg',
-        'Content-Length': audioBuffer.length.toString(),
+        'Content-Length': audioBuffer.byteLength.toString(),
         'Content-Disposition': `inline; filename="speech-${voiceName}.mp3"`,
         'Cache-Control': 'public, max-age=86400', // Cache for 24 hours
         'Access-Control-Allow-Origin': process.env.NODE_ENV === 'production' ? 'https://sdnthailand.com' : '*',
@@ -260,7 +248,7 @@ export async function POST(request: NextRequest) {
         'Access-Control-Allow-Headers': 'Content-Type',
         'X-Processing-Time': `${processingTime}ms`,
         'X-Text-Length': textValidation.sanitized.length.toString(),
-        'X-Provider': 'Google-Cloud-TTS',
+        'X-Provider': 'Azure-Cognitive-Services',
       },
     })
 
