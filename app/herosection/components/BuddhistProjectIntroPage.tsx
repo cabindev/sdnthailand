@@ -148,35 +148,45 @@ const IntegratedHeroSection: React.FC = () => {
                 </p>
               </div>
 
-
-
               {/* Call to Action */}
               <div className={`space-y-4 transition-all duration-1000 delay-500 transform ${
                 isVisible ? 'translate-y-0 opacity-100' : 'translate-y-10 opacity-0'
               }`}>
-                <div className="flex flex-col sm:flex-row gap-4">
-                  {/* Primary Button */}
-                  <div className="relative inline-block group">
-                    <a
-                      href="https://noalcohol.ddc.moph.go.th/"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="relative inline-flex items-center bg-gradient-to-r from-amber-500 to-orange-500 hover:from-orange-400 hover:to-amber-400 text-white font-semibold py-2 px-5 rounded-xl transition-all duration-300 hover:scale-105 group text-sm"
-                    >
-                      เข้าร่วมโครงการ
-                    </a>
-                  </div>
+                {/* Primary Button - Full Width */}
+                <div className="relative inline-block group">
+                  <a
+                    href="https://noalcohol.ddc.moph.go.th/"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="relative inline-flex items-center justify-center bg-gradient-to-r from-amber-500 to-orange-500 hover:from-orange-400 hover:to-amber-400 text-white font-semibold py-3 px-6 rounded-xl transition-all duration-300 hover:scale-105 group text-sm"
+                  >
+                    เข้าร่วมโครงการ
+                  </a>
+                </div>
 
-                  {/* Secondary Button */}
-                  <div className="relative inline-block group">
+                {/* Secondary Buttons - Same Row */}
+                <div className="flex flex-row gap-3">
+                  <div className="relative inline-block group flex-1">
                     <a
                       href="https://healthy-sobriety.sdnthailand.com/Buddhist-Lent"
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="inline-flex items-center bg-white hover:bg-stone-50 text-stone-700 hover:text-stone-900 font-medium py-2 px-5 rounded-xl border border-stone-200 hover:border-stone-300 transition-all duration-300 hover:scale-105 group shadow-sm text-sm"
+                      className="inline-flex items-center justify-center w-full bg-white hover:bg-stone-50 text-stone-700 hover:text-stone-900 font-medium py-2 px-4 rounded-xl border border-stone-200 hover:border-stone-300 transition-all duration-300 hover:scale-105 group shadow-sm text-sm"
                     >
                       <Award className="w-4 h-4 mr-2 text-amber-500" />
                       เรียนรู้เพิ่มเติม
+                    </a>
+                  </div>
+
+                  <div className="relative inline-block group flex-1">
+                    <a
+                      href="https://sdn-workspaces.sdnthailand.com/"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-flex items-center justify-center w-full bg-white hover:bg-stone-50 text-stone-700 hover:text-stone-900 font-medium py-2 px-4 rounded-xl border border-stone-200 hover:border-stone-300 transition-all duration-300 hover:scale-105 group shadow-sm text-sm"
+                    >
+                      <Heart className="w-4 h-4 mr-2 text-orange-500" />
+                      สื่อรณรงค์
                     </a>
                   </div>
                 </div>
