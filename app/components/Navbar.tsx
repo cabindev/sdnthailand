@@ -5,17 +5,23 @@ import Image from 'next/image';
 import { useSession, signOut } from "next-auth/react";
 import { usePathname } from 'next/navigation';
 import { HiMenuAlt3, HiDatabase } from "react-icons/hi";
-import { IoIosArrowDown } from "react-icons/io";
+import { IoIosArrowDown, IoIosArrowForward } from "react-icons/io";
 
 interface SubMenuItem {
   name: string;
   href: string;
 }
 
+interface NestedMenuItem {
+  name: string;
+  items: SubMenuItem[];
+}
+
 interface MenuItem {
   name: string;
   href?: string;
   submenu?: SubMenuItem[];
+  nestedSubmenu?: NestedMenuItem[];
 }
 
 interface ExternalLinkProps {
@@ -38,6 +44,7 @@ const Navbar: React.FC = () => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState<boolean>(false);
   const [isProfileMenuOpen, setIsProfileMenuOpen] = useState<boolean>(false);
   const [openSubmenu, setOpenSubmenu] = useState<string>('');
+  const [openNestedSubmenu, setOpenNestedSubmenu] = useState<string>('');
   const [hoverTimeout, setHoverTimeout] = useState<NodeJS.Timeout | null>(null);
 
   // Close menus when clicking outside
@@ -81,15 +88,24 @@ const Navbar: React.FC = () => {
     { name: 'Contact', href: 'https://support.sdnthailand.com/about/contact' }
   ];
 
-  const dataCenterItems: SubMenuItem[] = [
-    { name: 'Lanna Document', href: 'https://lanna.sdnthailand.com/pages/login.php' },
-    { name: 'ร้อยคนหัวใจเพชร', href: 'https://soberheartteam.sdnthailand.com/' },
-    { name: 'SDN DB Systems', href: 'https://post.sdnthailand.com/sdn/admin/' },
-    { name: 'AVS+', href: 'https://avs2.sdnthailand.com/index.php' },
-    { name: 'SDN Map-portal', href: 'https://sdnmapportal.sdnthailand.com/' },
-    { name: 'SSN Thailand', href: 'https://database.ssnthailand.com/' },
-    { name: 'SDN Futsal NO L CUP', href: 'https://sdnfutsal.com/' },
-    { name: 'Sangha Foundation', href: 'https://ordain-chi.vercel.app/ordain/stats/' },
+  const dataCenterItems: NestedMenuItem[] = [
+
+    {
+      name: 'DB Systems',
+      items: [
+        { name: 'SDN DB Systems', href: 'https://post.sdnthailand.com/sdn/admin/' },
+        { name: 'AVS+', href: 'https://avs2.sdnthailand.com/index.php' },
+        { name: 'SDN Map-portal', href: 'https://sdnmapportal.sdnthailand.com/' },
+        { name: 'SSN Thailand', href: 'https://database.ssnthailand.com/' },
+      ]
+    },
+    {
+      name: 'Data Sources',
+      items: [
+        { name: 'Lanna Document', href: 'https://lanna.sdnthailand.com/pages/login.php' },
+        { name: 'ร้อยคนหัวใจเพชร', href: 'https://soberheartteam.sdnthailand.com/' },
+      ]
+    },
   ];
 
   // Handle submenu hover
@@ -104,19 +120,36 @@ const Navbar: React.FC = () => {
   const handleMouseLeave = () => {
     const timeout = setTimeout(() => {
       setOpenSubmenu('');
+      setOpenNestedSubmenu('');
     }, 300);
     setHoverTimeout(timeout);
+  };
+
+  // Handle nested submenu hover
+  const handleNestedMouseEnter = (nestedName: string) => {
+    if (hoverTimeout) {
+      clearTimeout(hoverTimeout);
+      setHoverTimeout(null);
+    }
+    setOpenNestedSubmenu(nestedName);
   };
 
   // Handle mobile submenu toggle
   const toggleMobileSubmenu = (menuName: string) => {
     setOpenSubmenu(openSubmenu === menuName ? '' : menuName);
+    setOpenNestedSubmenu('');
+  };
+
+  // Handle mobile nested submenu toggle
+  const toggleMobileNestedSubmenu = (nestedName: string) => {
+    setOpenNestedSubmenu(openNestedSubmenu === nestedName ? '' : nestedName);
   };
 
   // Close mobile menu
   const closeMobileMenu = () => {
     setIsMobileMenuOpen(false);
     setOpenSubmenu('');
+    setOpenNestedSubmenu('');
   };
 
   // External link component
@@ -145,9 +178,11 @@ const Navbar: React.FC = () => {
   const renderMenuItem = (item: MenuItem, isMobile: boolean = false) => {
     const isActive = pathname === item.href;
     const hasSubmenu = Boolean(item.submenu);
+    const hasNestedSubmenu = Boolean(item.nestedSubmenu);
     const isSubmenuOpen = openSubmenu === item.name;
 
-    if (hasSubmenu && item.submenu) {
+    // Handle nested submenu (Data Center)
+    if (hasNestedSubmenu && item.nestedSubmenu) {
       return (
         <div
           key={item.name}
@@ -173,12 +208,117 @@ const Navbar: React.FC = () => {
             />
           </button>
 
+          {/* Desktop Nested Submenu */}
+          {!isMobile && isSubmenuOpen && (
+            <div
+              className="absolute top-full right-0 w-72 bg-white shadow-lg border border-gray-100 py-1 z-50 rounded-sm"
+              onMouseEnter={() => handleMouseEnter(item.name)}
+              onMouseLeave={handleMouseLeave}
+            >
+              {item.nestedSubmenu.map((nestedItem) => (
+                <div
+                  key={nestedItem.name}
+                  className="relative"
+                  onMouseEnter={() => handleNestedMouseEnter(nestedItem.name)}
+                >
+                  <div className="flex items-center justify-between px-4 py-2.5 text-sm font-medium text-gray-800 bg-gray-50 border-b border-gray-100">
+                    <IoIosArrowForward className="w-3 h-3 text-gray-500 rotate-180" />
+                    <span>{nestedItem.name}</span>
+                  </div>
+                  
+                  {/* Nested items */}
+                  {openNestedSubmenu === nestedItem.name && (
+                    <div className="absolute right-full top-0 w-64 bg-white shadow-lg border border-gray-100 py-1 z-50 rounded-sm">
+                      {nestedItem.items.map((subItem) => (
+                        <ExternalLink
+                          key={subItem.name}
+                          href={subItem.href}
+                          className="block w-full text-left px-4 py-2.5 text-sm font-light text-gray-700 hover:bg-gray-50 hover:text-orange-600 transition-colors"
+                          onClick={() => {
+                            setOpenSubmenu('');
+                            setOpenNestedSubmenu('');
+                          }}
+                        >
+                          {subItem.name}
+                        </ExternalLink>
+                      ))}
+                    </div>
+                  )}
+                </div>
+              ))}
+            </div>
+          )}
+
+          {/* Mobile Nested Submenu */}
+          {isMobile && isSubmenuOpen && (
+            <div className="bg-gray-50 py-2 rounded mt-1">
+              {item.nestedSubmenu.map((nestedItem) => (
+                <div key={nestedItem.name}>
+                  <button
+                    onClick={() => toggleMobileNestedSubmenu(nestedItem.name)}
+                    className="flex items-center justify-between w-full px-4 py-2 text-sm font-medium text-gray-800 hover:bg-gray-100 transition-colors"
+                    type="button"
+                  >
+                    <span>{nestedItem.name}</span>
+                    <IoIosArrowDown
+                      className={`w-3 h-3 transition-transform ${
+                        openNestedSubmenu === nestedItem.name ? 'rotate-180' : ''
+                      }`}
+                    />
+                  </button>
+                  
+                  {openNestedSubmenu === nestedItem.name && (
+                    <div className="bg-gray-100 py-1 ml-4 rounded">
+                      {nestedItem.items.map((subItem) => (
+                        <ExternalLink
+                          key={subItem.name}
+                          href={subItem.href}
+                          className="block w-full text-left pl-4 pr-4 py-2 text-sm font-light text-gray-600 hover:text-orange-600 hover:bg-gray-200 transition-colors"
+                          onClick={closeMobileMenu}
+                        >
+                          {subItem.name}
+                        </ExternalLink>
+                      ))}
+                    </div>
+                  )}
+                </div>
+              ))}
+            </div>
+          )}
+        </div>
+      );
+    }
+
+    // Handle regular submenu
+    if (hasSubmenu && item.submenu) {
+      return (
+        <div
+          key={item.name}
+          className="relative"
+          onMouseEnter={() => !isMobile && handleMouseEnter(item.name)}
+          onMouseLeave={() => !isMobile && handleMouseLeave()}
+        >
+          <button
+            onClick={() => isMobile && toggleMobileSubmenu(item.name)}
+            className={`flex items-center px-3 py-2 text-sm font-light transition-colors duration-200 ${
+              isActive ? 'text-orange-600' : 'text-gray-700 hover:text-orange-600'
+            } ${isMobile ? 'w-full justify-between text-base' : ''}`}
+            type="button"
+          >
+            <span className="flex items-center">
+              {item.name}
+            </span>
+            <IoIosArrowDown
+              className={`ml-1 w-3 h-3 transition-transform ${
+                isSubmenuOpen ? 'rotate-180' : ''
+              }`}
+            />
+          </button>
+
           {/* Desktop Submenu */}
           {!isMobile && isSubmenuOpen && (
             <div
-              className={`absolute top-full w-64 bg-white shadow-lg border border-gray-100 py-1 z-50 rounded-sm ${
-                item.name === 'Data Center' ? 'right-0' : 'left-0'
-              }`}
+              className="absolute top-full left-0 w-64 bg-white shadow-lg border border-gray-100 py-1 z-50 rounded-sm"
               onMouseEnter={() => handleMouseEnter(item.name)}
               onMouseLeave={handleMouseLeave}
             >
@@ -262,7 +402,7 @@ const Navbar: React.FC = () => {
             <div className="hidden lg:block">
               {renderMenuItem({
                 name: 'Data Center',
-                submenu: dataCenterItems,
+                nestedSubmenu: dataCenterItems,
               }, false)}
             </div>
 
@@ -333,7 +473,7 @@ const Navbar: React.FC = () => {
             {/* Data Center menu for mobile */}
             {renderMenuItem({
               name: 'Data Center',
-              submenu: dataCenterItems,
+              nestedSubmenu: dataCenterItems,
             }, true)}
           </div>
         </div>

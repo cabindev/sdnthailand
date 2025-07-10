@@ -40,6 +40,13 @@ const IntegratedHeroSection: React.FC = () => {
       title: 'ลงทะเบียนเลิกแอลกอฮอล์',
       link: 'https://noalcohol.ddc.moph.go.th/'
     },
+    {
+      id: '5',
+      desktopImage: '/campaign/buddhist2025.jpg',
+      mobileImage: '/campaign/BU.jpg',
+      title: 'BU Campaign',
+      link: 'https://sdnthailand.com/'
+    },
   ]
 
   useEffect(() => {
