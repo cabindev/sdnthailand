@@ -13,25 +13,18 @@ const IntegratedHeroSection: React.FC = () => {
 
   const campaigns = [
     {
-      id: '1',
-      desktopImage: '/campaign/publictv.jpeg',
-      mobileImage: '/campaign/type public.jpg',
-      title: 'Campaign',
-      link: 'https://sdnthailand.com/sdnblog/36837'
-    },
-    {
       id: '2',
-      desktopImage: '/campaign/durain+drinker_TV.jpeg',
-      mobileImage: '/campaign/durain+drinker.jpg',
-      title: 'ทุเรียนกับแอลกอฮอล์ อันตรายถึงชีวิต',
-      link: 'https://sdnthailand.com/sdnblog/36832'
+      desktopImage: '/campaign/Alcohol-low.jpg',
+      mobileImage: '/campaign/Alcohol-low.jpg',
+      title: 'วิดีโอเรื่องแอลกอฮอล์',
+      link: 'https://youtu.be/8IrV2rg0rh0'
     },
     {
       id: '3',
-      desktopImage: '/campaign/rip1.png',
-      mobileImage: '/campaign/rip1.jpg',
-      title: 'ค่าใช้จ่ายในงานศพ',
-      link: 'https://sdnthailand.com/sdnblog/36644'
+      desktopImage: '/campaign/stopdrink.jpg',
+      mobileImage: '/campaign/stopdrink.jpg',
+      title: 'หยุดดื่ม',
+      link: '#'
     },
     {
       id: '4',

@@ -74,6 +74,7 @@ const Navbar: React.FC = () => {
         { name: 'คู่มือการใช้ logo SDN Thailand', href: 'https://blog.sdnthailand.com/sdnthailand-logo-2023' },
       ]
     },
+    { name: 'Video', href: '/video' },
     { name: 'Ebook', href: '/library' },
     { name: 'Library', href: 'https://ebook.sdnthailand.com/' },
     { name: 'SDN Knowledges', href: 'https://knowledges.sdnthailand.com/' },
