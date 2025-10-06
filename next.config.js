@@ -26,6 +26,21 @@ const nextConfig = {
         protocol: 'https',
         hostname: '*.wp.com',
         pathname: '/**',
+      },
+      {
+        protocol: 'https',
+        hostname: 'civicspace.sdnthailand.com',
+        pathname: '/**',
+      },
+      {
+        protocol: 'https',
+        hostname: 'civicblogs12.blob.core.windows.net',
+        pathname: '/**',
+      },
+      {
+        protocol: 'https',
+        hostname: '*.blob.core.windows.net',
+        pathname: '/**',
       }
     ],
   },

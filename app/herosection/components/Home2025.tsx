@@ -3,7 +3,7 @@
 import { useState, useEffect, Suspense, lazy } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import GuildMenu from "./GuildMenu";
-import BuddhistProjectIntroPage from "./BuddhistProjectIntroPage"; // เพิ่ม import
+import CivicSpaceSection from "./CivicSpaceSection";
 
 // Lazy load components
 const Campaign = lazy(() => import("./Campaign"));
@@ -65,7 +65,7 @@ export default function Home2025() {
   return (
     <main className="min-h-screen bg-white">
       
-      {/* Top Section: Buddhist Project (Compact) + Campaign */}
+      {/* Top Section: Civic Space + Campaign */}
       <section className="relative w-full bg-white">
         <motion.div
           className="w-full"
@@ -73,8 +73,8 @@ export default function Home2025() {
           initial="initial"
           animate="animate"
         >
-          {/* Buddhist Project Intro - Compact */}
-          <BuddhistProjectIntroPage />
+          {/* Civic Space Section */}
+          <CivicSpaceSection />
           
           {/* Campaign Section */}
           {/* <div className="w-full max-w-[1920px] mx-auto">
