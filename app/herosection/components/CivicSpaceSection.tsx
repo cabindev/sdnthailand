@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react';
 import Link from "next/link";
 import Image from "next/image";
 import { ExternalLink, ArrowRight, Clock, User } from "lucide-react";
+import Loading from "./loading/Loading";
 
 interface CivicSpacePost {
   id: number;
@@ -83,17 +84,7 @@ export default function CivicSpaceSection() {
   }, []);
 
   if (loading) {
-    return (
-      <section className="bg-gray-50 py-20">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {[...Array(6)].map((_, i) => (
-              <div key={i} className="bg-white rounded-xl h-80 animate-pulse" />
-            ))}
-          </div>
-        </div>
-      </section>
-    );
+    return <Loading size="lg" className="bg-gray-50 py-20" />;
   }
 
   if (error) {
