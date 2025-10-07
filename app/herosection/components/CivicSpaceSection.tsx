@@ -176,7 +176,7 @@ export default function CivicSpaceSection() {
           {posts.map((post, index) => (
             <Link
               key={post.id}
-              href={`https://civicspace.sdnthailand.com/posts/${post.slug}`}
+              href={`https://civicspace.sdnthailand.com/post/${post.slug}`}
               target="_blank"
               rel="noopener noreferrer"
               className={`group bg-white rounded-xl transition-all duration-300 overflow-hidden border border-gray-100 ${
