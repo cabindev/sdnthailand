@@ -9,7 +9,8 @@ import {
   HeartIcon, 
   MapIcon,
   ServerIcon,
-  CircleStackIcon
+  CircleStackIcon,
+  GlobeAltIcon
 } from '@heroicons/react/24/solid';
 
 const GuildMenu: React.FC = () => {
@@ -61,6 +62,12 @@ const GuildMenu: React.FC = () => {
       title: "SDN DB System",
       url: "https://post.sdnthailand.com/sdn/admin/",
       icon: CircleStackIcon
+    },
+    {
+      id: 9,
+      title: "Healthy Public Spaces",
+      url: "https://healthypublicspaces.com/",
+      icon: GlobeAltIcon
     }
   ];
 

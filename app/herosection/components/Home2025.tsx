@@ -88,6 +88,7 @@ export default function Home2025() {
       {/* Guild Menu */}
       <GuildMenu />
 
+
       {/* News Section */}
       <Section id="news" fallback={<NewsLoadingFallback />}>
         <NewsLatest />
