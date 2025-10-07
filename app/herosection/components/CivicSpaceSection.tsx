@@ -136,62 +136,24 @@ export default function CivicSpaceSection() {
     <section className="bg-gray-50 py-20">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         
-        {/* Header Section */}
-        <div className="text-center mb-16">
-          <div className="flex justify-center mb-6">
-            <Image
-              src="/civicspace.png"
-              alt="CivicSpace"
-              width={120}
-              height={120}
-              className="object-contain"
-            />
-          </div>
-          
-          <h2 className="text-3xl lg:text-4xl font-bold mb-4" style={{color: 'oklch(79.5% 0.184 86.047)'}}>
-            พื้นที่พลเมือง
-          </h2>
-          <h3 className="text-3xl lg:text-4xl font-bold text-gray-900 mb-8">
-            ร่วมหาทางออกปัญหาแอลกอฮอล์
-          </h3>
 
-          {/* Main CTA Button */}
-          <div className="mb-12">
-            <Link
-              href="https://civicspace.sdnthailand.com/"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex items-center px-8 py-4 text-white text-lg font-semibold rounded-xl transform hover:scale-105 transition-all duration-200 group"
-              style={{backgroundColor: 'oklch(79.5% 0.184 86.047)'}}
-            >
-              <ExternalLink className="w-5 h-5 mr-3" />
-              พื้นที่พลเมือง
-              <ArrowRight className="w-5 h-5 ml-3 group-hover:translate-x-1 transition-transform" />
-            </Link>
-          </div>
-        </div>
-
-        {/* Posts Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-12">
+        {/* Posts Gallery Grid - Unsplash Style */}
+        <div className="columns-1 md:columns-2 lg:columns-3 gap-4 mb-12 space-y-4">
           {posts.map((post, index) => (
-            <Link
+            <div
               key={post.id}
-              href={`https://civicspace.sdnthailand.com/post/${post.slug}`}
-              target="_blank"
-              rel="noopener noreferrer"
-              className={`group bg-white rounded-xl transition-all duration-300 overflow-hidden border border-gray-100 ${
-                index === 0 ? 'md:col-span-2 lg:col-span-1 lg:row-span-2' : ''
-              }`}
+              className="relative group break-inside-avoid mb-4"
             >
               {/* Image */}
-              <div className={`relative overflow-hidden ${
-                index === 0 ? 'h-64 lg:h-80' : 'h-48'
+              <div className={`relative overflow-hidden rounded-lg ${
+                index % 3 === 0 ? 'h-80' : 
+                index % 3 === 1 ? 'h-64' : 'h-96'
               }`}>
                 <Image
                   src={getImageUrl(post)}
                   alt={post.title}
                   fill
-                  className="object-cover group-hover:scale-105 transition-transform duration-300"
+                  className="object-contain group-hover:scale-105 transition-transform duration-300"
                   sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                   onError={(e) => {
                     const target = e.target as HTMLImageElement;
@@ -199,51 +161,53 @@ export default function CivicSpaceSection() {
                   }}
                   unoptimized={getImageUrl(post).includes('civicspace.sdnthailand.com')}
                 />
-                <div className="absolute top-4 right-4">
-                  <div className="bg-white/90 backdrop-blur-sm rounded-full p-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                    <ExternalLink className="w-4 h-4 text-gray-600" />
+                
+                {/* Overlay with content */}
+                <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                  <div className="absolute bottom-0 left-0 right-0 p-4 text-white">
+                    <h3 className="font-bold mb-2 line-clamp-2 text-lg">
+                      {post.title}
+                    </h3>
+                    
+                    <p className="text-white/90 text-sm mb-3 line-clamp-2">
+                      {truncateText(post.content || post.excerpt, 80)}
+                    </p>
+                    
+                    <div className="flex items-center justify-between text-xs">
+                      <div className="flex items-center space-x-3">
+                        {post.author && (
+                          <div className="flex items-center space-x-1">
+                            <User className="w-3 h-3" />
+                            <span className="truncate">{post.author}</span>
+                          </div>
+                        )}
+                        {post.created_at && (
+                          <div className="flex items-center space-x-1">
+                            <Clock className="w-3 h-3" />
+                            <span>
+                              {new Date(post.created_at).toLocaleDateString('th-TH', { 
+                                day: 'numeric', 
+                                month: 'short'
+                              })}
+                            </span>
+                          </div>
+                        )}
+                      </div>
+                      <ExternalLink className="w-4 h-4" />
+                    </div>
                   </div>
                 </div>
               </div>
-
-              {/* Content */}
-              <div className="p-6">
-                <h3 className={`font-bold text-gray-900 mb-3 line-clamp-2 transition-colors ${
-                  index === 0 ? 'text-xl' : 'text-lg'
-                }`}>
-                  {post.title}
-                </h3>
-                
-                {(index === 0 || posts.length <= 3) && (
-                  <p className="text-gray-600 mb-4 line-clamp-3">
-                    {truncateText(post.content || post.excerpt, 120)}
-                  </p>
-                )}
-                
-                <div className="flex items-center justify-between text-sm text-gray-500">
-                  <div className="flex items-center space-x-4">
-                    {post.author && (
-                      <div className="flex items-center space-x-1">
-                        <User className="w-4 h-4" />
-                        <span className="truncate">{post.author}</span>
-                      </div>
-                    )}
-                    {post.created_at && (
-                      <div className="flex items-center space-x-1">
-                        <Clock className="w-4 h-4" />
-                        <span>
-                          {new Date(post.created_at).toLocaleDateString('th-TH', { 
-                            day: 'numeric', 
-                            month: 'short',
-                            year: 'numeric'
-                          })}
-                        </span>
-                      </div>
-                    )}
-                  </div>
-                </div>
-              </div>
-            </Link>
+              
+              {/* Call to Action Link */}
+              <Link
+                href={`https://civicspace.sdnthailand.com/post/${post.slug}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="absolute inset-0 z-10"
+                aria-label={`อ่านบทความ: ${post.title}`}
+              />
+            </div>
           ))}
         </div>
 
@@ -256,7 +220,19 @@ export default function CivicSpaceSection() {
             แบ่งปันความคิดเห็น หาทางออกร่วมกัน และสร้างสังคมไทยที่ปลอดภัยจากปัญหาแอลกอฮอล์
           </p>
           
-          <div className="flex justify-center">
+          <div className="flex justify-center space-x-4">
+            <Link
+              href="https://civicspace.sdnthailand.com/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center px-8 py-4 text-white text-lg font-semibold rounded-xl transform hover:scale-105 transition-all duration-200 group"
+              style={{backgroundColor: 'oklch(79.5% 0.184 86.047)'}}
+            >
+              <ExternalLink className="w-5 h-5 mr-3" />
+              พื้นที่พลเมือง
+              <ArrowRight className="w-5 h-5 ml-3 group-hover:translate-x-1 transition-transform" />
+            </Link>
+            
             <Link
               href="https://www.facebook.com/profile.php?id=61579556311842"
               target="_blank"
