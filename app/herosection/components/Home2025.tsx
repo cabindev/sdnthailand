@@ -5,7 +5,6 @@ import { motion, AnimatePresence } from "framer-motion";
 import GuildMenu from "./GuildMenu";
 
 // Lazy load components
-const CoverElephant = lazy(() => import("./CoverElephant"));
 const NewsLatest = lazy(() => import("@/app/features/news/components/NewsLatest"));
 const BlogList = lazy(() => import("@/app/features/blog/components/BlogList"));
 const Support = lazy(() => import("./Support"));
@@ -65,7 +64,7 @@ export default function Home2025() {
   return (
     <main className="min-h-screen bg-white">
       
-      {/* Top Section: Cover Elephant */}
+      {/* Top Section: CivicSpace */}
       <section className="relative w-full bg-white">
         <motion.div
           className="w-full"
@@ -73,8 +72,8 @@ export default function Home2025() {
           initial="initial"
           animate="animate"
         >
-          {/* Cover Elephant Section */}
-          <Suspense fallback={<div className="h-[630px] w-full bg-gray-50 animate-pulse" />}>
+          {/* CivicSpace Landing Section */}
+          <Suspense fallback={<div className="min-h-screen w-full bg-gray-50 animate-pulse" />}>
             <IntegratedHeroSection />
           </Suspense>
         </motion.div>
