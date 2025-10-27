@@ -3,10 +3,9 @@
 import { useState, useEffect, Suspense, lazy } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import GuildMenu from "./GuildMenu";
-import CivicSpaceSection from "./CivicSpaceSection";
 
 // Lazy load components
-const Campaign = lazy(() => import("./Campaign"));
+const CoverElephant = lazy(() => import("./CoverElephant"));
 const NewsLatest = lazy(() => import("@/app/features/news/components/NewsLatest"));
 const BlogList = lazy(() => import("@/app/features/blog/components/BlogList"));
 const Support = lazy(() => import("./Support"));
@@ -19,6 +18,7 @@ const LogoShowcase = lazy(() => import("@/app/features/components/LogoShowcase")
 // Loading components
 import NewsLoadingFallback from "@/app/herosection/components/loading/NewsLoadingFallback";
 import BlogLoadingFallback from "@/app/herosection/components/loading/BlogLoadingFallback";
+import IntegratedHeroSection from "./ProjectIntroPage";
 
 // Animation variants
 const ANIMATIONS = {
@@ -65,7 +65,7 @@ export default function Home2025() {
   return (
     <main className="min-h-screen bg-white">
       
-      {/* Top Section: Civic Space + Campaign */}
+      {/* Top Section: Cover Elephant */}
       <section className="relative w-full bg-white">
         <motion.div
           className="w-full"
@@ -73,15 +73,10 @@ export default function Home2025() {
           initial="initial"
           animate="animate"
         >
-          {/* Civic Space Section */}
-          <CivicSpaceSection />
-          
-          {/* Campaign Section */}
-          {/* <div className="w-full max-w-[1920px] mx-auto">
-            <Suspense fallback={<div className="h-[630px] w-full bg-gray-50 animate-pulse" />}>
-              <Campaign />
-            </Suspense>
-          </div> */}
+          {/* Cover Elephant Section */}
+          <Suspense fallback={<div className="h-[630px] w-full bg-gray-50 animate-pulse" />}>
+            <IntegratedHeroSection />
+          </Suspense>
         </motion.div>
       </section>
 

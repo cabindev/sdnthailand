@@ -2,6 +2,7 @@
 'use client'
 
 import useSWR from 'swr'
+import Link from 'next/link'
 import VideoCard from '@/app/video/components/VideoCard'
 
 const fetcher = (url: string) => fetch(url).then(r => r.json());
@@ -23,6 +24,16 @@ export default function VideoLatest() {
           {data.posts.map((video: any) => (
             <VideoCard key={video.id} video={video} />
           ))}
+        </div>
+
+        {/* View All Videos Link */}
+        <div className="text-center mt-8">
+          <Link
+            href="/video"
+            className="inline-block px-6 py-2 bg-orange-500 text-white rounded-full hover:bg-orange-600 transition-colors"
+          >
+            ดู Videos ทั้งหมด
+          </Link>
         </div>
       </div>
     </section>
