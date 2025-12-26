@@ -12,6 +12,7 @@ export default function Contact() {
     subject: '',
     message: ''
   });
+  const [file, setFile] = useState<File | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitStatus, setSubmitStatus] = useState<{ type: 'success' | 'error', message: string } | null>(null);
 
@@ -22,18 +23,37 @@ export default function Contact() {
     });
   };
 
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files && e.target.files[0]) {
+      const selectedFile = e.target.files[0];
+      // Check file size (max 10MB)
+      if (selectedFile.size > 10 * 1024 * 1024) {
+        setSubmitStatus({ type: 'error', message: 'ไฟล์มีขนาดใหญ่เกิน 10MB' });
+        return;
+      }
+      setFile(selectedFile);
+    }
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsSubmitting(true);
     setSubmitStatus(null);
 
     try {
+      const formDataToSend = new FormData();
+      formDataToSend.append('name', formData.name);
+      formDataToSend.append('email', formData.email);
+      formDataToSend.append('phone', formData.phone);
+      formDataToSend.append('subject', formData.subject);
+      formDataToSend.append('message', formData.message);
+      if (file) {
+        formDataToSend.append('file', file);
+      }
+
       const response = await fetch('/api/contact', {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(formData),
+        body: formDataToSend,
       });
 
       const data = await response.json();
@@ -47,6 +67,10 @@ export default function Contact() {
           subject: '',
           message: ''
         });
+        setFile(null);
+        // Reset file input
+        const fileInput = document.getElementById('file') as HTMLInputElement;
+        if (fileInput) fileInput.value = '';
       } else {
         setSubmitStatus({ type: 'error', message: data.error || 'เกิดข้อผิดพลาด' });
       }
@@ -258,6 +282,24 @@ export default function Contact() {
                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-transparent resize-none"
                  placeholder="กรุณาระบุรายละเอียดที่ต้องการติดต่อ"
                />
+             </div>
+
+             <div>
+               <label htmlFor="file" className="block text-sm font-medium text-gray-700 mb-2">
+                 แนบไฟล์ (PDF, รูปภาพ) - ไม่เกิน 10MB
+               </label>
+               <input
+                 type="file"
+                 id="file"
+                 onChange={handleFileChange}
+                 accept=".pdf,.jpg,.jpeg,.png,.gif"
+                 className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-transparent file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-medium file:bg-orange-50 file:text-orange-700 hover:file:bg-orange-100"
+               />
+               {file && (
+                 <p className="mt-2 text-sm text-gray-600">
+                   ไฟล์ที่เลือก: {file.name} ({(file.size / 1024 / 1024).toFixed(2)} MB)
+                 </p>
+               )}
              </div>
 
              <div className="flex justify-end">

@@ -1,14 +1,35 @@
 import { NextRequest, NextResponse } from 'next/server';
 import nodemailer from 'nodemailer';
 import path from 'path';
+import { writeFile, mkdir } from 'fs/promises';
 
 export async function POST(request: NextRequest) {
   try {
-    const body = await request.json();
-    const { name, email, phone, subject, message } = body;
+    const formData = await request.formData();
+    const name = formData.get('name') as string;
+    const email = formData.get('email') as string;
+    const phone = formData.get('phone') as string;
+    const subject = formData.get('subject') as string;
+    const message = formData.get('message') as string;
+    const file = formData.get('file') as File | null;
 
     if (!name || !email || !subject || !message) {
       return NextResponse.json({ error: 'กรุณากรอกข้อมูลให้ครบถ้วน' }, { status: 400 });
+    }
+
+    let filePath = '';
+    if (file) {
+      const bytes = await file.arrayBuffer();
+      const buffer = Buffer.from(bytes);
+      const filename = `${Date.now()}-${file.name}`;
+      const uploadDir = path.join(process.cwd(), 'public', 'uploads', 'contact');
+
+      // Ensure the upload directory exists
+      await mkdir(uploadDir, { recursive: true });
+
+      const fullPath = path.join(uploadDir, filename);
+      await writeFile(fullPath, buffer);
+      filePath = `/uploads/contact/${filename}`;
     }
 
     // Email sending configuration
@@ -70,6 +91,8 @@ export async function POST(request: NextRequest) {
               <p><strong>ข้อความ:</strong></p>
               <p>${message.replace(/\n/g, '<br>')}</p>
             </div>
+
+            ${filePath ? '<p><strong>ไฟล์แนบ:</strong> มีไฟล์แนบมาด้วย</p>' : ''}
 
             <p style="margin-top: 20px; font-size: 12px; color: #666;">
               ส่งเมื่อ: ${new Date().toLocaleDateString('th-TH', { year: 'numeric', month: 'long', day: 'numeric', hour: '2-digit', minute: '2-digit' })}
@@ -135,19 +158,29 @@ export async function POST(request: NextRequest) {
     `;
 
     // Send email to admin team and contact@sdnthailand.com
+    const attachments: any[] = [
+      {
+        filename: 'logo.png',
+        path: path.join(process.cwd(), 'public', 'logo.png'),
+        cid: 'logo'
+      }
+    ];
+
+    // Add user uploaded file if exists
+    if (filePath && file) {
+      attachments.push({
+        filename: file.name,
+        path: path.join(process.cwd(), 'public', filePath)
+      });
+    }
+
     await transporter.sendMail({
       from: '"SDN Thailand" <sdnthailandbackup@gmail.com>',
-      to: "contact@sdnthailand.com, evo_reaction@hotmail.com, tom_teera@hotmail.com, tan66847@gmail.com",
+      to: "contact@sdnthailand.com, evo_reaction@hotmail.com",
       subject: `ข้อความติดต่อจากเว็บไซต์: ${subject}`,
       html: adminEmailHtml,
       replyTo: email,
-      attachments: [
-        {
-          filename: 'logo.png',
-          path: path.join(process.cwd(), 'public', 'logo.png'),
-          cid: 'logo'
-        }
-      ]
+      attachments: attachments
     });
 
     // Send confirmation email to user
