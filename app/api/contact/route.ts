@@ -3,25 +3,91 @@ import nodemailer from 'nodemailer';
 import path from 'path';
 import { writeFile, mkdir } from 'fs/promises';
 
+// Simple in-memory rate limiting
+const rateLimitMap = new Map<string, { count: number; resetTime: number }>();
+
+function checkRateLimit(ip: string): boolean {
+  const now = Date.now();
+  const limit = rateLimitMap.get(ip);
+
+  if (!limit || now > limit.resetTime) {
+    rateLimitMap.set(ip, { count: 1, resetTime: now + 60000 }); // 1 minute window
+    return true;
+  }
+
+  if (limit.count >= 3) { // Max 3 requests per minute
+    return false;
+  }
+
+  limit.count++;
+  return true;
+}
+
+function sanitizeInput(input: string, maxLength: number = 1000): string {
+  return input
+    .trim()
+    .substring(0, maxLength)
+    .replace(/[<>]/g, ''); // Remove < and > to prevent basic XSS
+}
+
+function validateEmail(email: string): boolean {
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  return emailRegex.test(email);
+}
+
 export async function POST(request: NextRequest) {
   try {
+    // Rate limiting
+    const ip = request.headers.get('x-forwarded-for') || request.headers.get('x-real-ip') || 'unknown';
+    if (!checkRateLimit(ip)) {
+      return NextResponse.json({ error: 'ส่งคำขอบ่อยเกินไป กรุณารอสักครู่แล้วลองใหม่' }, { status: 429 });
+    }
+
     const formData = await request.formData();
-    const name = formData.get('name') as string;
-    const email = formData.get('email') as string;
-    const phone = formData.get('phone') as string;
-    const subject = formData.get('subject') as string;
-    const message = formData.get('message') as string;
+    const name = sanitizeInput(formData.get('name') as string, 100);
+    const email = sanitizeInput(formData.get('email') as string, 100);
+    const phone = sanitizeInput(formData.get('phone') as string, 20);
+    const subject = sanitizeInput(formData.get('subject') as string, 200);
+    const message = sanitizeInput(formData.get('message') as string, 5000);
     const file = formData.get('file') as File | null;
 
     if (!name || !email || !subject || !message) {
       return NextResponse.json({ error: 'กรุณากรอกข้อมูลให้ครบถ้วน' }, { status: 400 });
     }
 
+    if (!validateEmail(email)) {
+      return NextResponse.json({ error: 'รูปแบบอีเมลไม่ถูกต้อง' }, { status: 400 });
+    }
+
     let filePath = '';
     if (file) {
+      // Validate file size (max 10MB)
+      const maxSize = 10 * 1024 * 1024;
+      if (file.size > maxSize) {
+        return NextResponse.json({ error: 'ไฟล์มีขนาดใหญ่เกิน 10MB' }, { status: 400 });
+      }
+
+      // Validate file type by MIME type
+      const allowedMimeTypes = [
+        'application/pdf',
+        'image/jpeg',
+        'image/jpg',
+        'image/png',
+        'image/gif'
+      ];
+
+      if (!allowedMimeTypes.includes(file.type)) {
+        return NextResponse.json({ error: 'ประเภทไฟล์ไม่ถูกต้อง อนุญาตเฉพาพ PDF และรูปภาพเท่านั้น' }, { status: 400 });
+      }
+
       const bytes = await file.arrayBuffer();
       const buffer = Buffer.from(bytes);
-      const filename = `${Date.now()}-${file.name}`;
+
+      // Sanitize filename - remove special characters and limit length
+      const sanitizedName = file.name
+        .replace(/[^a-zA-Z0-9.-_]/g, '_')
+        .substring(0, 100);
+      const filename = `${Date.now()}-${sanitizedName}`;
       const uploadDir = path.join(process.cwd(), 'public', 'uploads', 'contact');
 
       // Ensure the upload directory exists
