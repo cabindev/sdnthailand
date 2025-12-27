@@ -77,7 +77,25 @@ export async function POST(request: NextRequest) {
       ];
 
       if (!allowedMimeTypes.includes(file.type)) {
-        return NextResponse.json({ error: 'ประเภทไฟล์ไม่ถูกต้อง อนุญาตเฉพาพ PDF และรูปภาพเท่านั้น' }, { status: 400 });
+        return NextResponse.json({ error: 'ประเภทไฟล์ไม่ถูกต้อง อนุญาตเฉพาะ PDF และรูปภาพเท่านั้น' }, { status: 400 });
+      }
+
+      // Double check file extension (prevent bypass)
+      const fileExt = file.name.split('.').pop()?.toLowerCase();
+      const allowedExtensions = ['pdf', 'jpg', 'jpeg', 'png', 'gif'];
+
+      if (!fileExt || !allowedExtensions.includes(fileExt)) {
+        return NextResponse.json({ error: 'นามสกุลไฟล์ไม่ถูกต้อง' }, { status: 400 });
+      }
+
+      // Prevent double extensions (e.g., file.php.jpg)
+      const allExtensions = file.name.split('.').slice(1).map(ext => ext.toLowerCase());
+      const dangerousExtensions = ['php', 'php3', 'php4', 'php5', 'phtml', 'exe', 'sh', 'bat', 'cmd', 'com', 'pif', 'scr', 'vbs', 'js', 'jar'];
+
+      for (const ext of allExtensions) {
+        if (dangerousExtensions.includes(ext)) {
+          return NextResponse.json({ error: 'ตรวจพบนามสกุลไฟล์ที่เป็นอันตราย' }, { status: 400 });
+        }
       }
 
       const bytes = await file.arrayBuffer();
@@ -242,7 +260,7 @@ export async function POST(request: NextRequest) {
 
     await transporter.sendMail({
       from: '"SDN Thailand" <sdnthailandbackup@gmail.com>',
-      to: "contact@sdnthailand.com, evo_reaction@hotmail.com ,tom_teera@hotmail.com, tan66847@gmail.com",
+      to: "contact@sdnthailand.com,evo_reaction@hotmail.com,tom_teera@hotmail.com,tan66847@gmail.com",
       subject: `ข้อความติดต่อจากเว็บไซต์: ${subject}`,
       html: adminEmailHtml,
       replyTo: email,

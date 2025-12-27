@@ -1,0 +1,27 @@
+# Prevent PHP execution in contact uploads directory
+<Files *.php>
+    deny from all
+</Files>
+<Files *.phps>
+    deny from all
+</Files>
+<Files *.php5>
+    deny from all
+</Files>
+<Files *.phtml>
+    deny from all
+</Files>
+
+# Disable script execution
+Options -ExecCGI
+AddHandler cgi-script .php .php3 .php4 .php5 .phtml .pl .py .jsp .asp .sh .cgi
+RemoveHandler .php .phtml .php3 .php4 .php5
+
+# Prevent directory browsing
+Options -Indexes
+
+# Only allow specific file types
+<FilesMatch "\.(jpg|jpeg|png|gif|pdf)$">
+    Order Allow,Deny
+    Allow from all
+</FilesMatch>
