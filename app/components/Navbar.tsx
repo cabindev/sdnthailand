@@ -86,7 +86,15 @@ const Navbar: React.FC = () => {
         { name: 'Store', href: 'https://support.sdnthailand.com/products' },
       ]
     },
-    { name: 'Contact', href: 'https://support.sdnthailand.com/about/contact' }
+    {
+      name: 'About',
+      submenu: [
+        { name: 'เกี่ยวกับเรา', href: '/about/mission' },
+        { name: 'หลักการทำงาน', href: '/about/principle' },
+        { name: 'โครงการ', href: '/about/projects' },
+      ]
+    },
+    { name: 'Contact', href: '/about/contact' }
   ];
 
   const dataCenterItems: NestedMenuItem[] = [
@@ -323,32 +331,60 @@ const Navbar: React.FC = () => {
               onMouseEnter={() => handleMouseEnter(item.name)}
               onMouseLeave={handleMouseLeave}
             >
-              {item.submenu.map((subItem) => (
-                <ExternalLink
-                  key={subItem.name}
-                  href={subItem.href}
-                  className="block w-full text-left px-4 py-2.5 text-sm font-light text-gray-700 hover:bg-gray-50 hover:text-orange-600 transition-colors"
-                  onClick={() => setOpenSubmenu('')}
-                >
-                  {subItem.name}
-                </ExternalLink>
-              ))}
+              {item.submenu.map((subItem) => {
+                const isExternal = subItem.href.startsWith('http');
+                const linkClassName = "block w-full text-left px-4 py-2.5 text-sm font-light text-gray-700 hover:bg-gray-50 hover:text-orange-600 transition-colors";
+
+                return isExternal ? (
+                  <ExternalLink
+                    key={subItem.name}
+                    href={subItem.href}
+                    className={linkClassName}
+                    onClick={() => setOpenSubmenu('')}
+                  >
+                    {subItem.name}
+                  </ExternalLink>
+                ) : (
+                  <InternalLink
+                    key={subItem.name}
+                    href={subItem.href}
+                    className={linkClassName}
+                    onClick={() => setOpenSubmenu('')}
+                  >
+                    {subItem.name}
+                  </InternalLink>
+                );
+              })}
             </div>
           )}
 
           {/* Mobile Submenu */}
           {isMobile && isSubmenuOpen && (
             <div className="bg-gray-50 py-2 rounded mt-1">
-              {item.submenu.map((subItem) => (
-                <ExternalLink
-                  key={subItem.name}
-                  href={subItem.href}
-                  className="block w-full text-left pl-6 pr-4 py-3 text-sm font-light text-gray-600 hover:text-orange-600 hover:bg-gray-100 transition-colors"
-                  onClick={closeMobileMenu}
-                >
-                  {subItem.name}
-                </ExternalLink>
-              ))}
+              {item.submenu.map((subItem) => {
+                const isExternal = subItem.href.startsWith('http');
+                const linkClassName = "block w-full text-left pl-6 pr-4 py-3 text-sm font-light text-gray-600 hover:text-orange-600 hover:bg-gray-100 transition-colors";
+
+                return isExternal ? (
+                  <ExternalLink
+                    key={subItem.name}
+                    href={subItem.href}
+                    className={linkClassName}
+                    onClick={closeMobileMenu}
+                  >
+                    {subItem.name}
+                  </ExternalLink>
+                ) : (
+                  <InternalLink
+                    key={subItem.name}
+                    href={subItem.href}
+                    className={linkClassName}
+                    onClick={closeMobileMenu}
+                  >
+                    {subItem.name}
+                  </InternalLink>
+                );
+              })}
             </div>
           )}
         </div>
@@ -457,6 +493,7 @@ const Navbar: React.FC = () => {
               onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
               className="lg:hidden p-2 rounded hover:bg-gray-100 transition-colors"
               type="button"
+              aria-label="Toggle mobile menu"
             >
               <HiMenuAlt3 className="h-5 w-5 text-gray-700" />
             </button>
