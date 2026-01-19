@@ -1,6 +1,7 @@
 
-import Home2025 from "./herosection/components/Home";
+import Home from "./herosection/components/Home";
 
-export default function Home() {
+
+export default function Homepage() {
   return <Home />;
 }

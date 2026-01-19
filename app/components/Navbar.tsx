@@ -326,13 +326,11 @@ const Navbar: React.FC = () => {
 
           {/* Desktop Submenu */}
           {!isMobile && isSubmenuOpen && (
-            <div className="absolute top-full left-0 pt-1 z-50">
-              {/* Invisible bridge to prevent gap */}
-              <div
-                className="w-64 bg-white shadow-lg border border-gray-100 py-1 rounded-sm"
-                onMouseEnter={() => handleMouseEnter(item.name)}
-                onMouseLeave={handleMouseLeave}
-              >
+            <div
+              className="absolute top-full left-0 w-64 bg-white shadow-lg border border-gray-100 py-1 z-50 rounded-sm"
+              onMouseEnter={() => handleMouseEnter(item.name)}
+              onMouseLeave={handleMouseLeave}
+            >
               {item.submenu.map((subItem) => {
                 const isExternal = subItem.href.startsWith('http');
                 const linkClassName = "block w-full text-left px-4 py-2.5 text-sm font-light text-gray-700 hover:bg-gray-50 hover:text-orange-600 transition-colors";
@@ -357,7 +355,6 @@ const Navbar: React.FC = () => {
                   </InternalLink>
                 );
               })}
-              </div>
             </div>
           )}
 
