@@ -45,7 +45,7 @@ const ANIMATIONS = {
 
 const VIEWPORT_CONFIG = { once: true, margin: "-30px" };
 
-export default function Home2025() {
+export default function Home() {
   const [isScrolled, setIsScrolled] = useState(false);
 
   useEffect(() => {

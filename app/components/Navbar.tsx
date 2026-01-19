@@ -117,7 +117,7 @@ const Navbar: React.FC = () => {
     },
   ];
 
-  // Handle submenu hover
+  // Handle submenu hover - show immediately on enter
   const handleMouseEnter = (menuName: string) => {
     if (hoverTimeout) {
       clearTimeout(hoverTimeout);
@@ -126,15 +126,16 @@ const Navbar: React.FC = () => {
     setOpenSubmenu(menuName);
   };
 
+  // Small delay on leave to allow moving to submenu
   const handleMouseLeave = () => {
     const timeout = setTimeout(() => {
       setOpenSubmenu('');
       setOpenNestedSubmenu('');
-    }, 300);
+    }, 150); // Reduced from 300ms to 150ms for faster response
     setHoverTimeout(timeout);
   };
 
-  // Handle nested submenu hover
+  // Handle nested submenu hover - show immediately
   const handleNestedMouseEnter = (nestedName: string) => {
     if (hoverTimeout) {
       clearTimeout(hoverTimeout);
@@ -326,11 +327,13 @@ const Navbar: React.FC = () => {
 
           {/* Desktop Submenu */}
           {!isMobile && isSubmenuOpen && (
-            <div
-              className="absolute top-full left-0 w-64 bg-white shadow-lg border border-gray-100 py-1 z-50 rounded-sm"
-              onMouseEnter={() => handleMouseEnter(item.name)}
-              onMouseLeave={handleMouseLeave}
-            >
+            <div className="absolute top-full left-0 pt-1 z-50">
+              {/* Invisible bridge to prevent gap */}
+              <div
+                className="w-64 bg-white shadow-lg border border-gray-100 py-1 rounded-sm"
+                onMouseEnter={() => handleMouseEnter(item.name)}
+                onMouseLeave={handleMouseLeave}
+              >
               {item.submenu.map((subItem) => {
                 const isExternal = subItem.href.startsWith('http');
                 const linkClassName = "block w-full text-left px-4 py-2.5 text-sm font-light text-gray-700 hover:bg-gray-50 hover:text-orange-600 transition-colors";
@@ -355,6 +358,7 @@ const Navbar: React.FC = () => {
                   </InternalLink>
                 );
               })}
+              </div>
             </div>
           )}
 
