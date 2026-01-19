@@ -91,7 +91,6 @@ const Navbar: React.FC = () => {
       submenu: [
         { name: 'เกี่ยวกับเรา', href: '/about/mission' },
         { name: 'หลักการทำงาน', href: '/about/principle' },
-        { name: 'โครงการ', href: '/about/projects' },
       ]
     },
     { name: 'Contact', href: '/about/contact' }
