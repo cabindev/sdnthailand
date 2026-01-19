@@ -95,15 +95,15 @@ const IntegratedHeroSection: React.FC = () => {
                 className="block"
                 aria-label="เข้าสู่ CivicSpace"
               >
-                <div className="relative w-full aspect-video rounded-lg overflow-hidden border border-gray-200">
+                <div className="relative w-full rounded-lg overflow-hidden border border-gray-200">
                   <Image
-                    src="/campaign/CoverElephant.jpg"
-                    alt="CivicSpace - พื้นที่พลเมือง"
-                    fill
-                    priority
-                    quality={90}
-                    className="object-cover hover:opacity-95 transition-opacity"
-                    sizes="(max-width: 1024px) 100vw, 50vw"
+                  src="/campaign/life.jpg"
+                  alt="CivicSpace - พื้นที่พลเมือง"
+                  width={2048}
+                  height={2024}
+                  priority
+                  quality={90}
+                  className="w-full h-auto object-cover hover:opacity-95 transition-opacity"
                   />
                 </div>
               </a>

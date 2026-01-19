@@ -46,6 +46,7 @@ const Navbar: React.FC = () => {
   const [openSubmenu, setOpenSubmenu] = useState<string>('');
   const [openNestedSubmenu, setOpenNestedSubmenu] = useState<string>('');
   const [hoverTimeout, setHoverTimeout] = useState<NodeJS.Timeout | null>(null);
+  const [enterTimeout, setEnterTimeout] = useState<NodeJS.Timeout | null>(null);
 
   // Close menus when clicking outside
   useEffect(() => {
@@ -56,14 +57,17 @@ const Navbar: React.FC = () => {
     return () => document.removeEventListener('click', handleClickOutside);
   }, []);
 
-  // Cleanup timeout on unmount
+  // Cleanup timeouts on unmount
   useEffect(() => {
     return () => {
       if (hoverTimeout) {
         clearTimeout(hoverTimeout);
       }
+      if (enterTimeout) {
+        clearTimeout(enterTimeout);
+      }
     };
-  }, [hoverTimeout]);
+  }, [hoverTimeout, enterTimeout]);
 
   const menuItems: MenuItem[] = [
     { name: 'Home', href: '/' },
@@ -116,21 +120,35 @@ const Navbar: React.FC = () => {
     },
   ];
 
-  // Handle submenu hover - show immediately on enter
+  // Handle submenu hover - add small delay before showing
   const handleMouseEnter = (menuName: string) => {
+    // Clear any pending leave timeout
     if (hoverTimeout) {
       clearTimeout(hoverTimeout);
       setHoverTimeout(null);
     }
-    setOpenSubmenu(menuName);
+    // Clear any pending enter timeout
+    if (enterTimeout) {
+      clearTimeout(enterTimeout);
+    }
+    // Add delay before showing submenu (prevents accidental triggers)
+    const timeout = setTimeout(() => {
+      setOpenSubmenu(menuName);
+    }, 200); // 200ms delay before showing
+    setEnterTimeout(timeout);
   };
 
   // Small delay on leave to allow moving to submenu
   const handleMouseLeave = () => {
+    // Clear enter timeout if mouse leaves before submenu shows
+    if (enterTimeout) {
+      clearTimeout(enterTimeout);
+      setEnterTimeout(null);
+    }
     const timeout = setTimeout(() => {
       setOpenSubmenu('');
       setOpenNestedSubmenu('');
-    }, 150); // Reduced from 300ms to 150ms for faster response
+    }, 150);
     setHoverTimeout(timeout);
   };
 
