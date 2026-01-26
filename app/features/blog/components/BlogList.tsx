@@ -1,6 +1,8 @@
 // BlogList.tsx
-import useSWR from 'swr';
+import useSWR, { mutate } from 'swr';
 import Link from 'next/link';
+import { useState } from 'react';
+import { IoRefresh } from 'react-icons/io5';
 import BlogCard from './BlogCard';
 
 interface BlogPost {
@@ -34,18 +36,26 @@ interface BlogResponse {
 }
 
 const fetcher = (url: string) => fetch(url).then(r => r.json());
+const API_URL = '/api/sdnblog?per_page=4&_embed=1';
 
 function BlogContent() {
+  const [isRefreshing, setIsRefreshing] = useState(false);
   const { data, error, isLoading } = useSWR<BlogResponse>(
-    '/api/sdnblog?per_page=4&_embed=1', // เพิ่ม _embed=1 เพื่อให้ได้ข้อมูลภาพครบถ้วน
+    API_URL,
     fetcher,
     {
       revalidateOnFocus: false,
-      dedupingInterval: 60000,
-      revalidateIfStale: false,
+      dedupingInterval: 30000, // ลดจาก 60000 เป็น 30000
+      revalidateIfStale: true, // เปิดให้ revalidate เมื่อข้อมูลเก่า
       revalidateOnReconnect: false
     }
   );
+
+  const handleRefresh = async () => {
+    setIsRefreshing(true);
+    await mutate(API_URL);
+    setIsRefreshing(false);
+  };
 
   if (isLoading) {
     return (
@@ -83,6 +93,7 @@ function BlogContent() {
       <div className="text-center py-12">
         <div className="text-red-500 text-lg">Failed to load blog posts</div>
         <button
+          type="button"
           onClick={() => window.location.reload()}
           className="mt-4 px-6 py-2 bg-orange-500 text-white rounded-full hover:bg-orange-600 transition-colors"
         >
@@ -96,6 +107,20 @@ function BlogContent() {
 
   return (
     <div className="space-y-8">
+      {/* Refresh button */}
+      <div className="flex justify-end">
+        <button
+          type="button"
+          onClick={handleRefresh}
+          disabled={isRefreshing}
+          className="flex items-center gap-2 px-4 py-2 text-sm text-gray-600 hover:text-orange-600 hover:bg-orange-100 rounded-full transition-colors disabled:opacity-50"
+          title="รีเฟรชข้อมูล"
+        >
+          <IoRefresh className={`w-4 h-4 ${isRefreshing ? 'animate-spin' : ''}`} />
+          <span>{isRefreshing ? 'กำลังโหลด...' : 'รีเฟรช'}</span>
+        </button>
+      </div>
+
       {posts[0] && <BlogCard post={posts[0]} isLarge />}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
         {posts.slice(1, 4).map((post) => (
