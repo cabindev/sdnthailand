@@ -2,7 +2,7 @@
 
 import { useState, useMemo, useCallback, useEffect } from 'react';
 import dynamic from 'next/dynamic';
-import { Loader, MapPin, FileText, Layers, X, ExternalLink, Map as MapIcon, Palette, ArrowRight } from 'lucide-react';
+import { Loader, MapPin, FileText, Layers, Minus, X, ExternalLink, Map as MapIcon, Palette, ArrowRight } from 'lucide-react';
 import { useMapPortalDocuments } from '../hooks/useMapPortalDocuments';
 import { regionData, findRegionByProvince } from '../data/regions';
 import { getCategoryColor } from '../utils/colorGenerator';
@@ -152,19 +152,27 @@ export default function MapPortalSection() {
         />
       </div>
 
-      {/* Floating toggle button */}
-      <div className={`absolute top-20 z-[501] transition-all duration-300 ease-out ${
-        sidebarOpen ? 'left-[calc(min(100vw-1.5rem,380px)+1.5rem)] sm:left-[396px]' : 'left-4'
-      }`}>
-        <button
-          type="button"
-          onClick={() => setSidebarOpen(!sidebarOpen)}
-          className="w-10 h-10 rounded-full bg-white shadow-lg border border-gray-100 flex items-center justify-center text-gray-700 hover:bg-gray-50 transition-colors"
-          title={sidebarOpen ? 'ซ่อนชั้นข้อมูล' : 'แสดงชั้นข้อมูล'}
-        >
-          {sidebarOpen ? <X className="w-5 h-5" /> : <Layers className="w-5 h-5" />}
-        </button>
-      </div>
+      {/* Floating toggle button - show only when sidebar is closed */}
+      {!sidebarOpen && (
+        <div className="absolute top-4 left-4 z-[501]">
+          <button
+            type="button"
+            onClick={() => setSidebarOpen(true)}
+            className="w-10 h-10 rounded-full bg-white shadow-lg border border-gray-100 flex items-center justify-center text-gray-700 hover:bg-gray-50 transition-colors"
+            title="แสดงชั้นข้อมูล"
+          >
+            <Layers className="w-5 h-5" />
+          </button>
+        </div>
+      )}
+
+      {/* Mobile backdrop - tap to close */}
+      {sidebarOpen && (
+        <div
+          className="absolute inset-0 bg-black/20 z-[499] lg:hidden"
+          onClick={() => setSidebarOpen(false)}
+        />
+      )}
 
       {/* Sliding panel */}
       <div className={`absolute top-3 left-3 bottom-3 z-[500] transition-transform duration-300 ease-out ${
@@ -183,15 +191,25 @@ export default function MapPortalSection() {
                   <p className="text-sm text-gray-400 mt-1">ระบบแผนที่ข้อมูลเชิงพื้นที่</p>
                 </div>
               </div>
-              <a
-                href={MAPPORTAL_URL}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="p-2 text-gray-300 hover:text-orange-500 rounded-lg hover:bg-gray-50 transition-colors"
-                title="เปิด SDN Map Portal"
-              >
-                <ExternalLink className="w-5 h-5" />
-              </a>
+              <div className="flex items-center gap-1">
+                <a
+                  href={MAPPORTAL_URL}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="p-2 text-gray-300 hover:text-orange-500 rounded-lg hover:bg-gray-50 transition-colors"
+                  title="เปิด SDN Map Portal"
+                >
+                  <ExternalLink className="w-5 h-5" />
+                </a>
+                <button
+                  type="button"
+                  onClick={() => setSidebarOpen(false)}
+                  className="p-2 text-gray-400 hover:text-gray-600 rounded-lg hover:bg-gray-100 transition-colors"
+                  title="ซ่อนชั้นข้อมูล"
+                >
+                  <Minus className="w-5 h-5" />
+                </button>
+              </div>
             </div>
 
             {/* Stats row */}

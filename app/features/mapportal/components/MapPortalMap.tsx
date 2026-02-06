@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useRef, useEffect } from 'react';
-import { MapContainer, TileLayer, CircleMarker, Popup, Marker } from 'react-leaflet';
+import { MapContainer, TileLayer, CircleMarker, Popup, Marker, ZoomControl } from 'react-leaflet';
 import type { Map as LeafletMap } from 'leaflet';
 import type { MapPortalDocument } from '../types';
 import { getCategoryColor } from '../utils/colorGenerator';
@@ -147,6 +147,7 @@ export default function MapPortalMap({
       center={THAILAND_CENTER}
       zoom={DEFAULT_ZOOM}
       scrollWheelZoom={false}
+      zoomControl={false}
       className="w-full h-full z-0"
       style={{ minHeight: '400px' }}
     >
@@ -154,6 +155,9 @@ export default function MapPortalMap({
         attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'
         url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
       />
+
+      {/* Zoom control on the right */}
+      <ZoomControl position="topright" />
 
       {/* Default region boundaries with colors + world mask */}
       <RegionBoundaries selectedRegion={selectedRegion} />
