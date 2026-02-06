@@ -398,72 +398,35 @@ function TabButton({
 
 function MapPortalSkeleton() {
   return (
-    <section className="relative w-full h-[85vh] min-h-[600px] bg-gradient-to-br from-gray-50 to-gray-100 overflow-hidden">
-      {/* Animated background pattern */}
-      <div className="absolute inset-0 opacity-30">
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_1px_1px,#d1d5db_1px,transparent_0)] bg-[size:40px_40px]" />
-      </div>
-
-      {/* Sidebar skeleton */}
-      <div className="absolute top-3 left-3 bottom-3 z-10 w-[350px] sm:w-[380px] bg-white/95 backdrop-blur-sm rounded-2xl shadow-xl overflow-hidden border border-gray-100/50">
-        {/* Header */}
-        <div className="px-5 pt-4 pb-3 border-b border-gray-50">
-          <div className="flex items-center gap-3 mb-3">
-            <div className="w-10 h-10 bg-gradient-to-br from-orange-400 to-orange-500 rounded-xl animate-pulse" />
-            <div className="flex-1">
-              <div className="h-5 bg-gray-200 rounded-lg w-32 mb-1.5 animate-pulse" />
-              <div className="h-3.5 bg-gray-100 rounded w-28 animate-pulse" />
+    <section className="relative w-full h-[85vh] min-h-[600px] bg-gray-100">
+      <div className="absolute top-3 left-3 bottom-3 z-10 w-[350px] sm:w-[380px] bg-white/95 rounded-2xl shadow-xl overflow-hidden animate-pulse">
+        <div className="px-5 pt-5 pb-4 border-b border-gray-100">
+          <div className="flex items-center gap-3 mb-4">
+            <div className="w-11 h-11 bg-orange-100 rounded-xl" />
+            <div>
+              <div className="h-5 bg-gray-200 rounded w-32 mb-2" />
+              <div className="h-4 bg-gray-100 rounded w-28" />
             </div>
-            <div className="w-8 h-8 bg-gray-100 rounded-lg animate-pulse" />
           </div>
-          <div className="flex items-center gap-4">
-            <div className="h-4 bg-gray-100 rounded w-16 animate-pulse" />
-            <div className="h-4 bg-gray-100 rounded w-16 animate-pulse" />
-            <div className="ml-auto h-6 bg-gray-100 rounded-lg w-16 animate-pulse" />
+          <div className="flex gap-5">
+            <div className="h-4 bg-gray-100 rounded w-16" />
+            <div className="h-4 bg-gray-100 rounded w-16" />
           </div>
         </div>
-
-        {/* Tabs */}
-        <div className="px-4 pt-3">
+        <div className="px-4 pt-4">
           <div className="flex bg-gray-100/80 rounded-xl p-1.5 gap-1">
-            <div className="flex-1 h-11 bg-white rounded-xl shadow-sm animate-pulse" />
-            <div className="flex-1 h-11 bg-gray-50 rounded-xl animate-pulse" />
+            <div className="flex-1 h-12 bg-white rounded-lg" />
+            <div className="flex-1 h-12 bg-gray-50 rounded-lg" />
           </div>
         </div>
-
-        {/* Region list */}
-        <div className="px-3 pt-4 pb-3 space-y-2">
-          {[1, 2, 3, 4, 5, 6, 7, 8].map((i) => (
-            <div
-              key={i}
-              className="h-14 bg-gray-50 rounded-2xl border border-gray-100 animate-pulse"
-              style={{ animationDelay: `${i * 0.1}s` }}
-            />
+        <div className="p-4 space-y-2 mt-2">
+          {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((i) => (
+            <div key={i} className="h-14 bg-gray-50 rounded-2xl" />
           ))}
         </div>
-
-        {/* CTA button skeleton */}
-        <div className="absolute bottom-0 left-0 right-0 px-4 py-3 border-t border-gray-100 bg-white">
-          <div className="h-12 bg-gradient-to-r from-orange-200 to-orange-300 rounded-xl animate-pulse" />
-        </div>
       </div>
-
-      {/* Map area with loading indicator */}
       <div className="absolute inset-0 flex items-center justify-center">
-        <div className="flex flex-col items-center gap-4">
-          <div className="relative">
-            <div className="w-16 h-16 rounded-full bg-white shadow-lg flex items-center justify-center">
-              <Loader className="w-8 h-8 text-orange-500 animate-spin" />
-            </div>
-            <div className="absolute inset-0 rounded-full border-4 border-orange-200 animate-ping opacity-30" />
-          </div>
-          <p className="text-sm font-medium text-gray-500">กำลังโหลดแผนที่...</p>
-        </div>
-      </div>
-
-      {/* Floating elements */}
-      <div className="absolute top-20 left-[396px] z-[501]">
-        <div className="w-10 h-10 rounded-full bg-white shadow-lg border border-gray-100 animate-pulse" />
+        <Loader className="w-8 h-8 text-gray-400 animate-spin" />
       </div>
     </section>
   );
