@@ -31,8 +31,8 @@ function addPulseStyles() {
       border: none !important;
     }
     .pulse-marker-dot {
-      width: 16px;
-      height: 16px;
+      width: 12px;
+      height: 12px;
       border-radius: 50%;
       border: 2px solid white;
       box-shadow: 0 2px 4px rgba(0,0,0,0.3);
@@ -41,8 +41,8 @@ function addPulseStyles() {
       position: absolute;
       top: 0;
       left: 0;
-      width: 16px;
-      height: 16px;
+      width: 12px;
+      height: 12px;
       border-radius: 50%;
       border: 3px solid;
       animation: marker-pulse 1.5s ease-in-out infinite;
@@ -59,14 +59,14 @@ function createPulseIcon(color: string) {
   return L.divIcon({
     className: 'pulse-marker-container',
     html: `
-      <div style="position: relative; width: 16px; height: 16px;">
+      <div style="position: relative; width: 12px; height: 12px;">
         <div class="pulse-marker-ring" style="border-color: ${color};"></div>
         <div class="pulse-marker-dot" style="background-color: ${color};"></div>
       </div>
     `,
-    iconSize: [16, 16],
-    iconAnchor: [8, 8],
-    popupAnchor: [0, -8],
+    iconSize: [12, 12],
+    iconAnchor: [6, 6],
+    popupAnchor: [0, -6],
   });
 }
 
@@ -199,7 +199,7 @@ export default function MapPortalMap({
           <CircleMarker
             key={doc.id}
             center={[doc.latitude, doc.longitude]}
-            radius={isFocused ? 10 : isInFilter ? 7 : 4}
+            radius={isFocused ? 7 : isInFilter ? 5 : 3}
             pathOptions={{
               color: isFocused ? '#ffffff' : color,
               fillColor: color,
