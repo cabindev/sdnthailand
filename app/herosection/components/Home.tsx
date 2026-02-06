@@ -13,10 +13,12 @@ const NetworksSDN = lazy(() => import("./Networks-SDN"));
 const OrdainSection = lazy(() => import("@/app/features/ordain/OrdainSection"));
 const SDNInfo = lazy(() => import("@/app/about/page"));
 const LogoShowcase = lazy(() => import("@/app/features/components/LogoShowcase"));
+const MapPortalSection = lazy(() => import("@/app/features/mapportal/components/MapPortalSection"));
 
 // Loading components
 import NewsLoadingFallback from "@/app/herosection/components/loading/NewsLoadingFallback";
 import BlogLoadingFallback from "@/app/herosection/components/loading/BlogLoadingFallback";
+import MapPortalLoadingFallback from "@/app/herosection/components/loading/MapPortalLoadingFallback";
 import IntegratedHeroSection from "./ProjectIntroPage";
 
 // Animation variants
@@ -63,18 +65,17 @@ export default function Home() {
 
   return (
     <main className="min-h-screen bg-white">
-      
-      {/* Top Section: CivicSpace */}
-      <section className="relative w-full bg-white">
+
+      {/* Top Section: MapPortal */}
+      <section id="mapportal" className="relative w-full">
         <motion.div
           className="w-full"
           variants={ANIMATIONS.heroScale}
           initial="initial"
           animate="animate"
         >
-          {/* CivicSpace Landing Section */}
-          <Suspense fallback={<div className="min-h-screen w-full bg-gray-50 animate-pulse" />}>
-            <IntegratedHeroSection />
+          <Suspense fallback={<MapPortalLoadingFallback />}>
+            <MapPortalSection />
           </Suspense>
         </motion.div>
       </section>
@@ -82,6 +83,10 @@ export default function Home() {
       {/* Guild Menu */}
       <GuildMenu />
 
+      {/* CivicSpace Section */}
+      <Section id="civicspace">
+        <IntegratedHeroSection />
+      </Section>
 
       {/* News Section */}
       <Section id="news" fallback={<NewsLoadingFallback />}>

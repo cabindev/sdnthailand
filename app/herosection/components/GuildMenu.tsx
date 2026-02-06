@@ -54,7 +54,7 @@ const GuildMenu: React.FC = () => {
     {
       id: 7,
       title: "SSN Thailand",
-      url: "https://database.ssnthailand.com/",
+      url: "https://ssnthailand.com/",
       icon: ServerIcon
     },
     {
@@ -72,10 +72,9 @@ const GuildMenu: React.FC = () => {
   ];
 
   return (
-    <section className="bg-white pt-2 pb-6">
+    <section className="bg-white py-4">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        {/* Grid Layout - Microsoft Style */}
-        <div className="grid grid-cols-3 md:grid-cols-4 lg:grid-cols-8 gap-6">
+        <div className="grid grid-cols-5 sm:grid-cols-9 gap-2">
           {externalLinks.map((link) => {
             const IconComponent = link.icon;
             return (
@@ -84,15 +83,10 @@ const GuildMenu: React.FC = () => {
                 href={link.url}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="group flex flex-col items-center text-center space-y-3 p-4 rounded-lg hover:bg-gray-50 transition-all duration-200"
+                className="group flex flex-col items-center text-center gap-2 py-3 px-2 rounded-xl hover:bg-gray-50 transition-all duration-200"
               >
-              
-                <div className="flex items-center justify-center">
-                  <IconComponent className="w-8 h-8 text-orange-500 group-hover:text-orange-800 transition-colors duration-200" />
-                </div>
-                
-               
-                <span className="text-sm font-medium text-gray-700 group-hover:text-gray-900 transition-colors duration-200 leading-tight">
+                <IconComponent className="w-6 h-6 text-orange-500 group-hover:text-orange-600 transition-colors duration-200" />
+                <span className="text-xs font-medium text-gray-600 group-hover:text-gray-900 transition-colors duration-200 leading-tight line-clamp-1">
                   {link.title}
                 </span>
               </a>

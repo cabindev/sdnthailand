@@ -41,6 +41,16 @@ const nextConfig = {
         protocol: 'https',
         hostname: '*.blob.core.windows.net',
         pathname: '/**',
+      },
+      {
+        protocol: 'https',
+        hostname: 'sdnmapportal.sdnthailand.com',
+        pathname: '/**',
+      },
+      {
+        protocol: 'http',
+        hostname: 'localhost',
+        pathname: '/**',
       }
     ],
   },
