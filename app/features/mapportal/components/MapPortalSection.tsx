@@ -2,12 +2,13 @@
 
 import { useState, useMemo, useCallback, useEffect } from 'react';
 import dynamic from 'next/dynamic';
-import { Loader, MapPin, FileText, Layers, Minus, X, ExternalLink, Map as MapIcon, Palette, ArrowRight } from 'lucide-react';
+import { Loader, MapPin, FileText, Layers, Minus, X, ExternalLink, Map as MapIcon, Palette, ArrowRight, Sparkles } from 'lucide-react';
 import { useMapPortalDocuments } from '../hooks/useMapPortalDocuments';
 import { regionData, findRegionByProvince } from '../data/regions';
 import { getCategoryColor } from '../utils/colorGenerator';
 import MapPortalCard from './MapPortalCard';
 import RegionSelector from './RegionSelector';
+
 
 const MapPortalMap = dynamic(
   () => import('./MapPortalMap'),
@@ -23,12 +24,12 @@ const MapPortalMap = dynamic(
 
 const MAPPORTAL_URL = 'https://sdnmapportal.sdnthailand.com';
 
-type TabType = 'regions' | 'documents';
+type TabType = 'recent' | 'regions' | 'documents';
 
 export default function MapPortalSection() {
   const { documents, error, isLoading, mutate } = useMapPortalDocuments();
   const [focusedDocId, setFocusedDocId] = useState<number | null>(null);
-  const [activeTab, setActiveTab] = useState<TabType>('regions');
+  const [activeTab, setActiveTab] = useState<TabType>('recent');
   const [selectedRegion, setSelectedRegion] = useState<string | null>(null);
   const [selectedProvince, setSelectedProvince] = useState<string | null>(null);
   const [selectedProvinces, setSelectedProvinces] = useState<string[]>([]);
@@ -79,6 +80,11 @@ export default function MapPortalSection() {
   }, [validDocs]);
 
   const [showLegend, setShowLegend] = useState(false);
+
+  const recentDocs = useMemo(
+    () => [...validDocs].sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()).slice(0, 10),
+    [validDocs]
+  );
 
   const handleSelectRegion = useCallback((regionName: string, provinces: string[]) => {
     setSelectedRegion(regionName);
@@ -288,17 +294,23 @@ export default function MapPortalSection() {
 
             {/* Tabs */}
             <div className="px-4 pt-3 flex-shrink-0">
-              <div className="flex bg-gray-100/80 rounded-xl p-1.5">
+              <div className="flex bg-gray-100/80 rounded-xl p-1.5 gap-0.5">
+                <TabButton
+                  active={activeTab === 'recent'}
+                  onClick={() => setActiveTab('recent')}
+                  icon={<Sparkles className="w-3.5 h-3.5" />}
+                  label="ล่าสุด"
+                />
                 <TabButton
                   active={activeTab === 'regions'}
                   onClick={() => setActiveTab('regions')}
-                  icon={<MapPin className="w-4 h-4" />}
+                  icon={<MapPin className="w-3.5 h-3.5" />}
                   label="ภูมิภาค"
                 />
                 <TabButton
                   active={activeTab === 'documents'}
                   onClick={() => setActiveTab('documents')}
-                  icon={<FileText className="w-4 h-4" />}
+                  icon={<FileText className="w-3.5 h-3.5" />}
                   label="เอกสาร"
                   badge={filteredDocs.length !== validDocs.length ? filteredDocs.length : undefined}
                 />
@@ -307,7 +319,62 @@ export default function MapPortalSection() {
 
             {/* Content */}
             <div className="flex-1 overflow-hidden mt-1">
-              {activeTab === 'regions' ? (
+              {activeTab === 'recent' ? (
+                (() => {
+                  const doc = recentDocs[0];
+                  if (!doc) return (
+                    <div className="h-full flex items-center justify-center">
+                      <p className="text-sm text-gray-400">ยังไม่มีข้อมูล</p>
+                    </div>
+                  );
+                  const catColor = getCategoryColor(doc.category.id);
+                  return (
+                    <div className="h-full flex flex-col overflow-hidden">
+                      {/* Hero image - fills most of space */}
+                      <div className="relative flex-1 min-h-0 overflow-hidden">
+                        {doc.coverImage ? (
+                          <CoverImage src={doc.coverImage} alt={doc.title} />
+                        ) : (
+                          <MapPortalPlaceholder color={catColor} />
+                        )}
+                        {/* Dark gradient overlay bottom */}
+                        <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
+
+                        {/* Top badges */}
+                        <div className="absolute top-3 left-3 right-3 flex items-center justify-between">
+                          <div className="flex items-center gap-1.5 bg-black/40 backdrop-blur-sm rounded-full px-2.5 py-1">
+                            <div className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
+                            <span className="text-white text-[11px] font-medium">โพสต์ล่าสุด</span>
+                          </div>
+                          <span
+                            className="text-[11px] font-semibold px-2.5 py-1 rounded-full backdrop-blur-sm"
+                            style={{ backgroundColor: catColor + 'CC', color: '#fff' }}
+                          >
+                            {doc.category.name}
+                          </span>
+                        </div>
+
+                        {/* Bottom overlay content */}
+                        <div className="absolute bottom-0 left-0 right-0 p-4">
+                          <h3 className="text-white font-bold text-base leading-snug line-clamp-3 mb-2 drop-shadow">
+                            {doc.title}
+                          </h3>
+                          {doc.description && (
+                            <p className="text-white/70 text-xs leading-relaxed line-clamp-2 mb-3">
+                              {doc.description}
+                            </p>
+                          )}
+                          <div className="flex items-center gap-1 text-white/60 text-xs">
+                            <MapPin className="w-3 h-3 flex-shrink-0" />
+                            <span>{doc.amphoe}, {doc.province}</span>
+                          </div>
+                        </div>
+                      </div>
+
+                    </div>
+                  );
+                })()
+              ) : activeTab === 'regions' ? (
                 <RegionSelector
                   documents={validDocs}
                   selectedRegion={selectedRegion}
@@ -395,7 +462,7 @@ function TabButton({
     <button
       type="button"
       onClick={onClick}
-      className={`flex-1 py-3 text-base font-semibold rounded-xl transition-all ${
+      className={`flex-1 py-2.5 text-xs font-semibold rounded-xl transition-all ${
         active
           ? 'text-gray-900 bg-white shadow-sm'
           : 'text-gray-400 hover:text-gray-600'
@@ -411,6 +478,40 @@ function TabButton({
         )}
       </span>
     </button>
+  );
+}
+
+function CoverImage({ src, alt }: { src: string; alt: string }) {
+  const [failed, setFailed] = useState(false);
+  if (failed) return <MapPortalPlaceholder />;
+  return (
+    <img
+      src={src}
+      alt={alt}
+      className="w-full h-full object-cover"
+      onError={() => setFailed(true)}
+    />
+  );
+}
+
+function MapPortalPlaceholder({ color = '#F97316' }: { color?: string }) {
+  return (
+    <div className="w-full h-full flex flex-col items-center justify-center gap-3">
+      <svg
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke={color}
+        strokeWidth="1.5"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        className="w-12 h-12 opacity-60"
+      >
+        <ellipse cx="12" cy="5" rx="9" ry="3" />
+        <path d="M3 5v6c0 1.657 4.03 3 9 3s9-1.343 9-3V5" />
+        <path d="M3 11v6c0 1.657 4.03 3 9 3s9-1.343 9-3v-6" />
+      </svg>
+      <p className="font-black text-base tracking-widest opacity-60" style={{ color }}>SDNMAPPORTAL</p>
+    </div>
   );
 }
 
