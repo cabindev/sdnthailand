@@ -7,7 +7,7 @@ export const dynamic = 'force-dynamic'
 const getPosts = cache(async (page = '1', per_page = '4') => {
   // เปลี่ยนจาก WP standard API เป็น custom endpoint
   const res = await fetch(
-    `${process.env.WORDPRESS_API_URL || 'https://blog.sdnthailand.com'}/wp-json/sdn/v1/blog-posts?page=${page}&per_page=${per_page}`,
+    `${process.env.WORDPRESS_API_URL || 'https://sdn-blog.synology.me'}/index.php?rest_route=/sdn/v1/blog-posts&page=${page}&per_page=${per_page}`,
     {
       cache: 'no-store',
       headers: { 'Accept': 'application/json' }

@@ -2,7 +2,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { ViewResponse } from '@/app/sdnpost/types'
 
-const baseUrl = process.env.WORDPRESS_API_URL || 'https://blog.sdnthailand.com'
+const baseUrl = process.env.WORDPRESS_API_URL || 'https://sdn-blog.synology.me'
 
 export async function GET(
  request: NextRequest,
@@ -19,7 +19,7 @@ export async function GET(
    console.log('GET Views - Post ID:', params.id)
    
    const response = await fetch(
-     `${baseUrl}/wp-json/wp/v2/post-views/${params.id}`,
+     `${baseUrl}/index.php?rest_route=/wp/v2/post-views/${params.id}`,
      {
        headers: {
          'Accept': 'application/json'
@@ -66,7 +66,7 @@ export async function POST(
    console.log('POST Views - Post ID:', params.id)
    
    const response = await fetch(
-     `${baseUrl}/wp-json/wp/v2/post-views/increase/${params.id}`,
+     `${baseUrl}/index.php?rest_route=/wp/v2/post-views/increase/${params.id}`,
      {
        method: 'POST',
        headers: {
@@ -104,7 +104,7 @@ export async function POST(
    // ถ้ามีข้อผิดพลาด ลองดึงยอดวิวปัจจุบัน
    try {
      const currentResponse = await fetch(
-       `${baseUrl}/wp-json/wp/v2/post-views/${params.id}`,
+       `${baseUrl}/index.php?rest_route=/wp/v2/post-views/${params.id}`,
        {
          headers: {
            'Accept': 'application/json'

@@ -5,11 +5,11 @@ import { cache } from 'react'
 export const dynamic = 'force-dynamic'
 
 const getPost = cache(async (id: string) => {
-  const baseUrl = process.env.WORDPRESS_API_URL || 'https://blog.sdnthailand.com'
+  const baseUrl = process.env.WORDPRESS_API_URL || 'https://sdn-blog.synology.me'
   
   const [post, views] = await Promise.all([
-    fetch(`${baseUrl}/wp-json/wp/v2/posts/${id}?_embed`).then(r => r.json()),
-    fetch(`${baseUrl}/wp-json/post-views/views/post/${id}`).then(r => r.json().catch(() => ({ count: 0 })))
+    fetch(`${baseUrl}/index.php?rest_route=/wp/v2/posts/${id}&_embed=true`).then(r => r.json()),
+    fetch(`${baseUrl}/index.php?rest_route=/post-views/views/post/${id}`).then(r => r.json().catch(() => ({ count: 0 })))
   ])
 
   return { ...post, viewCount: views.count || 0 }
@@ -35,9 +35,9 @@ export async function POST(
   { params }: { params: { id: string } }
 ) {
   try {
-    const baseUrl = process.env.WORDPRESS_API_URL || 'https://blog.sdnthailand.com'
+    const baseUrl = process.env.WORDPRESS_API_URL || 'https://sdn-blog.synology.me'
     const response = await fetch(
-      `${baseUrl}/wp-json/post-views/views/post/${params.id}/increment`,
+      `${baseUrl}/index.php?rest_route=/post-views/views/post/${params.id}/increment`,
       {
         method: 'POST',
         headers: { 'Accept': 'application/json' }

@@ -4,7 +4,7 @@ import { NextResponse } from 'next/server'
 
 export async function GET() {
   try {
-    const response = await axios.get('https://blog.sdnthailand.com/wp-json/wp/v2/project', {
+    const response = await axios.get(`${process.env.WORDPRESS_API_URL || 'https://sdn-blog.synology.me'}/index.php?rest_route=/wp/v2/project`, {
       params: {
         per_page: 100,
         status: 'publish',

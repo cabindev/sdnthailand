@@ -21,7 +21,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   }
 
   // ตรวจสอบ URL ที่สร้างขึ้น
-  const apiUrl = `${wordpressUrl}/wp-json/wp/v2/posts?per_page=100`;
+  const apiUrl = `${wordpressUrl}/index.php?rest_route=/wp/v2/posts&per_page=100`;
   console.log('API URL:', apiUrl);
 
   try {

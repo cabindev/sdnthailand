@@ -6,7 +6,7 @@ export const dynamic = 'force-dynamic'
 
 const getPosts = cache(async (page = '1', per_page = '4') => {
  const res = await fetch(
-   `${process.env.WORDPRESS_API_URL || 'https://blog.sdnthailand.com'}/wp-json/wp/v2/posts?page=${page}&per_page=${per_page}&_embed=true`,
+   `${process.env.WORDPRESS_API_URL || 'https://sdn-blog.synology.me'}/index.php?rest_route=/wp/v2/posts&page=${page}&per_page=${per_page}&_embed=true`,
    {
      cache: 'no-store',
      headers: { 'Accept': 'application/json' }

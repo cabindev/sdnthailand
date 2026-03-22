@@ -6,7 +6,7 @@ export const revalidate = 0 // ไม่ cache
 
 const getLatestPosts = async (page = '1', per_page = '4') => {
   const res = await fetch(
-    `${process.env.WORDPRESS_API_URL || 'https://blog.sdnthailand.com'}/wp-json/sdn/v1/latest-posts?page=${page}&per_page=${per_page}`,
+    `${process.env.WORDPRESS_API_URL || 'https://sdn-blog.synology.me'}/index.php?rest_route=/sdn/v1/latest-posts&page=${page}&per_page=${per_page}`,
     {
       cache: 'no-store', // ไม่ cache เพื่อให้ได้ข้อมูลล่าสุดเสมอ
       headers: { 'Accept': 'application/json' }

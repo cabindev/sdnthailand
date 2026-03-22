@@ -18,7 +18,7 @@ export const generateBookCollectionSchema = () => ({
    export const generateMetaTags = () => {
     const title = "นิทานปลูกพลังบวก | SDN Thailand";
     const description = "นิทานสำหรับเด็กและเยาวชน จากเครือข่ายงดเหล้า สร้างภูมิคุ้มกัน ลดปัจจัยเสี่ยง";
-    const image = "https://blog.sdnthailand.com/wp-content/uploads/2024/11/ชุดกิจกรรมปลูกพลังบวก.jpg";
+    const image = "https://sdn-blog.synology.me/wp-content/uploads/2024/11/ชุดกิจกรรมปลูกพลังบวก.jpg";
    
     return {
       title,

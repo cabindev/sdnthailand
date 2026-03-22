@@ -10,7 +10,7 @@ const fetcher = (url: string) => fetch(url).then(r => r.json());
 export default function VideoLatest() {
   const { data } = useSWR('/api/video?per_page=3', fetcher)
   
-  if (!data) return null
+  if (!data || !data.posts) return null
   
   return (
     <section className="py-12 bg-orange-50">

@@ -1,7 +1,7 @@
 // app/api/sdnblog/related/[id]/route.ts
 import { NextResponse } from 'next/server'
 
-const WP_API_URL = 'https://blog.sdnthailand.com/wp-json/wp/v2'
+const WP_API_URL = `${process.env.WORDPRESS_API_URL || 'https://sdn-blog.synology.me'}/index.php?rest_route=/wp/v2`
 
 interface RelatedPost {
   id: number
@@ -29,7 +29,7 @@ export async function GET(
 ) {
   try {
     const response = await fetch(
-      `${WP_API_URL}/blog_post?_embed&per_page=4&exclude=${params.id}`,
+      `${WP_API_URL}/blog_post&_embed=true&per_page=4&exclude=${params.id}`,
       { 
         next: { revalidate: 60 },
         headers: {

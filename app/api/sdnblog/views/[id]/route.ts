@@ -1,7 +1,7 @@
 // app/api/sdnblog/views/[id]/route.ts
 import { NextRequest, NextResponse } from 'next/server'
 
-const baseUrl = process.env.WORDPRESS_API_URL || 'https://blog.sdnthailand.com'
+const baseUrl = process.env.WORDPRESS_API_URL || 'https://sdn-blog.synology.me'
 
 // ฟังก์ชันเพิ่มยอดวิว
 export async function POST(
@@ -18,7 +18,7 @@ export async function POST(
   try {
     // เรียก API เพิ่มยอดวิว
     const response = await fetch(
-      `${baseUrl}/wp-json/pvc/v1/increase/${params.id}`,
+      `${baseUrl}/index.php?rest_route=/pvc/v1/increase/${params.id}`,
       {
         method: 'POST',
         headers: {
@@ -61,7 +61,7 @@ export async function GET(
 
   try {
     const response = await fetch(
-      `${baseUrl}/wp-json/pvc/v1/views/${params.id}`,
+      `${baseUrl}/index.php?rest_route=/pvc/v1/views/${params.id}`,
       {
         headers: {
           'Content-Type': 'application/json'

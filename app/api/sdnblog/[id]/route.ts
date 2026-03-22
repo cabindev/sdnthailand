@@ -2,13 +2,13 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { cache } from 'react'
 
-const WP_API_URL = 'https://blog.sdnthailand.com/wp-json/wp/v2'
+const WP_API_URL = `${process.env.WORDPRESS_API_URL || 'https://sdn-blog.synology.me'}/index.php?rest_route=/wp/v2`
 
 export const dynamic = 'force-dynamic'
 
 const getPost = cache(async (id: string) => {
   const res = await fetch(
-    `${WP_API_URL}/blog_post/${id}?_embed=wp:featuredmedia,wp:term,author`,
+    `${WP_API_URL}/blog_post/${id}&_embed=wp:featuredmedia,wp:term,author`,
     { 
       cache: 'no-store',
       headers: { 'Accept': 'application/json' }

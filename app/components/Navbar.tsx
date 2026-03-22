@@ -75,7 +75,7 @@ const Navbar: React.FC = () => {
       name: 'Artwork',
       submenu: [
         { name: 'SDN Artwork', href: 'https://sdn-workspaces.sdnthailand.com/' },
-        { name: 'คู่มือการใช้ logo SDN Thailand', href: 'https://blog.sdnthailand.com/sdnthailand-logo-2023' },
+        { name: 'คู่มือการใช้ logo SDN Thailand', href: 'https://sdn-blog.synology.me/sdnthailand-logo-2023' },
       ]
     },
     { name: 'Video', href: '/video' },

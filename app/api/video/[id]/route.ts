@@ -1,7 +1,7 @@
 // app/api/video/[id]/route.ts
 import { NextRequest, NextResponse } from 'next/server'
 
-const WP_API_URL = 'https://blog.sdnthailand.com/wp-json/wp/v2'
+const WP_API_URL = `${process.env.WORDPRESS_API_URL || 'https://sdn-blog.synology.me'}/index.php?rest_route=/wp/v2`
 
 export async function GET(
   request: NextRequest,
@@ -12,7 +12,7 @@ export async function GET(
     console.log('Fetching video with ID:', id);
 
     // ดึงข้อมูลจาก WordPress API โดยตรง
-    const response = await fetch(`${WP_API_URL}/videos/${id}?_embed`, {
+    const response = await fetch(`${WP_API_URL}/videos/${id}&_embed=true`, {
       headers: {
         'Accept': 'application/json',
       },
