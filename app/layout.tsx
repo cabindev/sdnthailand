@@ -4,7 +4,6 @@ import SessionProvider from "./components/SessionProvider";
 import { getServerSession } from "next-auth";
 import authOptions from "./lib/configs/auth/authOptions";
 import ConditionalNavbar from "./components/ConditionalNavbar";
-import { IBM_Plex_Sans_Thai_Looped } from 'next/font/google'
 import localFont from 'next/font/local'
 import { Toaster } from 'react-hot-toast'
 import SWRProvider from "./providers/SWRProvider";
@@ -25,10 +24,20 @@ const seppuri = localFont({
   variable: '--font-seppuri'
 })
 
-// IBM Plex Sans Thai Looped
-const ibmPlex = IBM_Plex_Sans_Thai_Looped({
-  weight: ['400'],
-  subsets: ['thai'],
+// IBM Plex Sans Thai Looped (local)
+const ibmPlex = localFont({
+  src: [
+    {
+      path: './fonts/IBMPlexSansThaiLooped-Regular-thai.woff2',
+      weight: '400',
+      style: 'normal',
+    },
+    {
+      path: './fonts/IBMPlexSansThaiLooped-Regular-latin.woff2',
+      weight: '400',
+      style: 'normal',
+    },
+  ],
   variable: '--font-ibm'
 })
 
