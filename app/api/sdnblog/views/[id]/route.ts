@@ -1,7 +1,7 @@
 // app/api/sdnblog/views/[id]/route.ts
 import { NextRequest, NextResponse } from 'next/server'
 
-const baseUrl = process.env.WORDPRESS_API_URL || 'https://sdn-blog.synology.me'
+const baseUrl = process.env.WORDPRESS_API_URL || 'https://sdnthailand.synology.me'
 
 // ฟังก์ชันเพิ่มยอดวิว
 export async function POST(

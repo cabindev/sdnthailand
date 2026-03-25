@@ -25,7 +25,7 @@ interface Project {
 async function getProject(slug: string) {
   try {
     const res = await fetch(
-      `${process.env.WORDPRESS_API_URL || 'https://sdn-blog.synology.me'}/index.php?rest_route=/wp/v2/project&slug=${slug}&_embed=true`,
+      `${process.env.WORDPRESS_API_URL || 'https://sdnthailand.synology.me'}/index.php?rest_route=/wp/v2/project&slug=${slug}&_embed=true`,
       { 
         next: { revalidate: 3600 }, // Cache for 1 hour
         headers: {
@@ -201,7 +201,7 @@ export default async function ProjectPage({
 export async function generateStaticParams() {
   try {
     const res = await fetch(
-      `${process.env.WORDPRESS_API_URL || 'https://sdn-blog.synology.me'}/index.php?rest_route=/wp/v2/project`,
+      `${process.env.WORDPRESS_API_URL || 'https://sdnthailand.synology.me'}/index.php?rest_route=/wp/v2/project`,
       { next: { revalidate: 3600 } }
     )
     

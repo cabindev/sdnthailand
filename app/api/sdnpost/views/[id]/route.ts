@@ -2,7 +2,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { ViewResponse } from '@/app/sdnpost/types'
 
-const baseUrl = process.env.WORDPRESS_API_URL || 'https://sdn-blog.synology.me'
+const baseUrl = process.env.WORDPRESS_API_URL || 'https://sdnthailand.synology.me'
 
 export async function GET(
  request: NextRequest,

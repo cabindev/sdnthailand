@@ -8,7 +8,7 @@ export async function GET(
   try {
     // ปรับให้ใช้ slug แทน id และเพิ่ม _embed
     const res = await fetch(
-      `${process.env.WORDPRESS_API_URL || 'https://sdn-blog.synology.me'}/index.php?rest_route=/wp/v2/project&slug=${params.id}&_embed=true`,
+      `${process.env.WORDPRESS_API_URL || 'https://sdnthailand.synology.me'}/index.php?rest_route=/wp/v2/project&slug=${params.id}&_embed=true`,
       {
         next: { revalidate: 3600 }
       }

@@ -12,7 +12,7 @@ interface Props {
 async function getVideo(id: string) {
     try {
       // เรียกใช้ API โดยตรง
-      const response = await fetch(`${process.env.WORDPRESS_API_URL || 'https://sdn-blog.synology.me'}/index.php?rest_route=/wp/v2/videos/${id}&_embed=true`, {
+      const response = await fetch(`${process.env.WORDPRESS_API_URL || 'https://sdnthailand.synology.me'}/index.php?rest_route=/wp/v2/videos/${id}&_embed=true`, {
         next: { revalidate: 60 }
       });
   

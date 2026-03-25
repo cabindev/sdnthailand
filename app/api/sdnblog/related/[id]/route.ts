@@ -1,7 +1,7 @@
 // app/api/sdnblog/related/[id]/route.ts
 import { NextResponse } from 'next/server'
 
-const WP_API_URL = `${process.env.WORDPRESS_API_URL || 'https://sdn-blog.synology.me'}/index.php?rest_route=/wp/v2`
+const WP_API_URL = `${process.env.WORDPRESS_API_URL || 'https://sdnthailand.synology.me'}/index.php?rest_route=/wp/v2`
 
 interface RelatedPost {
   id: number

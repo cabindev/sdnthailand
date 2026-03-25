@@ -5,7 +5,7 @@ import { cache } from 'react'
 export const dynamic = 'force-dynamic'
 
 const getPost = cache(async (id: string) => {
-  const baseUrl = process.env.WORDPRESS_API_URL || 'https://sdn-blog.synology.me'
+  const baseUrl = process.env.WORDPRESS_API_URL || 'https://sdnthailand.synology.me'
   
   const [post, views] = await Promise.all([
     fetch(`${baseUrl}/index.php?rest_route=/wp/v2/posts/${id}&_embed=true`).then(r => r.json()),
@@ -35,7 +35,7 @@ export async function POST(
   { params }: { params: { id: string } }
 ) {
   try {
-    const baseUrl = process.env.WORDPRESS_API_URL || 'https://sdn-blog.synology.me'
+    const baseUrl = process.env.WORDPRESS_API_URL || 'https://sdnthailand.synology.me'
     const response = await fetch(
       `${baseUrl}/index.php?rest_route=/post-views/views/post/${params.id}/increment`,
       {

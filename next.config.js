@@ -4,7 +4,7 @@ const nextConfig = {
     remotePatterns: [
       {
         protocol: 'https',
-        hostname: 'sdn-blog.synology.me',
+        hostname: 'sdnthailand.synology.me',
         pathname: '/**',
       },
       {
