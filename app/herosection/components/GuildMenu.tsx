@@ -30,7 +30,7 @@ const GuildMenu: React.FC = () => {
     {
       id: 3,
       title: "AVS+",
-      url: "https://avs2.sdnthailand.com/index.php",
+      url: "https://sdnthailand.synology.me/avs/",
       icon: ChartBarIcon
     },
     {
@@ -60,7 +60,7 @@ const GuildMenu: React.FC = () => {
     {
       id: 8,
       title: "SDN DB System",
-      url: "https://post.sdnthailand.com/sdn/admin/",
+      url: "https://sdnthailand.synology.me/sdn/admin/",
       icon: CircleStackIcon
     },
     {

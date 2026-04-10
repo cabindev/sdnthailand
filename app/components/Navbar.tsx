@@ -105,8 +105,8 @@ const Navbar: React.FC = () => {
     {
       name: 'DB Systems',
       items: [
-        { name: 'SDN DB Systems', href: 'https://post.sdnthailand.com/sdn/admin/' },
-        { name: 'AVS+', href: 'https://avs2.sdnthailand.com/index.php' },
+        { name: 'SDN DB Systems', href: 'https://sdnthailand.synology.me/sdn/admin/' },
+        { name: 'AVS+', href: 'https://sdnthailand.synology.me/avs/' },
         { name: 'SDN Map-portal', href: 'https://sdnmapportal.sdnthailand.com/' },
         { name: 'SSN Thailand', href: 'https://database.ssnthailand.com/' },
       ]

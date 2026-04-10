@@ -21,7 +21,7 @@ const externalLinks = [
   {
     id: 3,
     title: "AVS+",
-    url: "https://avs2.sdnthailand.com/index.php",
+    url: "https://sdnthailand.synology.me/avs/",
     image: "/Link/AVS+.jpg"
   },
   {
