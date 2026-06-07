@@ -115,7 +115,7 @@ const Navbar: React.FC = () => {
       name: 'Data Sources',
       items: [
         { name: 'Lanna Document', href: 'https://lanna.sdnthailand.com/pages/login.php' },
-        { name: 'ร้อยคนหัวใจเพชร', href: 'https://soberheartteam.sdnthailand.com/' },
+        { name: 'ร้อยคนหัวใจเพชร', href: 'https://sdnthailand.synology.me/soberteam' },
       ]
     },
   ];

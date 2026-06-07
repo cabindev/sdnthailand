@@ -5,8 +5,6 @@ import { motion, AnimatePresence } from "framer-motion";
 import GuildMenu from "./GuildMenu";
 
 // Lazy load components
-const NewsLatest = lazy(() => import("@/app/features/news/components/NewsLatest"));
-const BlogList = lazy(() => import("@/app/features/blog/components/BlogList"));
 const Support = lazy(() => import("./Support"));
 const VideoLatest = lazy(() => import("@/app/features/video/components/VideoLatest"));
 const NetworksSDN = lazy(() => import("./Networks-SDN"));
@@ -14,9 +12,9 @@ const OrdainSection = lazy(() => import("@/app/features/ordain/OrdainSection"));
 const SDNInfo = lazy(() => import("@/app/about/page"));
 const LogoShowcase = lazy(() => import("@/app/features/components/LogoShowcase"));
 const MapPortalSection = lazy(() => import("@/app/features/mapportal/components/MapPortalSection"));
+const LatestMovements = lazy(() => import("@/app/features/movements/components/LatestMovements"));
 
 // Loading components
-import NewsLoadingFallback from "@/app/herosection/components/loading/NewsLoadingFallback";
 import BlogLoadingFallback from "@/app/herosection/components/loading/BlogLoadingFallback";
 import MapPortalLoadingFallback from "@/app/herosection/components/loading/MapPortalLoadingFallback";
 import IntegratedHeroSection from "./ProjectIntroPage";
@@ -66,7 +64,20 @@ export default function Home() {
   return (
     <main className="min-h-screen bg-white">
 
-      {/* Top Section: MapPortal */}
+      {/* Top Section: Latest Movements (รวมบทความ + ข่าว + วิดีโอ) */}
+      <Section id="movements" fallback={<BlogLoadingFallback />}>
+        <LatestMovements />
+      </Section>
+
+      {/* Guild Menu */}
+      <GuildMenu />
+
+      {/* CivicSpace Section */}
+      <Section id="civicspace">
+        <IntegratedHeroSection />
+      </Section>
+
+      {/* Middle Section: MapPortal */}
       <section id="mapportal" className="relative w-full">
         <motion.div
           className="w-full"
@@ -79,24 +90,6 @@ export default function Home() {
           </Suspense>
         </motion.div>
       </section>
-
-      {/* Guild Menu */}
-      <GuildMenu />
-
-      {/* CivicSpace Section */}
-      <Section id="civicspace">
-        <IntegratedHeroSection />
-      </Section>
-
-      {/* News Section */}
-      <Section id="news" fallback={<NewsLoadingFallback />}>
-        <NewsLatest />
-      </Section>
-
-      {/* Blog Section */}
-      <Section id="blogs" fallback={<BlogLoadingFallback />}>
-        <BlogList />
-      </Section>
 
       {/* Ordain Section */}
       <Section id="ordain" className="bg-white" animation="fadeIn">
