@@ -17,7 +17,7 @@ For product strategy and the visual design system, see `PRODUCT.md` and `DESIGN.
 - **Data fetching**: SWR (client-side, against internal API routes that proxy WordPress)
 - **Email**: Nodemailer (contact form only)
 - **Text-to-Speech**: Azure Cognitive Services Speech REST API (called via `fetch`, no SDK)
-- **Production server**: Express (`server.js`) for Plesk/Passenger compatibility
+- **Production server**: native Node HTTP server (`server.js`) as the Plesk/Passenger entry point
 
 > No database, ORM, or auth: Prisma, NextAuth, bcryptjs, and the user/dashboard system were removed. The site is fully driven by external content APIs.
 
@@ -106,7 +106,7 @@ Environment variables (in `.env`, gitignored):
 - **MapPortal**: Leaflet map loaded client-only via dynamic import with `ssr: false`.
 
 ## Deployment Notes
-- Production uses a custom Express server (`server.js`) as the Passenger entry point on Plesk.
+- Production uses a native Node HTTP server (`server.js`, no Express) as the Passenger entry point on Plesk; Next serves public/ assets natively.
 - MAMP for local development; default port 3000.
 - Fonts self-hosted (Seppuri, IBM Plex Sans Thai Looped) under `app/fonts`.
 
