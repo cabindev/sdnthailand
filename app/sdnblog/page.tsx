@@ -147,7 +147,7 @@ function SDNBlogPageContent() {
           <button
             onClick={() => handlePageChange(Math.max(1, currentPage - 1))}
             disabled={currentPage === 1}
-            className={`w-10 h-10 flex items-center justify-center rounded-full focus:outline-none focus-visible:ring-2 focus-visible:ring-[#ff7834]/50 focus-visible:ring-offset-2
+            className={`w-10 h-10 flex items-center justify-center rounded-full focus:outline-hidden focus-visible:ring-2 focus-visible:ring-[#ff7834]/50 focus-visible:ring-offset-2
               ${currentPage === 1 
                 ? 'bg-[#ff7834]/10 text-[#ff7834]/40 cursor-not-allowed' 
                 : 'bg-[#ff7834] text-white hover:bg-[#e86b2a] transition-colors'
@@ -171,7 +171,7 @@ function SDNBlogPageContent() {
                   <button
                     key={pageNumber}
                     onClick={() => handlePageChange(pageNumber)}
-                    className={`w-10 h-10 flex items-center justify-center rounded-lg focus:outline-none focus-visible:ring-2 focus-visible:ring-[#ff7834]/50 focus-visible:ring-offset-2
+                    className={`w-10 h-10 flex items-center justify-center rounded-lg focus:outline-hidden focus-visible:ring-2 focus-visible:ring-[#ff7834]/50 focus-visible:ring-offset-2
                       ${currentPage === pageNumber
                         ? 'bg-[#ff7834] text-white'
                         : 'bg-white text-[#ff7834] border border-[#ff7834] hover:bg-[#ff7834]/5'
@@ -196,7 +196,7 @@ function SDNBlogPageContent() {
           <button
             onClick={() => handlePageChange(Math.min(data.totalPages, currentPage + 1))}
             disabled={currentPage === data.totalPages}
-            className={`w-10 h-10 flex items-center justify-center rounded-full focus:outline-none focus-visible:ring-2 focus-visible:ring-[#ff7834]/50 focus-visible:ring-offset-2
+            className={`w-10 h-10 flex items-center justify-center rounded-full focus:outline-hidden focus-visible:ring-2 focus-visible:ring-[#ff7834]/50 focus-visible:ring-offset-2
               ${currentPage === data.totalPages 
                 ? 'bg-[#ff7834]/10 text-[#ff7834]/40 cursor-not-allowed' 
                 : 'bg-[#ff7834] text-white hover:bg-[#e86b2a] transition-colors'

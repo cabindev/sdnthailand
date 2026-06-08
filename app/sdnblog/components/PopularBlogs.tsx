@@ -100,7 +100,7 @@ export default function PopularBlog() {
              <Link 
                key={post.id}
                href={`/sdnpost/${post.id}`}
-               className={`flex-shrink-0 w-full md:w-1/3 relative transition-all duration-300`}
+               className={`shrink-0 w-full md:w-1/3 relative transition-all duration-300`}
                style={{
                  transform: `translateX(-${currentIndex * 100}%)`
                }}

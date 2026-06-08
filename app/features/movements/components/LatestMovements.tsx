@@ -129,7 +129,7 @@ function HeroCard({ item }: { item: MovementItem }) {
 function GridCard({ item }: { item: MovementItem }) {
   return (
     <Link href={item.href} className="group block h-full">
-      <div className="flex h-full flex-col overflow-hidden rounded-xl bg-white shadow-sm transition-shadow duration-300 hover:shadow-md">
+      <div className="flex h-full flex-col overflow-hidden rounded-xl bg-white shadow-xs transition-shadow duration-300 hover:shadow-md">
         <div className="relative aspect-video overflow-hidden">
           <img
             src={item.image}
@@ -165,17 +165,17 @@ function FeedSkeleton() {
         <div className="aspect-video bg-gray-200 md:aspect-auto md:w-3/5" />
         <div className="space-y-4 p-8 md:w-2/5">
           <div className="h-6 w-24 rounded-full bg-gray-200" />
-          <div className="h-8 w-3/4 rounded bg-gray-200" />
-          <div className="h-20 rounded bg-gray-200" />
+          <div className="h-8 w-3/4 rounded-sm bg-gray-200" />
+          <div className="h-20 rounded-sm bg-gray-200" />
         </div>
       </div>
       <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
         {[1, 2, 3].map((i) => (
-          <div key={i} className="animate-pulse overflow-hidden rounded-xl bg-white shadow-sm">
+          <div key={i} className="animate-pulse overflow-hidden rounded-xl bg-white shadow-xs">
             <div className="aspect-video bg-gray-200" />
             <div className="space-y-2 p-4">
-              <div className="h-5 w-3/4 rounded bg-gray-200" />
-              <div className="h-4 rounded bg-gray-200" />
+              <div className="h-5 w-3/4 rounded-sm bg-gray-200" />
+              <div className="h-4 rounded-sm bg-gray-200" />
             </div>
           </div>
         ))}
@@ -252,7 +252,7 @@ export default function LatestMovements() {
                 type="button"
                 onClick={() => setFilter(key)}
                 aria-pressed={active}
-                className={`rounded-full px-4 py-1.5 text-sm font-medium transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-[#ff7834]/50 focus-visible:ring-offset-2 ${
+                className={`rounded-full px-4 py-1.5 text-sm font-medium transition-colors focus:outline-hidden focus-visible:ring-2 focus-visible:ring-[#ff7834]/50 focus-visible:ring-offset-2 ${
                   active ? activeClass : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
                 }`}
               >
@@ -270,7 +270,7 @@ export default function LatestMovements() {
             <button
               type="button"
               onClick={() => window.location.reload()}
-              className="rounded-full bg-[#ff7834] px-6 py-2 text-white transition-colors hover:bg-[#e86b2a] focus:outline-none focus-visible:ring-2 focus-visible:ring-[#ff7834]/50 focus-visible:ring-offset-2"
+              className="rounded-full bg-[#ff7834] px-6 py-2 text-white transition-colors hover:bg-[#e86b2a] focus:outline-hidden focus-visible:ring-2 focus-visible:ring-[#ff7834]/50 focus-visible:ring-offset-2"
             >
               ลองใหม่อีกครั้ง
             </button>

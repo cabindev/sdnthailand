@@ -141,7 +141,7 @@ export default function AudioReader({ text }: AudioReaderProps) {
             : 'bg-white hover:bg-orange-50 hover:shadow-md active:scale-95'
           }
           ${isPlaying ? 'bg-[#ff7834]/15 text-[#e86b2a]' : 'text-gray-600'}
-          border border-gray-200 shadow-sm
+          border border-gray-200 shadow-xs
         `}
         title={
           isLoading 

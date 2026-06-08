@@ -57,7 +57,7 @@ export default function Support() {
           <Link
             key={href}
             href={href}
-            className="group flex flex-col items-center rounded-xl border border-gray-100 bg-white p-6 text-center shadow-sm ring-1 ring-black/[0.03] transition-all duration-300 hover:-translate-y-0.5 hover:border-[#ff7834]/30 hover:shadow-md focus:outline-none focus-visible:ring-2 focus-visible:ring-[#ff7834]/50 motion-reduce:transition-none motion-reduce:hover:translate-y-0"
+            className="group flex flex-col items-center rounded-xl border border-gray-100 bg-white p-6 text-center shadow-xs ring-1 ring-black/3 transition-all duration-300 hover:-translate-y-0.5 hover:border-[#ff7834]/30 hover:shadow-md focus:outline-hidden focus-visible:ring-2 focus-visible:ring-[#ff7834]/50 motion-reduce:transition-none motion-reduce:hover:translate-y-0"
           >
             <span className="mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-[#ff7834]/10 transition-colors duration-300 group-hover:bg-[#ff7834]/15">
               <Icon className="text-3xl text-[#ff7834]" />

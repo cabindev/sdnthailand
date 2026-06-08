@@ -66,10 +66,10 @@ export default function SDNInfo() {
             >
               <Link 
                 href={link.href}
-                className={`${link.color} rounded-xl shadow-sm border border-gray-100 p-6 transition-all hover:shadow-md hover:scale-105 block h-full`}
+                className={`${link.color} rounded-xl shadow-xs border border-gray-100 p-6 transition-all hover:shadow-md hover:scale-105 block h-full`}
               >
                 <div className="flex flex-col items-center text-center h-full">
-                  <div className="mb-4 p-3 rounded-full bg-white shadow-sm">{link.icon}</div>
+                  <div className="mb-4 p-3 rounded-full bg-white shadow-xs">{link.icon}</div>
                   <h3 className="font-bold text-lg text-gray-900 mb-2">{link.title}</h3>
                   <p className="text-gray-600 text-sm">{link.description}</p>
                 </div>

@@ -26,7 +26,7 @@ export default function Footer() {
   return (
     <footer className="mt-auto bg-[#1a1a1a] text-white/70">
       {/* Brand accent rule */}
-      <div className="h-1 w-full bg-gradient-to-r from-[#ff7834] via-[#ff7834] to-[#ff7834]/30" />
+      <div className="h-1 w-full bg-linear-to-r from-[#ff7834] via-[#ff7834] to-[#ff7834]/30" />
 
       <div className="mx-auto max-w-7xl px-5 py-14 sm:px-6 sm:py-16 lg:px-8">
         <div className="grid grid-cols-1 gap-x-8 gap-y-12 sm:grid-cols-2 lg:grid-cols-12">
@@ -38,7 +38,7 @@ export default function Footer() {
                 alt="โลโก้ SDN Thailand"
                 width={56}
                 height={56}
-                className="h-14 w-14 flex-shrink-0 rounded-full"
+                className="h-14 w-14 shrink-0 rounded-full"
               />
               <div>
                 <h3 className="text-xl font-semibold leading-snug text-white">
@@ -58,7 +58,7 @@ export default function Footer() {
             <h4 className="text-base font-semibold text-white">ติดต่อสำนักงาน</h4>
             <div className="flex items-start gap-3">
               <svg
-                className="mt-0.5 h-5 w-5 flex-shrink-0 text-[#ff7834]"
+                className="mt-0.5 h-5 w-5 shrink-0 text-[#ff7834]"
                 fill="none"
                 viewBox="0 0 24 24"
                 stroke="currentColor"
@@ -76,10 +76,10 @@ export default function Footer() {
             </div>
             <a
               href="tel:+6629483300"
-              className="group flex items-center gap-3 text-[15px] text-white/70 transition-colors hover:text-[#ff7834] focus-visible:text-[#ff7834] focus-visible:outline-none"
+              className="group flex items-center gap-3 text-[15px] text-white/70 transition-colors hover:text-[#ff7834] focus-visible:text-[#ff7834] focus-visible:outline-hidden"
             >
               <svg
-                className="h-5 w-5 flex-shrink-0 text-[#ff7834]"
+                className="h-5 w-5 shrink-0 text-[#ff7834]"
                 fill="none"
                 viewBox="0 0 24 24"
                 stroke="currentColor"
@@ -101,7 +101,7 @@ export default function Footer() {
                   <Link
                     href={link.href}
                     {...(link.external ? { target: '_blank', rel: 'noopener noreferrer' } : {})}
-                    className="group inline-flex items-center gap-2 text-[15px] text-white/70 transition-colors hover:text-[#ff7834] focus-visible:text-[#ff7834] focus-visible:outline-none"
+                    className="group inline-flex items-center gap-2 text-[15px] text-white/70 transition-colors hover:text-[#ff7834] focus-visible:text-[#ff7834] focus-visible:outline-hidden"
                   >
                     <span className="h-px w-3 bg-[#ff7834]/50 transition-all duration-300 group-hover:w-5 group-hover:bg-[#ff7834] motion-reduce:transition-none" />
                     {link.label}
@@ -120,7 +120,7 @@ export default function Footer() {
                     target="_blank"
                     rel="noopener noreferrer"
                     aria-label={social.label}
-                    className="flex h-10 w-10 items-center justify-center rounded-full bg-white/5 text-white/80 ring-1 ring-white/10 transition-colors hover:bg-[#ff7834] hover:text-white hover:ring-[#ff7834] focus-visible:bg-[#ff7834] focus-visible:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#ff7834] motion-reduce:transition-none"
+                    className="flex h-10 w-10 items-center justify-center rounded-full bg-white/5 text-white/80 ring-1 ring-white/10 transition-colors hover:bg-[#ff7834] hover:text-white hover:ring-[#ff7834] focus-visible:bg-[#ff7834] focus-visible:text-white focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-[#ff7834] motion-reduce:transition-none"
                   >
                     <svg className="h-5 w-5" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
                       <path d={social.path} />

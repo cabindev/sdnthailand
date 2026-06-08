@@ -8,14 +8,14 @@ export default function MapPortalLoadingFallback() {
           <div className="flex items-center gap-2.5 mb-3">
             <div className="w-8 h-8 bg-[#ff7834]/10 rounded-lg" />
             <div>
-              <div className="h-4 bg-gray-100 rounded w-28 mb-1" />
-              <div className="h-3 bg-gray-50 rounded w-24" />
+              <div className="h-4 bg-gray-100 rounded-sm w-28 mb-1" />
+              <div className="h-3 bg-gray-50 rounded-sm w-24" />
             </div>
           </div>
           <div className="flex gap-4">
-            <div className="h-3 bg-gray-50 rounded w-14" />
-            <div className="h-3 bg-gray-50 rounded w-14" />
-            <div className="h-3 bg-gray-50 rounded w-16" />
+            <div className="h-3 bg-gray-50 rounded-sm w-14" />
+            <div className="h-3 bg-gray-50 rounded-sm w-14" />
+            <div className="h-3 bg-gray-50 rounded-sm w-16" />
           </div>
         </div>
         <div className="px-3 pt-2.5">

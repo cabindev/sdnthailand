@@ -1,53 +1,102 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import 'tailwindcss';
+@plugin '@tailwindcss/typography';
 
-:root {
-  --background: #ffffff;
-  --foreground: #1a1a1a;
-  --primary: #1a1a1a;
-  --primary-foreground: #ffffff;
-  --secondary: #f7f7f7;
-  --secondary-foreground: #1a1a1a;
-  --accent: #ff7834;
-  --accent-foreground: #ffffff;
-  --muted: #6e6e6e;
-  --muted-foreground: #ffffff;
-  --hover-bg: #f2f2f2;
-  --hover-text: #1a1a1a;
-  --font-heading: 'Seppuri', sans-serif;
-  --font-body: 'IBM Plex Sans Thai Looped', sans-serif;
+@theme {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+
+  --font-seppuri: var(--font-seppuri);
+  --font-ibm: var(--font-ibm-plex);
+
+  --animate-fade-in: fade-in 0.5s ease-out;
+  --animate-shimmer: shimmer 1.5s infinite;
+
+  @keyframes fade-in {
+    0% {
+      opacity: 0;
+      transform: translateY(10px);
+    }
+    100% {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  @keyframes shimmer {
+    100% {
+      transform: translateX(100%);
+    }
+  }
 }
 
 /*
+  The default border color has changed to `currentcolor` in Tailwind CSS v4,
+  so we've added these compatibility styles to make sure everything still
+  looks the same as it did with Tailwind CSS v3.
+
+  If we ever want to remove these styles, we need to add an explicit border
+  color utility to any element that depends on these defaults.
+*/
+@layer base {
+  *,
+  ::after,
+  ::before,
+  ::backdrop,
+  ::file-selector-button {
+    border-color: var(--color-gray-200, currentcolor);
+  }
+}
+
+@utility text-balance {
+  text-wrap: balance;
+}
+
+@layer utilities {
+  :root {
+    --background: #ffffff;
+    --foreground: #1a1a1a;
+    --primary: #1a1a1a;
+    --primary-foreground: #ffffff;
+    --secondary: #f7f7f7;
+    --secondary-foreground: #1a1a1a;
+    --accent: #ff7834;
+    --accent-foreground: #ffffff;
+    --muted: #6e6e6e;
+    --muted-foreground: #ffffff;
+    --hover-bg: #f2f2f2;
+    --hover-text: #1a1a1a;
+    --font-heading: 'Seppuri', sans-serif;
+    --font-body: 'IBM Plex Sans Thai Looped', sans-serif;
+  }
+
+  /*
  * Light-only UI. The whole component layer hard-codes light surfaces
  * (bg-white, text-gray-*), so auto dark mode only flips a few CSS
  * variables and produces a broken half-dark page (e.g. /sdnpost).
  * Lock the color scheme to light until a real dark theme is built.
  */
-:root {
-  color-scheme: light;
-}
+  :root {
+    color-scheme: light;
+  }
 
-/* Seppuri for headings */
-h1, h2, h3, h4, h5, h6 {
-  font-family: var(--font-heading);
-  font-weight: 500;
-}
+  /* Seppuri for headings */
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    font-family: var(--font-heading);
+    font-weight: 500;
+  }
 
-/* IBM Plex Sans Thai Looped for body */
-body {
-  color: var(--foreground);
-  background: var(--background);
-  font-family: var(--font-body);
-  font-weight: 400;
-  font-size: 16px;
-  line-height: 1.6;
-}
-
-@layer utilities {
-  .text-balance {
-    text-wrap: balance;
+  /* IBM Plex Sans Thai Looped for body */
+  body {
+    color: var(--foreground);
+    background: var(--background);
+    font-family: var(--font-body);
+    font-weight: 400;
+    font-size: 16px;
+    line-height: 1.6;
   }
 }
 

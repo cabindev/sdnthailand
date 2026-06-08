@@ -96,7 +96,7 @@ export default function Contact() {
              <FaMapMarkerAlt className="text-orange-500" />
              <h2 className="text-xl font-medium">สำนักงานโพธิ์แก้ว</h2>
            </div>
-           <div className="aspect-video rounded-lg overflow-hidden shadow-sm border border-gray-200">
+           <div className="aspect-video rounded-lg overflow-hidden shadow-xs border border-gray-200">
              <iframe
                width="100%"
                height="100%"
@@ -114,7 +114,7 @@ export default function Contact() {
              <FaWarehouse className="text-orange-500" />
              <h2 className="text-xl font-medium">คลังสื่อ</h2>
            </div>
-           <div className="aspect-video rounded-lg overflow-hidden shadow-sm border border-gray-200">
+           <div className="aspect-video rounded-lg overflow-hidden shadow-xs border border-gray-200">
              <iframe
                width="100%"
                height="100%"
@@ -175,7 +175,7 @@ export default function Contact() {
 
        {/* Contact Form Section */}
        <div className="max-w-4xl mx-auto mt-16">
-         <div className="bg-gradient-to-br from-orange-50 to-white p-8 rounded-xl shadow-lg border border-orange-100">
+         <div className="bg-linear-to-br from-orange-50 to-white p-8 rounded-xl shadow-lg border border-orange-100">
            <h2 className="text-2xl font-semibold text-gray-900 mb-6 flex items-center">
              <FaEnvelope className="text-orange-500 mr-3" />
              ส่งข้อความถึงเรา

@@ -13,11 +13,11 @@ interface ProjectCardProps {
   };
  
   return (
-    <div className="bg-white rounded-xl shadow-sm overflow-hidden">
+    <div className="bg-white rounded-xl shadow-xs overflow-hidden">
       <div className="p-4">
         <div className="flex gap-4">
           {/* รูปด้านซ้าย */}
-          <div className="w-full md:w-48 flex-shrink-0">
+          <div className="w-full md:w-48 shrink-0">
             <div className="aspect-w-16 aspect-h-9">
               <img 
                 src={image} 

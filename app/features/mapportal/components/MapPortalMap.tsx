@@ -103,12 +103,12 @@ export default function MapPortalMap({
     <div className="min-w-[220px] max-w-[280px]">
       <div className="flex items-center gap-2 mb-1.5">
         <span
-          className="w-3 h-3 rounded-full flex-shrink-0"
+          className="w-3 h-3 rounded-full shrink-0"
           style={{ backgroundColor: color }}
         />
         <span className="text-[10px] font-medium text-gray-500">{doc.category.name}</span>
         {isLatest && (
-          <span className="px-1.5 py-0.5 text-[9px] font-bold bg-red-500 text-white rounded">
+          <span className="px-1.5 py-0.5 text-[9px] font-bold bg-red-500 text-white rounded-sm">
             NEW
           </span>
         )}

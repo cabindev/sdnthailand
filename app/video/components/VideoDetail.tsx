@@ -36,7 +36,7 @@ export default function VideoDetail({ video }: { video: VideoPost }) {
            alt={video.title.rendered}
            className="w-full h-full object-cover"
          />
-         <div className="absolute inset-0 bg-gradient-to-b from-transparent to-black/60" />
+         <div className="absolute inset-0 bg-linear-to-b from-transparent to-black/60" />
        </div>
      )}
 

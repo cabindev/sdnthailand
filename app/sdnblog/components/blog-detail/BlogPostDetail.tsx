@@ -50,7 +50,7 @@ export default function BlogPostDetail({ post }: BlogPostDetailProps) {
             className="w-full h-full object-cover"
             loading="eager"
           />
-          <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/30 to-transparent" />
+          <div className="absolute inset-0 bg-linear-to-t from-black/60 via-black/30 to-transparent" />
         </div>
       )}
 
@@ -136,7 +136,7 @@ export default function BlogPostDetail({ post }: BlogPostDetailProps) {
             <div className="mt-8 md:mt-12 pt-8 border-t border-gray-200">
               <Link 
                 href="/sdnblog"
-                className="inline-flex items-center gap-2 font-ibm text-sm md:text-base bg-[#ff7834] text-white px-4 py-2 rounded-full hover:bg-[#e86b2a] transition-all duration-300 shadow-md hover:shadow-lg transform hover:-translate-y-0.5 motion-reduce:transform-none motion-reduce:transition-none focus:outline-none focus-visible:ring-2 focus-visible:ring-[#ff7834]/50 focus-visible:ring-offset-2"
+                className="inline-flex items-center gap-2 font-ibm text-sm md:text-base bg-[#ff7834] text-white px-4 py-2 rounded-full hover:bg-[#e86b2a] transition-all duration-300 shadow-md hover:shadow-lg transform hover:-translate-y-0.5 motion-reduce:transform-none motion-reduce:transition-none focus:outline-hidden focus-visible:ring-2 focus-visible:ring-[#ff7834]/50 focus-visible:ring-offset-2"
               >
                 บทความทั้งหมด
               </Link>

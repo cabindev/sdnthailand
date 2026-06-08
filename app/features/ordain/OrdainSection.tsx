@@ -32,7 +32,7 @@ export default function OrdainSection() {
   };
 
   return (
-    <div className="py-16 bg-gradient-to-b from-amber-50 via-orange-50 to-white">
+    <div className="py-16 bg-linear-to-b from-amber-50 via-orange-50 to-white">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <motion.div 
           className="text-center mb-12"

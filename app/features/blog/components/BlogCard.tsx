@@ -63,7 +63,7 @@ export default function BlogCard({ post, isLarge = false }: BlogCardProps) {
 
   // Mobile Card
   const mobileCard = (
-    <div className="block bg-white rounded-xl overflow-hidden shadow-sm hover:shadow-md transition-all duration-300">
+    <div className="block bg-white rounded-xl overflow-hidden shadow-xs hover:shadow-md transition-all duration-300">
       <div className="relative aspect-video">
         <Image
           src={featuredImage}
@@ -103,7 +103,7 @@ export default function BlogCard({ post, isLarge = false }: BlogCardProps) {
           blurDataURL="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAYEBQYFBAYGBQYHBwYIChAKCgkJChQODwwQFxQYGBcUFhYaHSUfGhsjHBYWICwgIyYnKSopGR8tMC0oMCUoKSj/2wBDAQcHBwoIChMKChMoGhYaKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCj/wAARCAAIAAoDASIAAhEBAxEB/8QAFQABAQAAAAAAAAAAAAAAAAAAAAv/xAAhEAACAQMDBQAAAAAAAAAAAAABAgMABAUGIWGRkbHB0f/EABUBAQEAAAAAAAAAAAAAAAAAAAMF/8QAGhEAAgIDAAAAAAAAAAAAAAAAAAECEgMRkf/aAAwDAQACEQMRAD8AltJagyeH0AthI5xdrLcNM91BF5pX2HaH9bcfaSXWGaRmknyJckliyjqTzSlT54b6bk+h0R//2Q=="
         />
         {/* เพิ่ม overlay gradient เพื่อให้ข้อความอ่านง่ายขึ้น */}
-        <div className="absolute inset-0 bg-gradient-to-r from-black/5 to-transparent" />
+        <div className="absolute inset-0 bg-linear-to-r from-black/5 to-transparent" />
       </div>
       <div className="w-1/3 p-6 bg-[#ff7834]/10 flex flex-col justify-center">
         <h3

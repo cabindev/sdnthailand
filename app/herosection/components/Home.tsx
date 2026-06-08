@@ -200,7 +200,7 @@ function BackToTopButton({ isVisible, onClick }: BackToTopButtonProps) {
     <AnimatePresence>
       {isVisible && (
         <motion.button
-          className="fixed bottom-8 right-8 p-3 bg-[#ff7834] text-white rounded-full shadow-lg z-50 hover:bg-[#e86b2a] hover:shadow-xl transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-[#ff7834]/50 focus-visible:ring-offset-2"
+          className="fixed bottom-8 right-8 p-3 bg-[#ff7834] text-white rounded-full shadow-lg z-50 hover:bg-[#e86b2a] hover:shadow-xl transition-colors focus:outline-hidden focus-visible:ring-2 focus-visible:ring-[#ff7834]/50 focus-visible:ring-offset-2"
           initial={{ opacity: 0, scale: 0.8 }}
           animate={{ opacity: 1, scale: 1 }}
           exit={{ opacity: 0, scale: 0.8 }}

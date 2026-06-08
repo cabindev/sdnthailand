@@ -35,7 +35,7 @@ export default function BlogCard({ post }: PostCardProps) {
 
   return (
     <Link href={`/sdnblog/${post.id}`} className="group block h-full">
-      <div className="flex h-full flex-col bg-white rounded-xl shadow-sm overflow-hidden hover:shadow-md transition-shadow duration-300">
+      <div className="flex h-full flex-col bg-white rounded-xl shadow-xs overflow-hidden hover:shadow-md transition-shadow duration-300">
         <div className="aspect-video relative overflow-hidden">
           {featuredImage ? (
             <img

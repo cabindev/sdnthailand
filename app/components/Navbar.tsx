@@ -226,7 +226,7 @@ const Navbar: React.FC = () => {
           {/* Desktop Nested Submenu */}
           {!isMobile && isSubmenuOpen && (
             <div
-              className="absolute top-full right-0 w-72 bg-white shadow-lg border border-gray-100 py-1 z-50 rounded-sm"
+              className="absolute top-full right-0 w-72 bg-white shadow-lg border border-gray-100 py-1 z-50 rounded-xs"
               onMouseEnter={() => handleMouseEnter(item.name)}
               onMouseLeave={handleMouseLeave}
             >
@@ -243,7 +243,7 @@ const Navbar: React.FC = () => {
                   
                   {/* Nested items */}
                   {openNestedSubmenu === nestedItem.name && (
-                    <div className="absolute right-full top-0 w-64 bg-white shadow-lg border border-gray-100 py-1 z-50 rounded-sm">
+                    <div className="absolute right-full top-0 w-64 bg-white shadow-lg border border-gray-100 py-1 z-50 rounded-xs">
                       {nestedItem.items.map((subItem) => (
                         <ExternalLink
                           key={subItem.name}
@@ -266,7 +266,7 @@ const Navbar: React.FC = () => {
 
           {/* Mobile Nested Submenu */}
           {isMobile && isSubmenuOpen && (
-            <div className="bg-gray-50 py-2 rounded mt-1">
+            <div className="bg-gray-50 py-2 rounded-sm mt-1">
               {item.nestedSubmenu.map((nestedItem) => (
                 <div key={nestedItem.name}>
                   <button
@@ -283,7 +283,7 @@ const Navbar: React.FC = () => {
                   </button>
                   
                   {openNestedSubmenu === nestedItem.name && (
-                    <div className="bg-gray-100 py-1 ml-4 rounded">
+                    <div className="bg-gray-100 py-1 ml-4 rounded-sm">
                       {nestedItem.items.map((subItem) => (
                         <ExternalLink
                           key={subItem.name}
@@ -333,7 +333,7 @@ const Navbar: React.FC = () => {
           {/* Desktop Submenu */}
           {!isMobile && isSubmenuOpen && (
             <div
-              className="absolute top-full left-0 w-64 bg-white shadow-lg border border-gray-100 py-1 z-50 rounded-sm"
+              className="absolute top-full left-0 w-64 bg-white shadow-lg border border-gray-100 py-1 z-50 rounded-xs"
               onMouseEnter={() => handleMouseEnter(item.name)}
               onMouseLeave={handleMouseLeave}
             >
@@ -366,7 +366,7 @@ const Navbar: React.FC = () => {
 
           {/* Mobile Submenu */}
           {isMobile && isSubmenuOpen && (
-            <div className="bg-gray-50 py-2 rounded mt-1">
+            <div className="bg-gray-50 py-2 rounded-sm mt-1">
               {item.submenu.map((subItem) => {
                 const isExternal = subItem.href.startsWith('http');
                 const linkClassName = "block w-full text-left pl-6 pr-4 py-3 text-sm font-light text-gray-600 hover:text-[#ff7834] hover:bg-gray-100 transition-colors";
@@ -403,7 +403,7 @@ const Navbar: React.FC = () => {
     const isExternal = item.href.startsWith('http');
     const linkProps = {
       href: item.href,
-      className: `relative block px-3 py-2 text-sm font-light transition-colors duration-200 focus-visible:outline-none focus-visible:text-[#ff7834] ${
+      className: `relative block px-3 py-2 text-sm font-light transition-colors duration-200 focus-visible:outline-hidden focus-visible:text-[#ff7834] ${
         isActive ? 'text-[#ff7834]' : 'text-gray-700 hover:text-[#ff7834]'
       } ${
         isMobile
@@ -427,7 +427,7 @@ const Navbar: React.FC = () => {
   };
 
   return (
-    <nav className="bg-white shadow-sm border-b border-gray-200">
+    <nav className="bg-white shadow-xs border-b border-gray-200">
       <div className="w-full px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-14">
           {/* Logo */}
@@ -458,7 +458,7 @@ const Navbar: React.FC = () => {
             {/* Mobile menu button */}
             <button
               onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-              className="lg:hidden p-2 rounded hover:bg-gray-100 transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-[#ff7834]/60"
+              className="lg:hidden p-2 rounded-sm hover:bg-gray-100 transition-colors focus:outline-hidden focus-visible:ring-2 focus-visible:ring-[#ff7834]/60"
               type="button"
               aria-label="Toggle mobile menu"
             >

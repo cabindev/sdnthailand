@@ -56,7 +56,7 @@ export default function RegionSelector({
   return (
     <div className="flex flex-col h-full">
       {/* Search */}
-      <div className="px-4 pt-4 pb-3 flex-shrink-0">
+      <div className="px-4 pt-4 pb-3 shrink-0">
         <div className="relative">
           <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-300" />
           <input
@@ -64,7 +64,7 @@ export default function RegionSelector({
             placeholder="ค้นหาจังหวัด..."
             value={search}
             onChange={(e) => setSearch(e.target.value)}
-            className="w-full pl-12 pr-10 py-3 text-base bg-gray-50 border border-gray-100 rounded-2xl focus:outline-none focus:ring-2 focus:ring-orange-500/20 focus:border-orange-200 placeholder:text-gray-400 transition-all"
+            className="w-full pl-12 pr-10 py-3 text-base bg-gray-50 border border-gray-100 rounded-2xl focus:outline-hidden focus:ring-2 focus:ring-orange-500/20 focus:border-orange-200 placeholder:text-gray-400 transition-all"
           />
           {search && (
             <button
@@ -101,20 +101,20 @@ export default function RegionSelector({
                 }`}
               >
                 <span
-                  className="w-3.5 h-3.5 rounded-full flex-shrink-0 shadow-sm"
+                  className="w-3.5 h-3.5 rounded-full shrink-0 shadow-xs"
                   style={{ backgroundColor: data.color }}
                 />
                 <span className={`text-base font-bold flex-1 truncate ${isSelected ? 'text-white' : 'text-gray-800'}`}>
                   {regionName}
                 </span>
-                <span className={`flex-shrink-0 px-2 py-0.5 rounded-full text-sm font-medium tabular-nums ${
+                <span className={`shrink-0 px-2 py-0.5 rounded-full text-sm font-medium tabular-nums ${
                   isSelected ? 'bg-white/20 text-white' : 'bg-gray-100 text-gray-500'
                 }`}>
                   {docCount > 0 ? docCount : data.provinces.length}
                 </span>
                 <ChevronDown
                   onClick={(e) => { e.stopPropagation(); toggleRegion(regionName); }}
-                  className={`w-5 h-5 flex-shrink-0 transition-transform duration-150 ${
+                  className={`w-5 h-5 shrink-0 transition-transform duration-150 ${
                     isExpanded ? 'rotate-180' : ''
                   } ${isSelected ? 'text-white/40' : 'text-gray-300'}`}
                 />
@@ -134,7 +134,7 @@ export default function RegionSelector({
                         className={`w-full text-left px-4 py-3 text-[15px] rounded-xl transition-all my-0.5 flex items-center justify-between ${
                           isProvSelected
                             ? 'bg-orange-50 text-orange-600 font-semibold'
-                            : 'text-gray-600 hover:bg-white hover:text-gray-900 hover:shadow-sm'
+                            : 'text-gray-600 hover:bg-white hover:text-gray-900 hover:shadow-xs'
                         }`}
                       >
                         <span>{province}</span>

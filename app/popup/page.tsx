@@ -48,7 +48,7 @@ export default function LivePopup() {
         </div>
         
         {/* โลโก้ที่ไม่มีวงกลมล้อมรอบ */}
-        <div className="w-64 h-64 md:w-80 md:h-80 flex-shrink-0 z-10 relative">
+        <div className="w-64 h-64 md:w-80 md:h-80 shrink-0 z-10 relative">
           <div className="absolute inset-0 logo-flare-simple"></div>
           <img 
             src="/campaign/songkran.png" 

@@ -44,7 +44,7 @@ export default function PostDetail({ post }: PostDetailProps) {
    <div className="container max-w-5xl mx-auto px-4 py-12 md:py-20">
      <Toaster />
      
-     <div className="bg-white rounded-2xl shadow-sm p-4 md:p-8">
+     <div className="bg-white rounded-2xl shadow-xs p-4 md:p-8">
        <div className="flex flex-col md:flex-row gap-8">
          <div className="flex-1">
            {/* Categories */}
@@ -130,7 +130,7 @@ export default function PostDetail({ post }: PostDetailProps) {
                prose-code:bg-gray-100 prose-code:text-gray-700 prose-code:font-light prose-code:text-xs md:prose-code:text-sm
                text-sm md:text-base font-light leading-relaxed
                mb-8 md:mb-12
-               [&>*]:mx-auto [&>*]:max-w-3xl"
+               *:mx-auto *:max-w-3xl"
              dangerouslySetInnerHTML={{ __html: post.content.rendered }}
            />
 
@@ -149,7 +149,7 @@ export default function PostDetail({ post }: PostDetailProps) {
            <div className="mt-8 md:mt-12 pt-8 border-t border-gray-200">
              <Link 
                href="/sdnpost"
-               className="inline-flex items-center gap-2 font-ibm text-sm md:text-base bg-[#ff7834] text-white px-4 py-2 rounded-full hover:bg-[#e86b2a] transition-all duration-300 shadow-md hover:shadow-lg transform hover:-translate-y-0.5 motion-reduce:transform-none motion-reduce:transition-none focus:outline-none focus-visible:ring-2 focus-visible:ring-[#ff7834]/50 focus-visible:ring-offset-2"
+               className="inline-flex items-center gap-2 font-ibm text-sm md:text-base bg-[#ff7834] text-white px-4 py-2 rounded-full hover:bg-[#e86b2a] transition-all duration-300 shadow-md hover:shadow-lg transform hover:-translate-y-0.5 motion-reduce:transform-none motion-reduce:transition-none focus:outline-hidden focus-visible:ring-2 focus-visible:ring-[#ff7834]/50 focus-visible:ring-offset-2"
              >
                ข่าวทั้งหมด
              </Link>

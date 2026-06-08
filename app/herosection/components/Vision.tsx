@@ -12,7 +12,7 @@ export default function Vision() {
  }, []);
 
  return (
-  <section className="relative w-full h-[600px] bg-gradient-to-br from-[#ff7834]/5 to-[#ff7834]/10 overflow-hidden">
+  <section className="relative w-full h-[600px] bg-linear-to-br from-[#ff7834]/5 to-[#ff7834]/10 overflow-hidden">
   <div className="absolute inset-0">
        {/* Background Pattern */}
        <div className="absolute inset-0 opacity-10 bg-[radial-gradient(circle_at_1px_1px,rgba(251,146,60,0.15)_1px,transparent_0)]" style={{ backgroundSize: '40px 40px' }} />

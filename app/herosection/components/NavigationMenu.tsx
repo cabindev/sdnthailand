@@ -94,7 +94,7 @@ const NavigationMenu = ({ activeSection }: NavigationMenuProps) => {
   const totalSlides = Math.ceil(externalLinks.length / 6);
 
   return (
-    <div className="sticky top-0 z-30 backdrop-blur-xl bg-white/95 shadow-md border-b border-[var(--accent)]/10">
+    <div className="sticky top-0 z-30 backdrop-blur-xl bg-white/95 shadow-md border-b border-(--accent)/10">
       <div className="max-w-7xl mx-auto px-4">
         <nav className="flex items-center justify-between py-3">
           {/* Desktop Menu */}
@@ -125,8 +125,8 @@ const NavigationMenu = ({ activeSection }: NavigationMenuProps) => {
                 href={`#${id}`}
                 className={`group flex items-center whitespace-nowrap px-4 py-2 rounded-full text-sm font-medium transition-all ${
                   activeSection === id
-                    ? "bg-[var(--accent)] text-[var(--accent-foreground)] shadow-lg shadow-[var(--accent)]/20"
-                    : "text-[var(--foreground)] hover:bg-[var(--hover-bg)] hover:scale-105"
+                    ? "bg-(--accent) text-(--accent-foreground) shadow-lg shadow-(--accent)/20"
+                    : "text-(--foreground) hover:bg-(--hover-bg) hover:scale-105"
                 }`}
                 onClick={(e) => {
                   e.preventDefault();
@@ -160,8 +160,8 @@ const NavigationMenu = ({ activeSection }: NavigationMenuProps) => {
                 href={`#${id}`}
                 className={`group flex items-center whitespace-nowrap px-3 py-2 rounded-full text-xs font-medium transition-all ${
                   activeSection === id
-                    ? "bg-[var(--accent)] text-[var(--accent-foreground)] shadow-lg"
-                    : "text-[var(--foreground)] hover:bg-[var(--hover-bg)]"
+                    ? "bg-(--accent) text-(--accent-foreground) shadow-lg"
+                    : "text-(--foreground) hover:bg-(--hover-bg)"
                 }`}
                 onClick={(e) => {
                   e.preventDefault();
@@ -183,7 +183,7 @@ const NavigationMenu = ({ activeSection }: NavigationMenuProps) => {
                 isHamburgerOpen
                   ? "bg-[#FF6633] text-white"
                   : "bg-[#FF6633] text-white hover:bg-[#FF5522]"
-              } transition-colors flex-shrink-0`}
+              } transition-colors shrink-0`}
               aria-label={isHamburgerOpen ? "ปิดเมนู" : "เปิดเมนู"}
             >
               <FaBars className="w-4 h-4" />
@@ -199,7 +199,7 @@ const NavigationMenu = ({ activeSection }: NavigationMenuProps) => {
                     style={{ transform: `translateX(-${currentSlide * 100}%)` }}
                   >
                     {Array.from({ length: totalSlides }, (_, slideIndex) => (
-                      <div key={slideIndex} className="w-full flex-shrink-0">
+                      <div key={slideIndex} className="w-full shrink-0">
                         <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
                           {externalLinks
                             .slice(slideIndex * 6, (slideIndex + 1) * 6)
@@ -213,14 +213,14 @@ const NavigationMenu = ({ activeSection }: NavigationMenuProps) => {
                                 className="block hover:shadow-md transition-all duration-300 rounded-md overflow-hidden text-center group hover:scale-105"
                                 onClick={() => setIsHamburgerOpen(false)}
                               >
-                                <div className="w-full h-[70px] bg-gradient-to-br from-gray-50 to-gray-100 rounded-md overflow-hidden flex items-center justify-center group-hover:from-[#ff7834]/5 group-hover:to-[#ff7834]/10 transition-all duration-300 p-2">
+                                <div className="w-full h-[70px] bg-linear-to-br from-gray-50 to-gray-100 rounded-md overflow-hidden flex items-center justify-center group-hover:from-[#ff7834]/5 group-hover:to-[#ff7834]/10 transition-all duration-300 p-2">
                                   <Image
                                     src={link.image}
                                     alt={link.title}
                                     width={120}
                                     height={60}
                                     loading="lazy"
-                                    className="object-contain max-w-full max-h-full filter drop-shadow-sm group-hover:drop-shadow-md transition-all duration-300"
+                                    className="object-contain max-w-full max-h-full filter drop-shadow-xs group-hover:drop-shadow-md transition-all duration-300"
                                     onError={(e) => {
                                       // Fallback สำหรับรูปที่โหลดไม่ได้
                                       const target = e.target as HTMLImageElement;

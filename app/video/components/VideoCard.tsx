@@ -7,7 +7,7 @@ export default function VideoCard({ video }: { video: VideoPost }) {
 
   return (
     <Link href={`/video/${video.id}`}>
-      <div className="group bg-white rounded-xl overflow-hidden shadow-sm hover:shadow-md transition-all duration-300">
+      <div className="group bg-white rounded-xl overflow-hidden shadow-xs hover:shadow-md transition-all duration-300">
         <div className="relative aspect-video">
           <img
             src={thumbnail || '/images/default-video-thumbnail.jpg'}

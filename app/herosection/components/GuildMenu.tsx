@@ -83,7 +83,7 @@ const GuildMenu: React.FC = () => {
                 href={link.url}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="group flex flex-col items-center text-center gap-2 py-3 px-2 rounded-xl hover:bg-gray-50 transition-all duration-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-[#ff7834]/50"
+                className="group flex flex-col items-center text-center gap-2 py-3 px-2 rounded-xl hover:bg-gray-50 transition-all duration-200 focus:outline-hidden focus-visible:ring-2 focus-visible:ring-[#ff7834]/50"
               >
                 <IconComponent className="w-6 h-6 text-[#ff7834] transition-colors duration-200 group-hover:text-[#e86b2a]" />
                 <span className="text-xs font-medium text-gray-600 group-hover:text-gray-900 transition-colors duration-200 leading-tight line-clamp-1">

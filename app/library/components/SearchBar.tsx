@@ -13,7 +13,7 @@ export default function SearchBar({
           placeholder="ค้นหานิทาน..."
           value={value}
           onChange={(e) => onChange(e.target.value)}
-          className="w-full px-6 py-4 text-lg rounded-full border-2 border-pink-200 focus:border-pink-400 focus:outline-none"
+          className="w-full px-6 py-4 text-lg rounded-full border-2 border-pink-200 focus:border-pink-400 focus:outline-hidden"
         />
       </div>
     );

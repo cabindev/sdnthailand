@@ -64,12 +64,12 @@ export default function NewsLatest() {
           </div>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
             {[1, 2, 3, 4].map((i) => (
-              <div key={i} className="bg-white rounded-2xl overflow-hidden shadow-sm animate-pulse">
-                <div className="aspect-[4/3] bg-gray-200"></div>
+              <div key={i} className="bg-white rounded-2xl overflow-hidden shadow-xs animate-pulse">
+                <div className="aspect-4/3 bg-gray-200"></div>
                 <div className="p-4">
-                  <div className="h-4 bg-gray-200 rounded w-3/4 mb-3"></div>
-                  <div className="h-4 bg-gray-200 rounded w-full mb-2"></div>
-                  <div className="h-4 bg-gray-200 rounded w-2/3"></div>
+                  <div className="h-4 bg-gray-200 rounded-sm w-3/4 mb-3"></div>
+                  <div className="h-4 bg-gray-200 rounded-sm w-full mb-2"></div>
+                  <div className="h-4 bg-gray-200 rounded-sm w-2/3"></div>
                 </div>
               </div>
             ))}

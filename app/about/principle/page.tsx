@@ -20,7 +20,7 @@ export default function Principle() {
  return (
    <div className="min-h-screen bg-white pt-24">
      {/* Hero Section */}
-     <div className="relative bg-gradient-to-r from-orange-50 to-orange-100 py-16">
+     <div className="relative bg-linear-to-r from-orange-50 to-orange-100 py-16">
        <div className="container mx-auto px-4">
          <div className="flex flex-col items-center text-center">
            <Image
@@ -43,7 +43,7 @@ export default function Principle() {
      {/* Main Content */}
      <div className="container mx-auto px-4 py-16">
        <div className="max-w-4xl mx-auto">
-         <div className="bg-white rounded-xl shadow-sm border border-gray-100">
+         <div className="bg-white rounded-xl shadow-xs border border-gray-100">
            <div className="divide-y divide-gray-100">
              {principles.map((principle, index) => (
                <div 
@@ -51,7 +51,7 @@ export default function Principle() {
                  className="p-6 hover:bg-orange-50 transition-colors duration-200"
                >
                  <div className="flex items-start space-x-4">
-                   <span className="flex-shrink-0 w-8 h-8 bg-orange-100 text-orange-600 rounded-full flex items-center justify-center font-medium text-sm">
+                   <span className="shrink-0 w-8 h-8 bg-orange-100 text-orange-600 rounded-full flex items-center justify-center font-medium text-sm">
                      {index + 1}
                    </span>
                    <p className="text-gray-600 leading-relaxed text-base">

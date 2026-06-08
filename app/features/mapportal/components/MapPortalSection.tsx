@@ -128,7 +128,7 @@ export default function MapPortalSection() {
     return (
       <div className="relative w-full h-[85vh] bg-gray-100 flex items-center justify-center">
         <div className="text-center px-4">
-          <div className="w-12 h-12 rounded-full bg-white shadow-sm flex items-center justify-center mx-auto mb-4">
+          <div className="w-12 h-12 rounded-full bg-white shadow-xs flex items-center justify-center mx-auto mb-4">
             <X className="w-5 h-5 text-red-400" />
           </div>
           <p className="text-gray-500 text-sm mb-4">ไม่สามารถโหลดข้อมูลแผนที่ได้</p>
@@ -160,7 +160,7 @@ export default function MapPortalSection() {
 
       {/* Floating toggle button - show only when sidebar is closed */}
       {!sidebarOpen && (
-        <div className="absolute top-4 left-4 z-[501]">
+        <div className="absolute top-4 left-4 z-501">
           <button
             type="button"
             onClick={() => setSidebarOpen(true)}
@@ -175,18 +175,18 @@ export default function MapPortalSection() {
       {/* Mobile backdrop - tap to close */}
       {sidebarOpen && (
         <div
-          className="absolute inset-0 bg-black/20 z-[499] lg:hidden"
+          className="absolute inset-0 bg-black/20 z-499 lg:hidden"
           onClick={() => setSidebarOpen(false)}
         />
       )}
 
       {/* Sliding panel */}
-      <div className={`absolute top-3 left-3 bottom-3 z-[500] transition-transform duration-300 ease-out ${
-        sidebarOpen ? 'translate-x-0' : '-translate-x-[120%]'
+      <div className={`absolute top-3 left-3 bottom-3 z-500 transition-transform duration-300 ease-out ${
+        sidebarOpen ? 'translate-x-0' : 'translate-x-[-120%]'
       }`}>
-        <div className="h-full w-[calc(100vw-1.5rem)] max-w-[380px] bg-white/95 backdrop-blur-sm shadow-xl rounded-2xl flex flex-col overflow-hidden border border-gray-100/50">
+        <div className="h-full w-[calc(100vw-1.5rem)] max-w-[380px] bg-white/95 backdrop-blur-xs shadow-xl rounded-2xl flex flex-col overflow-hidden border border-gray-100/50">
           {/* Header */}
-          <div className="px-5 pt-4 pb-3 flex-shrink-0 border-b border-gray-50">
+          <div className="px-5 pt-4 pb-3 shrink-0 border-b border-gray-50">
             <div className="flex items-center justify-between mb-3">
               <div className="flex items-center gap-3">
                 <div className="w-10 h-10 rounded-xl bg-[#ff7834] flex items-center justify-center">
@@ -250,11 +250,11 @@ export default function MapPortalSection() {
                 {categories.slice(0, 8).map((cat) => (
                   <div key={cat.id} className="flex items-center gap-2 min-w-0">
                     <span
-                      className="w-3 h-3 rounded-full flex-shrink-0"
+                      className="w-3 h-3 rounded-full shrink-0"
                       style={{ backgroundColor: getCategoryColor(cat.id) }}
                     />
                     <span className="text-xs text-gray-600 truncate">{cat.name}</span>
-                    <span className="text-xs text-gray-300 flex-shrink-0">({cat.count})</span>
+                    <span className="text-xs text-gray-300 shrink-0">({cat.count})</span>
                   </div>
                 ))}
               </div>
@@ -268,9 +268,9 @@ export default function MapPortalSection() {
 
             {/* Filter indicator */}
             {selectedProvinces.length > 0 && (
-              <div className="px-3 pt-2.5 flex-shrink-0">
+              <div className="px-3 pt-2.5 shrink-0">
                 <div className="flex items-center gap-2.5 px-3 py-2 rounded-xl bg-[#ff7834]/5">
-                  <div className="w-2.5 h-2.5 rounded-full flex-shrink-0" style={{ backgroundColor: highlightColor }} />
+                  <div className="w-2.5 h-2.5 rounded-full shrink-0" style={{ backgroundColor: highlightColor }} />
                   <div className="flex-1 min-w-0">
                     <p className="text-sm font-semibold text-gray-900 truncate">{selectedProvince || selectedRegion}</p>
                     {selectedProvince && provinceStats && (
@@ -284,7 +284,7 @@ export default function MapPortalSection() {
                   <button
                     type="button"
                     onClick={handleClearSelection}
-                    className="p-1.5 text-[#ff7834]/60 hover:text-[#e86b2a] rounded-full hover:bg-[#ff7834]/10 transition-colors flex-shrink-0"
+                    className="p-1.5 text-[#ff7834]/60 hover:text-[#e86b2a] rounded-full hover:bg-[#ff7834]/10 transition-colors shrink-0"
                   >
                     <X className="w-3.5 h-3.5" />
                   </button>
@@ -293,7 +293,7 @@ export default function MapPortalSection() {
             )}
 
             {/* Tabs */}
-            <div className="px-4 pt-3 flex-shrink-0">
+            <div className="px-4 pt-3 shrink-0">
               <div className="flex bg-gray-100/80 rounded-xl p-1.5 gap-0.5">
                 <TabButton
                   active={activeTab === 'recent'}
@@ -338,16 +338,16 @@ export default function MapPortalSection() {
                           <MapPortalPlaceholder color={catColor} />
                         )}
                         {/* Dark gradient overlay bottom */}
-                        <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
+                        <div className="absolute inset-0 bg-linear-to-t from-black/80 via-black/20 to-transparent" />
 
                         {/* Top badges */}
                         <div className="absolute top-3 left-3 right-3 flex items-center justify-between">
-                          <div className="flex items-center gap-1.5 bg-black/40 backdrop-blur-sm rounded-full px-2.5 py-1">
+                          <div className="flex items-center gap-1.5 bg-black/40 backdrop-blur-xs rounded-full px-2.5 py-1">
                             <div className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
                             <span className="text-white text-[11px] font-medium">โพสต์ล่าสุด</span>
                           </div>
                           <span
-                            className="text-[11px] font-semibold px-2.5 py-1 rounded-full backdrop-blur-sm"
+                            className="text-[11px] font-semibold px-2.5 py-1 rounded-full backdrop-blur-xs"
                             style={{ backgroundColor: catColor + 'CC', color: '#fff' }}
                           >
                             {doc.category.name}
@@ -356,7 +356,7 @@ export default function MapPortalSection() {
 
                         {/* Bottom overlay content */}
                         <div className="absolute bottom-0 left-0 right-0 p-4">
-                          <h3 className="text-white font-bold text-base leading-snug line-clamp-3 mb-2 drop-shadow">
+                          <h3 className="text-white font-bold text-base leading-snug line-clamp-3 mb-2 drop-shadow-sm">
                             {doc.title}
                           </h3>
                           {doc.description && (
@@ -365,7 +365,7 @@ export default function MapPortalSection() {
                             </p>
                           )}
                           <div className="flex items-center gap-1 text-white/60 text-xs">
-                            <MapPin className="w-3 h-3 flex-shrink-0" />
+                            <MapPin className="w-3 h-3 shrink-0" />
                             <span>{doc.amphoe}, {doc.province}</span>
                           </div>
                         </div>
@@ -385,7 +385,7 @@ export default function MapPortalSection() {
                 />
               ) : (
                 <div className="h-full flex flex-col">
-                  <div className="px-4 py-2.5 border-b border-gray-100 flex-shrink-0 flex items-center justify-between">
+                  <div className="px-4 py-2.5 border-b border-gray-100 shrink-0 flex items-center justify-between">
                     <p className="text-xs text-gray-400 font-medium">
                       {selectedProvince || selectedRegion
                         ? `${filteredDocs.length} รายการ`
@@ -427,12 +427,12 @@ export default function MapPortalSection() {
             </div>
 
             {/* CTA Button */}
-            <div className="px-4 py-3 border-t border-gray-100 flex-shrink-0">
+            <div className="px-4 py-3 border-t border-gray-100 shrink-0">
               <a
                 href={MAPPORTAL_URL}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="flex items-center justify-center gap-2 w-full py-3 px-4 bg-gradient-to-r from-[#ff7834] to-[#e86b2a] text-white font-semibold rounded-xl hover:from-[#e86b2a] hover:to-[#e86b2a] transition-all shadow-md hover:shadow-lg"
+                className="flex items-center justify-center gap-2 w-full py-3 px-4 bg-linear-to-r from-[#ff7834] to-[#e86b2a] text-white font-semibold rounded-xl hover:from-[#e86b2a] hover:to-[#e86b2a] transition-all shadow-md hover:shadow-lg"
               >
                 <MapIcon className="w-4 h-4" />
                 ดูแผนที่ทั้งหมด
@@ -464,7 +464,7 @@ function TabButton({
       onClick={onClick}
       className={`flex-1 py-2.5 text-xs font-semibold rounded-xl transition-all ${
         active
-          ? 'text-gray-900 bg-white shadow-sm'
+          ? 'text-gray-900 bg-white shadow-xs'
           : 'text-gray-400 hover:text-gray-600'
       }`}
     >
@@ -523,13 +523,13 @@ function MapPortalSkeleton() {
           <div className="flex items-center gap-3 mb-4">
             <div className="w-11 h-11 bg-[#ff7834]/10 rounded-xl" />
             <div>
-              <div className="h-5 bg-gray-200 rounded w-32 mb-2" />
-              <div className="h-4 bg-gray-100 rounded w-28" />
+              <div className="h-5 bg-gray-200 rounded-sm w-32 mb-2" />
+              <div className="h-4 bg-gray-100 rounded-sm w-28" />
             </div>
           </div>
           <div className="flex gap-5">
-            <div className="h-4 bg-gray-100 rounded w-16" />
-            <div className="h-4 bg-gray-100 rounded w-16" />
+            <div className="h-4 bg-gray-100 rounded-sm w-16" />
+            <div className="h-4 bg-gray-100 rounded-sm w-16" />
           </div>
         </div>
         <div className="px-4 pt-4">

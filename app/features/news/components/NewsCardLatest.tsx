@@ -13,8 +13,8 @@ export default function NewsCardLatest({ post }: NewsCardLatestProps) {
 
   return (
     <Link href={`/sdnpost/${post.id}`} className="block h-full">
-      <div className="group bg-white rounded-2xl overflow-hidden shadow h-full">
-        <div className="relative aspect-[18/10] overflow-hidden">
+      <div className="group bg-white rounded-2xl overflow-hidden shadow-sm h-full">
+        <div className="relative aspect-18/10 overflow-hidden">
           <img
             src={featuredImage}
             alt={post.title.rendered}

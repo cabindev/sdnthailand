@@ -131,8 +131,8 @@ export default function LogoShowcase() {
     <div className="max-w-5xl mx-auto px-8"> 
       <div className="relative">
        
-        <div className="absolute left-0 top-0 bottom-0 w-16 bg-gradient-to-r from-[##d4d4d4] to-transparent z-10" />
-        <div className="absolute right-0 top-0 bottom-0 w-16 bg-gradient-to-l from-[##d4d4d4] to-transparent z-10" />
+        <div className="absolute left-0 top-0 bottom-0 w-16 bg-linear-to-r from-[##d4d4d4] to-transparent z-10" />
+        <div className="absolute right-0 top-0 bottom-0 w-16 bg-linear-to-l from-[##d4d4d4] to-transparent z-10" />
         <div className="overflow-hidden px-8" ref={emblaRef}>
           <div className="flex gap-8"> 
           {logos.map((logo) => (
@@ -142,9 +142,9 @@ export default function LogoShowcase() {
           >
             <motion.div
               whileHover={{ scale: 1.02 }}
-              className="bg-white rounded-lg p-3 shadow-sm hover:shadow-md transition-all duration-300"
+              className="bg-white rounded-lg p-3 shadow-xs hover:shadow-md transition-all duration-300"
             >
-              <div className="relative aspect-[4/3]"> 
+              <div className="relative aspect-4/3"> 
                 <Image
                   src={logo.image}
                   alt={logo.alt}
@@ -164,7 +164,7 @@ export default function LogoShowcase() {
         {/* Navigation Buttons */}
         <button
           onClick={scrollPrev}
-          className="absolute -left-4 top-1/2 -translate-y-1/2 z-20 w-8 h-8 rounded-full bg-[#ff7834] text-white shadow-sm flex items-center justify-center hover:bg-[#e86b2a] transition-colors"
+          className="absolute -left-4 top-1/2 -translate-y-1/2 z-20 w-8 h-8 rounded-full bg-[#ff7834] text-white shadow-xs flex items-center justify-center hover:bg-[#e86b2a] transition-colors"
         >
           <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
@@ -173,7 +173,7 @@ export default function LogoShowcase() {
 
         <button
           onClick={scrollNext}
-          className="absolute -right-4 top-1/2 -translate-y-1/2 z-20 w-8 h-8 rounded-full bg-[#ff7834] text-white shadow-sm flex items-center justify-center hover:bg-[#e86b2a] transition-colors"
+          className="absolute -right-4 top-1/2 -translate-y-1/2 z-20 w-8 h-8 rounded-full bg-[#ff7834] text-white shadow-xs flex items-center justify-center hover:bg-[#e86b2a] transition-colors"
         >
           <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />

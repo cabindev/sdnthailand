@@ -63,7 +63,7 @@ function BlogContent() {
         {/* Large card skeleton */}
         <div className="animate-pulse bg-white rounded-xl overflow-hidden shadow-lg">
           <div className="md:flex">
-            <div className="bg-gradient-to-r from-gray-200 to-gray-300 h-[250px] md:h-[450px] md:w-2/3"></div>
+            <div className="bg-linear-to-r from-gray-200 to-gray-300 h-[250px] md:h-[450px] md:w-2/3"></div>
             <div className="p-6 md:w-1/3 bg-[#ff7834]/5">
               <div className="h-8 bg-gray-200 rounded-md mb-4 animate-pulse"></div>
               <div className="h-24 bg-gray-200 rounded-md animate-pulse"></div>
@@ -75,8 +75,8 @@ function BlogContent() {
         {/* Smaller cards skeleton */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
           {[1, 2, 3].map((i) => (
-            <div key={i} className="bg-white rounded-xl overflow-hidden shadow-sm animate-pulse">
-              <div className="bg-gradient-to-r from-gray-200 to-gray-300 aspect-video"></div>
+            <div key={i} className="bg-white rounded-xl overflow-hidden shadow-xs animate-pulse">
+              <div className="bg-linear-to-r from-gray-200 to-gray-300 aspect-video"></div>
               <div className="p-4 bg-[#ff7834]/5">
                 <div className="h-6 bg-gray-200 rounded-md mb-2"></div>
                 <div className="h-4 w-1/3 bg-[#ff7834]/20 rounded-full"></div>

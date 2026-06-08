@@ -28,7 +28,7 @@ export default function MapPortalCard({
     >
       {/* Color indicator */}
       <div
-        className="w-4 h-4 rounded-full flex-shrink-0 mt-0.5"
+        className="w-4 h-4 rounded-full shrink-0 mt-0.5"
         style={{ backgroundColor: categoryColor }}
       />
 

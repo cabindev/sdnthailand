@@ -5,7 +5,7 @@
 function Shimmer({ className = "" }: { className?: string }) {
   return (
     <div className={`relative overflow-hidden bg-gray-200/70 ${className}`}>
-      <div className="absolute inset-0 -translate-x-full animate-shimmer bg-gradient-to-r from-transparent via-white/60 to-transparent" />
+      <div className="absolute inset-0 -translate-x-full animate-shimmer bg-linear-to-r from-transparent via-white/60 to-transparent" />
     </div>
   );
 }
@@ -33,13 +33,13 @@ export default function SectionLoadingFallback({
         {Array.from({ length: cards }).map((_, i) => (
           <div
             key={i}
-            className="bg-white rounded-2xl overflow-hidden shadow-sm border border-gray-100"
+            className="bg-white rounded-2xl overflow-hidden shadow-xs border border-gray-100"
           >
             <Shimmer className="aspect-video" />
             <div className="p-4 space-y-3">
-              <Shimmer className="h-4 w-3/4 rounded" />
-              <Shimmer className="h-4 w-full rounded" />
-              <Shimmer className="h-4 w-2/3 rounded" />
+              <Shimmer className="h-4 w-3/4 rounded-sm" />
+              <Shimmer className="h-4 w-full rounded-sm" />
+              <Shimmer className="h-4 w-2/3 rounded-sm" />
             </div>
           </div>
         ))}
