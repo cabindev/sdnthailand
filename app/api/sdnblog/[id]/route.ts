@@ -17,10 +17,8 @@ const getPost = cache(async (id: string) => {
   return res.json()
 })
 
-export async function GET(
-  request: NextRequest,
-  { params }: { params: { id: string } }
-) {
+export async function GET(request: NextRequest, props: { params: Promise<{ id: string }> }) {
+  const params = await props.params;
   if (!params.id) {
     return NextResponse.json(
       { success: false, error: 'Blog ID is required' },

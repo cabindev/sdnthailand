@@ -2,7 +2,6 @@
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
-import { useSession, signOut } from "next-auth/react";
 import { usePathname } from 'next/navigation';
 import { HiMenuAlt3, HiDatabase } from "react-icons/hi";
 import { IoIosArrowDown, IoIosArrowForward } from "react-icons/io";
@@ -39,23 +38,12 @@ interface InternalLinkProps {
 }
 
 const Navbar: React.FC = () => {
-  const { data: session } = useSession();
   const pathname = usePathname();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState<boolean>(false);
-  const [isProfileMenuOpen, setIsProfileMenuOpen] = useState<boolean>(false);
   const [openSubmenu, setOpenSubmenu] = useState<string>('');
   const [openNestedSubmenu, setOpenNestedSubmenu] = useState<string>('');
   const [hoverTimeout, setHoverTimeout] = useState<NodeJS.Timeout | null>(null);
   const [enterTimeout, setEnterTimeout] = useState<NodeJS.Timeout | null>(null);
-
-  // Close menus when clicking outside
-  useEffect(() => {
-    const handleClickOutside = () => {
-      setIsProfileMenuOpen(false);
-    };
-    document.addEventListener('click', handleClickOutside);
-    return () => document.removeEventListener('click', handleClickOutside);
-  }, []);
 
   // Cleanup timeouts on unmount
   useEffect(() => {
@@ -466,51 +454,6 @@ const Navbar: React.FC = () => {
                 nestedSubmenu: dataCenterItems,
               }, false)}
             </div>
-
-            {/* Profile Menu */}
-            {session && (
-              <div className="relative hidden md:block">
-                <button
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    setIsProfileMenuOpen(!isProfileMenuOpen);
-                  }}
-                  className="flex items-center space-x-2 text-sm px-3 py-2 rounded hover:bg-gray-50 focus:outline-none focus-visible:ring-2 focus-visible:ring-[#ff7834]/60"
-                  type="button"
-                >
-                  <img
-                    src={session.user?.image || "/default-avatar.png"}
-                    alt="Profile"
-                    className="h-7 w-7 rounded-full"
-                  />
-                  <span className="text-gray-700 font-light">{session.user?.firstName}</span>
-                  <IoIosArrowDown
-                    className={`w-3 h-3 text-gray-500 transition-transform ${
-                      isProfileMenuOpen ? 'rotate-180' : ''
-                    }`}
-                  />
-                </button>
-
-                {isProfileMenuOpen && (
-                  <div className="absolute right-0 mt-1 w-48 bg-white rounded-sm border border-gray-100 shadow-lg py-1 z-50">
-                    <Link
-                      href="/profile"
-                      className="block px-4 py-2.5 text-sm font-light text-gray-700 hover:bg-gray-50 hover:text-[#ff7834] transition-colors"
-                      onClick={() => setIsProfileMenuOpen(false)}
-                    >
-                      โปรไฟล์
-                    </Link>
-                    <button
-                      onClick={() => signOut()}
-                      className="block w-full text-left px-4 py-2.5 text-sm font-light text-gray-700 hover:bg-gray-50 hover:text-[#ff7834] transition-colors"
-                      type="button"
-                    >
-                      ออกจากระบบ
-                    </button>
-                  </div>
-                )}
-              </div>
-            )}
 
             {/* Mobile menu button */}
             <button

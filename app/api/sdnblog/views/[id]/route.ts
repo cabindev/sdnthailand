@@ -4,10 +4,8 @@ import { NextRequest, NextResponse } from 'next/server'
 const baseUrl = process.env.WORDPRESS_API_URL || 'https://sdnthailand.synology.me'
 
 // ฟังก์ชันเพิ่มยอดวิว
-export async function POST(
-  request: NextRequest,
-  { params }: { params: { id: string } }
-) {
+export async function POST(request: NextRequest, props: { params: Promise<{ id: string }> }) {
+  const params = await props.params;
   if (!params.id) {
     return NextResponse.json(
       { success: false, error: 'Blog ID is required' },
@@ -48,10 +46,8 @@ export async function POST(
 }
 
 // ฟังก์ชันดึงยอดวิว
-export async function GET(
-  request: NextRequest,
-  { params }: { params: { id: string } }
-) {
+export async function GET(request: NextRequest, props: { params: Promise<{ id: string }> }) {
+  const params = await props.params;
   if (!params.id) {
     return NextResponse.json(
       { success: false, error: 'Blog ID is required' },

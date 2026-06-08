@@ -3,24 +3,24 @@
 
 import Link from 'next/link';
 import Image from 'next/image';
-import { motion } from 'framer-motion';
+import { motion, type Variants } from 'framer-motion';
 import { FaChartBar, FaPrayingHands } from 'react-icons/fa';
 
 export default function OrdainSection() {
   // Animation variants
-  const fadeInUp = {
+  const fadeInUp: Variants = {
     initial: { y: 40, opacity: 0 },
     animate: {
       y: 0,
       opacity: 1,
-      transition: { 
-        duration: 0.6, 
-        ease: [0.4, 0, 0.2, 1] 
+      transition: {
+        duration: 0.6,
+        ease: [0.4, 0, 0.2, 1]
       }
     }
   };
 
-  const fadeIn = {
+  const fadeIn: Variants = {
     initial: { opacity: 0 },
     animate: {
       opacity: 1,

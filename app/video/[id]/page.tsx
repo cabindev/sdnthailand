@@ -6,7 +6,7 @@ import VideoDetail from '../components/VideoDetail'
 import LoadingGrid from '../components/LoadingGrid'
 
 interface Props {
-  params: { id: string }
+  params: Promise<{ id: string }>
 }
 
 async function getVideo(id: string) {
@@ -29,7 +29,8 @@ async function getVideo(id: string) {
     }
   }
   
-  export default async function Page({ params }: Props) {
+  export default async function Page(props: Props) {
+    const params = await props.params;
     try {
       if (!params.id) {
         throw new Error('Video ID is required');

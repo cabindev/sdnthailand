@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useEffect, Suspense, lazy } from "react";
-import { motion, AnimatePresence, MotionConfig } from "framer-motion";
+import { motion, AnimatePresence, MotionConfig, type Variants } from "framer-motion";
 import GuildMenu from "./GuildMenu";
 
 // Lazy load components
@@ -36,13 +36,13 @@ const ANIMATIONS = {
   },
   heroScale: {
     initial: { opacity: 0, scale: 0.98 },
-    animate: { 
-      opacity: 1, 
-      scale: 1, 
-      transition: { delay: 0.1, duration: 0.6 } 
+    animate: {
+      opacity: 1,
+      scale: 1,
+      transition: { delay: 0.1, duration: 0.6 }
     }
   }
-};
+} satisfies Record<string, Variants>;
 
 const VIEWPORT_CONFIG = { once: true, margin: "-30px" };
 

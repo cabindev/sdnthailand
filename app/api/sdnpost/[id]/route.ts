@@ -15,10 +15,8 @@ const getPost = cache(async (id: string) => {
   return { ...post, viewCount: views.count || 0 }
 })
 
-export async function GET(
-  request: NextRequest,
-  { params }: { params: { id: string } }
-) {
+export async function GET(request: NextRequest, props: { params: Promise<{ id: string }> }) {
+  const params = await props.params;
   try {
     const post = await getPost(params.id)
     return NextResponse.json({ success: true, data: post })
@@ -30,10 +28,8 @@ export async function GET(
   }
 }
 
-export async function POST(
-  request: NextRequest,
-  { params }: { params: { id: string } }
-) {
+export async function POST(request: NextRequest, props: { params: Promise<{ id: string }> }) {
+  const params = await props.params;
   try {
     const baseUrl = process.env.WORDPRESS_API_URL || 'https://sdnthailand.synology.me'
     const response = await fetch(

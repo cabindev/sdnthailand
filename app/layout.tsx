@@ -1,8 +1,5 @@
 import type { Metadata } from "next";
 import "./globals.css";
-import SessionProvider from "./components/SessionProvider";
-import { getServerSession } from "next-auth";
-import authOptions from "./lib/configs/auth/authOptions";
 import ConditionalNavbar from "./components/ConditionalNavbar";
 import localFont from 'next/font/local'
 import { Toaster } from 'react-hot-toast'
@@ -67,25 +64,22 @@ export const metadata: Metadata = {
   }
 }
 
-export default async function RootLayout({
+export default function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const session = await getServerSession(authOptions);
   return (
     <html lang="th" className={`${seppuri.variable} ${ibmPlex.variable}`}>
       <body>
-        <SessionProvider session={session}>
-          <SWRProvider>
-            <ConditionalNavbar />
-            <main className="font-ibm min-h-screen">
-              {children}
-              <Toaster position="bottom-center" />
-            </main>
-            <Footer/>
-          </SWRProvider>
-        </SessionProvider>
+        <SWRProvider>
+          <ConditionalNavbar />
+          <main className="font-ibm min-h-screen">
+            {children}
+            <Toaster position="bottom-center" />
+          </main>
+          <Footer/>
+        </SWRProvider>
       </body>
     </html>
   );

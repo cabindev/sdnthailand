@@ -23,10 +23,8 @@ interface RelatedPost {
   }
 }
 
-export async function GET(
-  request: Request,
-  { params }: { params: { id: string } }
-) {
+export async function GET(request: Request, props: { params: Promise<{ id: string }> }) {
+  const params = await props.params;
   try {
     const response = await fetch(
       `${WP_API_URL}/blog_post&_embed=true&per_page=4&exclude=${params.id}`,

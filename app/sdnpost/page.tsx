@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useState } from 'react'
+import { useEffect, useState, Suspense } from 'react'
 import PostCard from './components/PostCard'
 import { useSearchParams, useRouter } from 'next/navigation'
 
@@ -47,7 +47,7 @@ interface PostsResponse {
   total: number
 }
 
-export default function SDNPostPage() {
+function SDNPostPageContent() {
   const [posts, setPosts] = useState<Post[]>([])
   const [totalPages, setTotalPages] = useState(0)
   const [isLoading, setIsLoading] = useState(true)
@@ -218,5 +218,21 @@ export default function SDNPostPage() {
         </div>
       )}
     </div>
+  )
+}
+
+export default function SDNPostPage() {
+  return (
+    <Suspense
+      fallback={
+        <div className="container mx-auto px-4 py-20">
+          <div className="flex justify-center items-center min-h-[60vh]">
+            <span className="loading loading-dots loading-lg text-[#ff7834]" />
+          </div>
+        </div>
+      }
+    >
+      <SDNPostPageContent />
+    </Suspense>
   )
 }

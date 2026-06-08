@@ -12,7 +12,7 @@ interface ViewCounterProps {
 export default function ViewCounter({ postId, initialCount }: ViewCounterProps) {
   const [viewCount, setViewCount] = useState(initialCount)
   const hasIncrementedRef = useRef(false)
-  const timerRef = useRef<NodeJS.Timeout>()
+  const timerRef = useRef<NodeJS.Timeout | null>(null)
 
   useEffect(() => {
     const incrementViewCount = async () => {

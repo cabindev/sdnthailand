@@ -7,7 +7,7 @@ import LoadingSpinner from '../components/LoadingSpinner'
 export const dynamic = 'force-dynamic'
 
 interface Props {
- params: { id: string } 
+ params: Promise<{ id: string }> 
 }
 
 async function getBlogPost(id: string) {
@@ -33,71 +33,73 @@ async function getBlogPost(id: string) {
  }
 }
 
-export async function generateMetadata({ params }: Props): Promise<Metadata> {
- try {
-   const post = await getBlogPost(params.id)
-   const featuredImage = post._embedded?.['wp:featuredmedia']?.[0]?.source_url || '/images/default-og.png'
-   const description = post.excerpt?.rendered?.replace(/<[^>]+>/g, '') || ''
+export async function generateMetadata(props: Props): Promise<Metadata> {
+  const params = await props.params;
+  try {
+    const post = await getBlogPost(params.id)
+    const featuredImage = post._embedded?.['wp:featuredmedia']?.[0]?.source_url || '/images/default-og.png'
+    const description = post.excerpt?.rendered?.replace(/<[^>]+>/g, '') || ''
 
-   return {
-     title: post.title?.rendered,
-     description,
-     openGraph: {
-       title: post.title?.rendered, 
-       description,
-       url: `https://sdnthailand.com/sdnblog/${params.id}`,
-       siteName: 'SDN Thailand',
-       locale: 'th_TH',
-       type: 'article',
-       publishedTime: post.date,
-       authors: [post.uagb_author_info?.display_name].filter(Boolean),
-       images: [{
-         url: featuredImage,
-         width: 1200,
-         height: 630,
-         alt: post.title?.rendered
-       }]
-     },
-     twitter: {
-       card: 'summary_large_image',
-       title: post.title?.rendered,
-       description,
-       images: [featuredImage]
-     },
-     alternates: {
-       canonical: `https://sdnthailand.com/sdnblog/${params.id}`
-     }
-   }
- } catch (error) {
-   return {
-     title: 'SDN Thailand',
-     description: 'บทความ เรื่องราววิถีชีวิต ผู้คน วัฒนธรรม',
-   }
- }
+    return {
+      title: post.title?.rendered,
+      description,
+      openGraph: {
+        title: post.title?.rendered, 
+        description,
+        url: `https://sdnthailand.com/sdnblog/${params.id}`,
+        siteName: 'SDN Thailand',
+        locale: 'th_TH',
+        type: 'article',
+        publishedTime: post.date,
+        authors: [post.uagb_author_info?.display_name].filter(Boolean),
+        images: [{
+          url: featuredImage,
+          width: 1200,
+          height: 630,
+          alt: post.title?.rendered
+        }]
+      },
+      twitter: {
+        card: 'summary_large_image',
+        title: post.title?.rendered,
+        description,
+        images: [featuredImage]
+      },
+      alternates: {
+        canonical: `https://sdnthailand.com/sdnblog/${params.id}`
+      }
+    }
+  } catch (error) {
+    return {
+      title: 'SDN Thailand',
+      description: 'บทความ เรื่องราววิถีชีวิต ผู้คน วัฒนธรรม',
+    }
+  }
 }
 
-export default async function Page({ params }: Props) {
- try {
-   const post = await getBlogPost(params.id)
-   
-   return (
-     <Suspense fallback={<LoadingSpinner />}>
-       <BlogPostDetail post={post} />
-     </Suspense>
-   )
- } catch (error) {
-   return (
-     <div className="container mx-auto px-4 py-20">
-       <div className="max-w-lg mx-auto bg-red-50 text-red-500 p-4 rounded-lg">
-         <p className="flex items-center gap-2">
-           <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" 
-               d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-           </svg>
-           ไม่พบบทความที่ต้องการ
-         </p>
-       </div>
-     </div>
-   )
- }
+export default async function Page(props: Props) {
+  const params = await props.params;
+  try {
+    const post = await getBlogPost(params.id)
+    
+    return (
+      <Suspense fallback={<LoadingSpinner />}>
+        <BlogPostDetail post={post} />
+      </Suspense>
+    )
+  } catch (error) {
+    return (
+      <div className="container mx-auto px-4 py-20">
+        <div className="max-w-lg mx-auto bg-red-50 text-red-500 p-4 rounded-lg">
+          <p className="flex items-center gap-2">
+            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" 
+                d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+            </svg>
+            ไม่พบบทความที่ต้องการ
+          </p>
+        </div>
+      </div>
+    )
+  }
 }

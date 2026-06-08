@@ -3,10 +3,8 @@ import { NextRequest, NextResponse } from 'next/server'
 
 const WP_API_URL = `${process.env.WORDPRESS_API_URL || 'https://sdnthailand.synology.me'}/index.php?rest_route=/wp/v2`
 
-export async function GET(
-  request: NextRequest,
-  { params }: { params: { id: string } }
-) {
+export async function GET(request: NextRequest, props: { params: Promise<{ id: string }> }) {
+  const params = await props.params;
   try {
     const id = params.id;
     console.log('Fetching video with ID:', id);

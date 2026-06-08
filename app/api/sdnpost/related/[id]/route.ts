@@ -19,10 +19,8 @@ interface RelatedPost {
   }
 }
 
-export async function GET(
-  request: Request,
-  { params }: { params: { id: string } }
-) {
+export async function GET(request: Request, props: { params: Promise<{ id: string }> }) {
+  const params = await props.params;
   try {
     // ดึงโพสต์ทั้งหมด 4 โพสต์ล่าสุด
     const response = await fetch(

@@ -1,10 +1,8 @@
 // app/api/projects/[id]/route.ts
 import { NextResponse } from 'next/server'
 
-export async function GET(
-  request: Request,
-  { params }: { params: { id: string } }
-) {
+export async function GET(request: Request, props: { params: Promise<{ id: string }> }) {
+  const params = await props.params;
   try {
     // ปรับให้ใช้ slug แทน id และเพิ่ม _embed
     const res = await fetch(

@@ -1,7 +1,7 @@
 //app/sdnblog/page.tsx
 'use client'
 
-import { useState } from 'react'
+import { useState, Suspense } from 'react'
 import { useSearchParams, useRouter } from 'next/navigation'
 import useSWR from 'swr'
 import Link from 'next/link'
@@ -45,7 +45,7 @@ const fetcher = async (url: string) => {
   return data;
 };
 
-export default function SDNBlogPage() {
+function SDNBlogPageContent() {
   const searchParams = useSearchParams()
   const router = useRouter()
   const currentPage = Number(searchParams.get('page')) || 1
@@ -206,5 +206,21 @@ export default function SDNBlogPage() {
         </div>
       )}
     </div>
+  )
+}
+
+export default function SDNBlogPage() {
+  return (
+    <Suspense
+      fallback={
+        <div className="container mx-auto px-4 py-20">
+          <div className="flex justify-center items-center min-h-[60vh]">
+            <span className="loading loading-dots loading-lg text-[#ff7834]" />
+          </div>
+        </div>
+      }
+    >
+      <SDNBlogPageContent />
+    </Suspense>
   )
 }
