@@ -69,7 +69,7 @@ const IntegratedHeroSection: React.FC = () => {
                   href="https://civicspace.sdnthailand.com/"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="text-orange-600 hover:text-orange-700 underline underline-offset-4 transition-colors"
+                  className="text-[#e86b2a] hover:text-[#e86b2a] underline underline-offset-4 transition-colors"
                 >
                  CivicSpace
                 </a>

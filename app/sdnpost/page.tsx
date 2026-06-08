@@ -91,7 +91,7 @@ export default function SDNPostPage() {
     return (
       <div className="container mx-auto px-4 py-20">
         <div className="flex justify-center items-center gap-6 min-h-[60vh]">
-          <span className="loading loading-dots loading-lg text-orange-500"></span>
+          <span className="loading loading-dots loading-lg text-[#ff7834]"></span>
         </div>
       </div>
     )
@@ -131,7 +131,7 @@ export default function SDNPostPage() {
         <h1 className="text-4xl font-bold text-gray-800 mb-4">
           SDN Thailand News & Updates
         </h1>
-        <div className="w-24 h-1 bg-orange-500 mx-auto mb-4"></div>
+        <div className="w-24 h-1 rounded-full bg-[#ff7834] mx-auto mb-4"></div>
         <p className="text-gray-600 max-w-2xl mx-auto">
           ติดตามข่าวสารและบทความล่าสุด
         </p>
@@ -140,13 +140,9 @@ export default function SDNPostPage() {
       {/* Posts Grid */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
         {posts.map((post) => (
-          <div 
-            key={post.id} 
-            className="opacity-0 animate-fade-in max-w-sm mx-auto w-full"
-            style={{
-              animation: 'fadeIn 0.5s ease-in forwards',
-              animationDelay: '0.1s'
-            }}
+          <div
+            key={post.id}
+            className="mx-auto w-full max-w-sm animate-fade-in motion-reduce:animate-none"
           >
             <PostCard post={post} />
           </div>
@@ -159,11 +155,12 @@ export default function SDNPostPage() {
           <button
             onClick={() => handlePageChange(Math.max(1, currentPage - 1))}
             disabled={currentPage === 1}
-            className={`w-10 h-10 flex items-center justify-center rounded-full
-              ${currentPage === 1 
-                ? 'bg-orange-100 text-orange-300 cursor-not-allowed' 
-                : 'bg-orange-500 text-white hover:bg-orange-600 transition-colors'
+            className={`w-10 h-10 flex items-center justify-center rounded-full focus:outline-none focus-visible:ring-2 focus-visible:ring-[#ff7834]/50 focus-visible:ring-offset-2
+              ${currentPage === 1
+                ? 'bg-[#ff7834]/10 text-[#ff7834]/40 cursor-not-allowed'
+                : 'bg-[#ff7834] text-white hover:bg-[#e86b2a] transition-colors'
               }`}
+            aria-label="หน้าก่อนหน้า"
           >
             <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 19l-7-7 7-7" />
@@ -182,11 +179,13 @@ export default function SDNPostPage() {
                   <button
                     key={pageNumber}
                     onClick={() => handlePageChange(pageNumber)}
-                    className={`w-10 h-10 flex items-center justify-center rounded-lg
+                    className={`w-10 h-10 flex items-center justify-center rounded-lg focus:outline-none focus-visible:ring-2 focus-visible:ring-[#ff7834]/50 focus-visible:ring-offset-2
                       ${currentPage === pageNumber
-                        ? 'bg-orange-500 text-white'
-                        : 'bg-white text-orange-500 border border-orange-500 hover:bg-orange-50'
+                        ? 'bg-[#ff7834] text-white'
+                        : 'bg-white text-[#ff7834] border border-[#ff7834] hover:bg-[#ff7834]/5'
                       }`}
+                    aria-label={`หน้า ${pageNumber}`}
+                    aria-current={currentPage === pageNumber ? 'page' : undefined}
                   >
                     {pageNumber}
                   </button>
@@ -196,7 +195,7 @@ export default function SDNPostPage() {
                 (pageNumber === currentPage - 3 && currentPage > 4) ||
                 (pageNumber === currentPage + 3 && currentPage < totalPages - 3)
               ) {
-                return <span key={pageNumber} className="px-2 text-gray-400">...</span>
+                return <span key={pageNumber} className="px-2 text-gray-400" aria-hidden="true">...</span>
               }
               return null
             })}
@@ -205,11 +204,12 @@ export default function SDNPostPage() {
           <button
             onClick={() => handlePageChange(Math.min(totalPages, currentPage + 1))}
             disabled={currentPage === totalPages}
-            className={`w-10 h-10 flex items-center justify-center rounded-full
-              ${currentPage === totalPages 
-                ? 'bg-orange-100 text-orange-300 cursor-not-allowed' 
-                : 'bg-orange-500 text-white hover:bg-orange-600 transition-colors'
+            className={`w-10 h-10 flex items-center justify-center rounded-full focus:outline-none focus-visible:ring-2 focus-visible:ring-[#ff7834]/50 focus-visible:ring-offset-2
+              ${currentPage === totalPages
+                ? 'bg-[#ff7834]/10 text-[#ff7834]/40 cursor-not-allowed'
+                : 'bg-[#ff7834] text-white hover:bg-[#e86b2a] transition-colors'
               }`}
+            aria-label="หน้าถัดไป"
           >
             <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 5l7 7-7 7" />

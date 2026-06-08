@@ -34,8 +34,8 @@ export default function BlogCard({ post }: PostCardProps) {
   const imageAlt = post._embedded?.['wp:featuredmedia']?.[0]?.alt_text || post.title.rendered
 
   return (
-    <Link href={`/sdnblog/${post.id}`}>
-      <div className="bg-white rounded-xl shadow-sm overflow-hidden hover:shadow-md transition-shadow duration-300">
+    <Link href={`/sdnblog/${post.id}`} className="group block h-full">
+      <div className="flex h-full flex-col bg-white rounded-xl shadow-sm overflow-hidden hover:shadow-md transition-shadow duration-300">
         <div className="aspect-video relative overflow-hidden">
           {featuredImage ? (
             <img
@@ -60,7 +60,7 @@ export default function BlogCard({ post }: PostCardProps) {
               {categories.map((cat: any) => (
                 <span key={cat.id} 
                       className="text-xs font-medium px-2.5 py-0.5 rounded-full 
-                               bg-orange-50 text-orange-600">
+                               bg-[#ff7834]/10 text-[#c2410c]">
                   {cat.name}
                 </span>
               ))}
@@ -68,7 +68,7 @@ export default function BlogCard({ post }: PostCardProps) {
           )}
 
           <h2 
-            className="text-xl font-seppuri font-medium mb-3 line-clamp-2 group-hover:text-orange-500"
+            className="text-xl font-seppuri font-medium mb-3 line-clamp-2 text-gray-900 transition-colors group-hover:text-[#ff7834]"
             dangerouslySetInnerHTML={{ __html: post.title.rendered }}
           />
 
@@ -82,12 +82,6 @@ export default function BlogCard({ post }: PostCardProps) {
                 day: 'numeric'
               })}
             </time>
-            {post._embedded?.author?.[0]?.name && (
-              <>
-                <span className="mx-2">•</span>
-                <span>{post._embedded.author[0].name}</span>
-              </>
-            )}
           </div>
         </div>
       </div>

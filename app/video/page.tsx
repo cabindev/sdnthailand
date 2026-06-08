@@ -10,7 +10,7 @@ export const metadata = {
 
 export default function VideoPage() {
   return (
-    <div className="min-h-screen bg-gradient-to-b from-gray-50 to-orange-50 py-20">
+    <div className="min-h-screen bg-gradient-to-b from-gray-50 to-[#ff7834]/10 py-20">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
         {/* Hero Section */}
         <div className="text-center mb-12">

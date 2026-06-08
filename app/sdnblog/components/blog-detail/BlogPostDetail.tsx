@@ -65,7 +65,7 @@ export default function BlogPostDetail({ post }: BlogPostDetailProps) {
                 {categories.map(cat => (
                   <span
                     key={cat.id}
-                    className="bg-orange-50 text-orange-600 text-xs md:text-sm px-3 py-1 rounded-full"
+                    className="bg-[#ff7834]/10 text-[#c2410c] text-xs md:text-sm px-3 py-1 rounded-full"
                   >
                     {cat.name}
                   </span>
@@ -88,7 +88,7 @@ export default function BlogPostDetail({ post }: BlogPostDetailProps) {
                 {authorLink ? (
                   <Link 
                     href={authorLink}
-                    className="font-ibm font-medium text-gray-800 text-sm md:text-base hover:text-orange-500 transition-colors"
+                    className="font-ibm font-medium text-gray-800 text-sm md:text-base hover:text-[#ff7834] transition-colors"
                   >
                     {authorName || 'ไม่ระบุผู้เขียน'}
                   </Link>
@@ -115,7 +115,7 @@ export default function BlogPostDetail({ post }: BlogPostDetailProps) {
                 prose-h2:text-lg sm:prose-h2:text-xl md:prose-h2:text-3xl
                 prose-h3:text-base sm:prose-h3:text-lg md:prose-h3:text-2xl
                 prose-p:font-ibm prose-p:text-gray-600 prose-p:leading-relaxed
-                prose-a:text-orange-500 hover:prose-a:text-orange-700
+                prose-a:text-[#c2410c] hover:prose-a:text-[#ff7834]
                 prose-img:rounded-xl prose-img:shadow-lg
                 prose-img:w-full prose-img:max-w-3xl prose-img:mx-auto
                 prose-img:h-auto prose-img:object-cover
@@ -136,7 +136,7 @@ export default function BlogPostDetail({ post }: BlogPostDetailProps) {
             <div className="mt-8 md:mt-12 pt-8 border-t border-gray-200">
               <Link 
                 href="/sdnblog"
-                className="inline-flex items-center gap-2 font-ibm text-sm md:text-base bg-gradient-to-r from-orange-300 to-orange-400 text-white px-4 py-2 rounded-full hover:from-orange-600 hover:to-orange-700 transition-all duration-300 shadow-md hover:shadow-lg transform hover:-translate-y-0.5"
+                className="inline-flex items-center gap-2 font-ibm text-sm md:text-base bg-[#ff7834] text-white px-4 py-2 rounded-full hover:bg-[#e86b2a] transition-all duration-300 shadow-md hover:shadow-lg transform hover:-translate-y-0.5 motion-reduce:transform-none motion-reduce:transition-none focus:outline-none focus-visible:ring-2 focus-visible:ring-[#ff7834]/50 focus-visible:ring-offset-2"
               >
                 บทความทั้งหมด
               </Link>

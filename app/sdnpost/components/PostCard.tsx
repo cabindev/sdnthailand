@@ -31,8 +31,8 @@ export default function PostCard({ post }: PostCardProps) {
   const categories = post._embedded?.['wp:term']?.[0] || [];
 
   return (
-    <Link href={`/sdnpost/${post.id}`}>
-      <div className="bg-white rounded-xl shadow-sm overflow-hidden hover:shadow-md transition-shadow duration-300">
+    <Link href={`/sdnpost/${post.id}`} className="group block h-full">
+      <div className="flex h-full flex-col bg-white rounded-xl shadow-sm overflow-hidden hover:shadow-md transition-shadow duration-300">
         <div className="aspect-video relative overflow-hidden">
           {featuredImage ? (
             <img
@@ -57,7 +57,7 @@ export default function PostCard({ post }: PostCardProps) {
               {categories.map((cat: any) => (
                 <span key={cat.id} 
                       className="text-xs font-medium px-2.5 py-0.5 rounded-full 
-                               bg-orange-50 text-orange-600">
+                               bg-[#ff7834]/10 text-[#c2410c]">
                   {cat.name}
                 </span>
               ))}
@@ -65,7 +65,7 @@ export default function PostCard({ post }: PostCardProps) {
           )}
 
           <h2 
-            className="text-xl font-seppuri font-medium mb-3 line-clamp-2 group-hover:text-orange-500"
+            className="text-xl font-seppuri font-medium mb-3 line-clamp-2 text-gray-900 transition-colors group-hover:text-[#ff7834]"
             dangerouslySetInnerHTML={{ __html: post.title.rendered }}
           />
 

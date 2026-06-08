@@ -64,10 +64,10 @@ function BlogContent() {
         <div className="animate-pulse bg-white rounded-xl overflow-hidden shadow-lg">
           <div className="md:flex">
             <div className="bg-gradient-to-r from-gray-200 to-gray-300 h-[250px] md:h-[450px] md:w-2/3"></div>
-            <div className="p-6 md:w-1/3 bg-orange-50">
+            <div className="p-6 md:w-1/3 bg-[#ff7834]/5">
               <div className="h-8 bg-gray-200 rounded-md mb-4 animate-pulse"></div>
               <div className="h-24 bg-gray-200 rounded-md animate-pulse"></div>
-              <div className="mt-4 h-6 w-1/3 bg-orange-200 rounded-full animate-pulse"></div>
+              <div className="mt-4 h-6 w-1/3 bg-[#ff7834]/20 rounded-full animate-pulse"></div>
             </div>
           </div>
         </div>
@@ -77,9 +77,9 @@ function BlogContent() {
           {[1, 2, 3].map((i) => (
             <div key={i} className="bg-white rounded-xl overflow-hidden shadow-sm animate-pulse">
               <div className="bg-gradient-to-r from-gray-200 to-gray-300 aspect-video"></div>
-              <div className="p-4 bg-orange-50">
+              <div className="p-4 bg-[#ff7834]/5">
                 <div className="h-6 bg-gray-200 rounded-md mb-2"></div>
-                <div className="h-4 w-1/3 bg-orange-200 rounded-full"></div>
+                <div className="h-4 w-1/3 bg-[#ff7834]/20 rounded-full"></div>
               </div>
             </div>
           ))}
@@ -95,7 +95,7 @@ function BlogContent() {
         <button
           type="button"
           onClick={() => window.location.reload()}
-          className="mt-4 px-6 py-2 bg-orange-500 text-white rounded-full hover:bg-orange-600 transition-colors"
+          className="mt-4 px-6 py-2 bg-[#ff7834] text-white rounded-full hover:bg-[#e86b2a] transition-colors"
         >
           ลองใหม่อีกครั้ง
         </button>
@@ -113,7 +113,7 @@ function BlogContent() {
           type="button"
           onClick={handleRefresh}
           disabled={isRefreshing}
-          className="flex items-center gap-2 px-4 py-2 text-sm text-gray-600 hover:text-orange-600 hover:bg-orange-100 rounded-full transition-colors disabled:opacity-50"
+          className="flex items-center gap-2 px-4 py-2 text-sm text-gray-600 hover:text-[#e86b2a] hover:bg-[#ff7834]/10 rounded-full transition-colors disabled:opacity-50"
           title="รีเฟรชข้อมูล"
         >
           <IoRefresh className={`w-4 h-4 ${isRefreshing ? 'animate-spin' : ''}`} />
@@ -133,7 +133,7 @@ function BlogContent() {
 
 export default function BlogList() {
   return (
-    <section className="py-12 bg-orange-50">
+    <section className="py-12 bg-[#ff7834]/5">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-12">
           <h2 className="text-3xl md:text-4xl font-bold text-gray-800 mb-2">
@@ -141,7 +141,7 @@ export default function BlogList() {
           </h2>
           <h2 className="text-3xl font-bold text-gray-900">บทความ</h2>
           <p className="mt-2 text-gray-600">เรื่องราวดีดีจาก ผู้คน และวัฒนธรรม</p>
-          <div className="w-24 h-1 bg-orange-500 mx-auto mt-4" />
+          <div className="w-24 h-1 bg-[#ff7834] mx-auto mt-4" />
         </div>
 
         <BlogContent />
@@ -149,7 +149,7 @@ export default function BlogList() {
         <div className="text-center mt-12">
           <Link
             href="/sdnblog"
-            className="inline-flex items-center px-6 py-2 bg-orange-500 text-white rounded-full hover:bg-orange-600 transition-all duration-300 shadow-lg hover:shadow-xl"
+            className="inline-flex items-center px-6 py-2 bg-[#ff7834] text-white rounded-full hover:bg-[#e86b2a] transition-all duration-300 shadow-lg hover:shadow-xl"
           >
             <span>อ่านบทความทั้งหมด</span>
             <svg className="ml-2 w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">

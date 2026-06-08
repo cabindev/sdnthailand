@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useEffect, Suspense, lazy } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion, AnimatePresence, MotionConfig } from "framer-motion";
 import GuildMenu from "./GuildMenu";
 
 // Lazy load components
@@ -63,6 +63,7 @@ export default function Home() {
   };
 
   return (
+    <MotionConfig reducedMotion="user">
     <main className="min-h-screen bg-white">
 
       {/* Top Section: Latest Movements (รวมบทความ + ข่าว + วิดีโอ) */}
@@ -113,7 +114,7 @@ export default function Home() {
       </Section>
 
       {/* Support Section */}
-      <section className="bg-orange-50 py-16">
+      <section className="bg-[#ff7834]/5 py-16">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <motion.header 
             className="mb-12 text-center"
@@ -125,7 +126,7 @@ export default function Home() {
             <h2 className="text-3xl font-bold text-gray-900 mb-3">
               ข้อมูลสนับสนุนการทำงาน
             </h2>
-            <div className="w-24 h-1 bg-orange-500 mx-auto" />
+            <div className="w-24 h-1 rounded-full bg-[#ff7834] mx-auto" />
           </motion.header>
           
           <Section>
@@ -142,6 +143,7 @@ export default function Home() {
       {/* Back to Top Button */}
       <BackToTopButton isVisible={isScrolled} onClick={scrollToTop} />
     </main>
+    </MotionConfig>
   );
 }
 
@@ -198,7 +200,7 @@ function BackToTopButton({ isVisible, onClick }: BackToTopButtonProps) {
     <AnimatePresence>
       {isVisible && (
         <motion.button
-          className="fixed bottom-8 right-8 p-3 bg-orange-500 text-white rounded-full shadow-lg z-50 hover:bg-orange-600 hover:shadow-xl transition-colors"
+          className="fixed bottom-8 right-8 p-3 bg-[#ff7834] text-white rounded-full shadow-lg z-50 hover:bg-[#e86b2a] hover:shadow-xl transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-[#ff7834]/50 focus-visible:ring-offset-2"
           initial={{ opacity: 0, scale: 0.8 }}
           animate={{ opacity: 1, scale: 1 }}
           exit={{ opacity: 0, scale: 0.8 }}

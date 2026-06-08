@@ -75,12 +75,12 @@ export default function BlogCard({ post, isLarge = false }: BlogCardProps) {
           quality={85}
         />
       </div>
-      <div className="p-4 bg-orange-100">
+      <div className="p-4 bg-[#ff7834]/10">
         <h3
           className="font-bold text-gray-900 mb-2 line-clamp-2"
           dangerouslySetInnerHTML={{ __html: post.title.rendered }}
         />
-        <span className="text-orange-500 text-sm group-hover:text-orange-600 transition-colors">
+        <span className="text-[#ff7834] text-sm group-hover:text-[#e86b2a] transition-colors">
           อ่านเพิ่มเติม
         </span>
       </div>
@@ -105,7 +105,7 @@ export default function BlogCard({ post, isLarge = false }: BlogCardProps) {
         {/* เพิ่ม overlay gradient เพื่อให้ข้อความอ่านง่ายขึ้น */}
         <div className="absolute inset-0 bg-gradient-to-r from-black/5 to-transparent" />
       </div>
-      <div className="w-1/3 p-6 bg-orange-100 flex flex-col justify-center">
+      <div className="w-1/3 p-6 bg-[#ff7834]/10 flex flex-col justify-center">
         <h3
           className="text-2xl font-bold text-gray-900 mb-4 leading-tight"
           dangerouslySetInnerHTML={{ __html: post.title.rendered }}
@@ -114,7 +114,7 @@ export default function BlogCard({ post, isLarge = false }: BlogCardProps) {
           className="text-gray-600 mb-6 line-clamp-4 text-sm leading-relaxed"
           dangerouslySetInnerHTML={{ __html: post.uagb_excerpt }}
         />
-        <span className="inline-flex items-center text-orange-500 hover:text-orange-600 transition-colors font-medium">
+        <span className="inline-flex items-center text-[#ff7834] hover:text-[#e86b2a] transition-colors font-medium">
           อ่านเพิ่มเติม
           <svg className="ml-2 w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />

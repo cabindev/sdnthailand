@@ -83,7 +83,7 @@ export default function VideoDetail({ video }: { video: VideoPost }) {
              className="prose prose-lg max-w-none
                prose-headings:font-bold prose-headings:text-gray-900
                prose-p:text-gray-600 prose-p:leading-relaxed
-               prose-a:text-orange-500 hover:prose-a:text-orange-600
+               prose-a:text-[#ff7834] hover:prose-a:text-[#e86b2a]
                prose-img:rounded-xl prose-img:shadow-lg"
              dangerouslySetInnerHTML={{ __html: cleanedContent }}
            />
@@ -104,7 +104,7 @@ export default function VideoDetail({ video }: { video: VideoPost }) {
        <div className="mt-8 pt-6 border-t">
          <Link 
            href="/video"
-           className="inline-flex items-center gap-2 text-orange-500 hover:text-orange-600 transition-colors"
+           className="inline-flex items-center gap-2 text-[#ff7834] hover:text-[#e86b2a] transition-colors"
          >
            <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 19l-7-7m0 0l7-7m-7 7h18" />

@@ -13,7 +13,7 @@ export default function VideoLatest() {
   if (!data || !data.posts) return null
   
   return (
-    <section className="py-12 bg-orange-50">
+    <section className="py-12 bg-[#ff7834]/5">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-8">
           <h2 className="text-3xl font-bold text-gray-900">Videos</h2>
@@ -30,7 +30,7 @@ export default function VideoLatest() {
         <div className="text-center mt-8">
           <Link
             href="/video"
-            className="inline-block px-6 py-2 bg-orange-500 text-white rounded-full hover:bg-orange-600 transition-colors"
+            className="inline-block px-6 py-2 bg-[#ff7834] text-white rounded-full hover:bg-[#e86b2a] transition-colors"
           >
             ดู Videos ทั้งหมด
           </Link>

@@ -12,7 +12,7 @@ export default function Vision() {
  }, []);
 
  return (
-  <section className="relative w-full h-[600px] bg-gradient-to-br from-orange-50 to-amber-50 overflow-hidden">
+  <section className="relative w-full h-[600px] bg-gradient-to-br from-[#ff7834]/5 to-[#ff7834]/10 overflow-hidden">
   <div className="absolute inset-0">
        {/* Background Pattern */}
        <div className="absolute inset-0 opacity-10 bg-[radial-gradient(circle_at_1px_1px,rgba(251,146,60,0.15)_1px,transparent_0)]" style={{ backgroundSize: '40px 40px' }} />
@@ -45,7 +45,7 @@ export default function Vision() {
            </h1>
            
            <div 
-             className={`text-2xl sm:text-3xl text-orange-500 font-medium transition-all duration-1000 delay-500 ease-out transform
+             className={`text-2xl sm:text-3xl text-[#ff7834] font-medium transition-all duration-1000 delay-500 ease-out transform
                ${isLoaded ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-32'}`}
            >
              สานสุขทั่วไทย ปลอดภัยปลอดเหล้า

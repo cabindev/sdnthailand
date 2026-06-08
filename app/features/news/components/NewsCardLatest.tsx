@@ -23,7 +23,7 @@ export default function NewsCardLatest({ post }: NewsCardLatestProps) {
           />
           
           {category && (
-            <span className="absolute top-3 left-3 bg-orange-500 text-white text-sm px-3 py-1 rounded-full">
+            <span className="absolute top-3 left-3 bg-[#ff7834] text-white text-sm px-3 py-1 rounded-full">
               {category}
             </span>
           )}
@@ -50,7 +50,7 @@ export default function NewsCardLatest({ post }: NewsCardLatestProps) {
                 day: 'numeric',
               })}
             </time>
-            <span className="text-sm text-orange-500 font-medium">
+            <span className="text-sm text-[#ff7834] font-medium">
               อ่านเพิ่มเติม
             </span>
           </div>

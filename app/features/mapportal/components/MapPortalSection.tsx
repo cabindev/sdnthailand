@@ -189,7 +189,7 @@ export default function MapPortalSection() {
           <div className="px-5 pt-4 pb-3 flex-shrink-0 border-b border-gray-50">
             <div className="flex items-center justify-between mb-3">
               <div className="flex items-center gap-3">
-                <div className="w-10 h-10 rounded-xl bg-orange-500 flex items-center justify-center">
+                <div className="w-10 h-10 rounded-xl bg-[#ff7834] flex items-center justify-center">
                   <MapIcon className="w-5 h-5 text-white" />
                 </div>
                 <div>
@@ -202,7 +202,7 @@ export default function MapPortalSection() {
                   href={MAPPORTAL_URL}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="p-2 text-gray-300 hover:text-orange-500 rounded-lg hover:bg-gray-50 transition-colors"
+                  className="p-2 text-gray-300 hover:text-[#ff7834] rounded-lg hover:bg-gray-50 transition-colors"
                   title="เปิด SDN Map Portal"
                 >
                   <ExternalLink className="w-5 h-5" />
@@ -233,7 +233,7 @@ export default function MapPortalSection() {
                 onClick={() => setShowLegend(!showLegend)}
                 className={`flex items-center gap-1.5 px-2.5 py-1.5 text-xs font-medium rounded-lg transition-colors ${
                   showLegend
-                    ? 'bg-orange-100 text-orange-600'
+                    ? 'bg-[#ff7834]/10 text-[#e86b2a]'
                     : 'text-gray-400 hover:bg-gray-100 hover:text-gray-600'
                 }`}
               >
@@ -269,7 +269,7 @@ export default function MapPortalSection() {
             {/* Filter indicator */}
             {selectedProvinces.length > 0 && (
               <div className="px-3 pt-2.5 flex-shrink-0">
-                <div className="flex items-center gap-2.5 px-3 py-2 rounded-xl bg-orange-50/80">
+                <div className="flex items-center gap-2.5 px-3 py-2 rounded-xl bg-[#ff7834]/5">
                   <div className="w-2.5 h-2.5 rounded-full flex-shrink-0" style={{ backgroundColor: highlightColor }} />
                   <div className="flex-1 min-w-0">
                     <p className="text-sm font-semibold text-gray-900 truncate">{selectedProvince || selectedRegion}</p>
@@ -284,7 +284,7 @@ export default function MapPortalSection() {
                   <button
                     type="button"
                     onClick={handleClearSelection}
-                    className="p-1.5 text-orange-300 hover:text-orange-600 rounded-full hover:bg-orange-100 transition-colors flex-shrink-0"
+                    className="p-1.5 text-[#ff7834]/60 hover:text-[#e86b2a] rounded-full hover:bg-[#ff7834]/10 transition-colors flex-shrink-0"
                   >
                     <X className="w-3.5 h-3.5" />
                   </button>
@@ -395,7 +395,7 @@ export default function MapPortalSection() {
                       <button
                         type="button"
                         onClick={handleClearSelection}
-                        className="text-xs text-orange-500 hover:text-orange-600 font-medium"
+                        className="text-xs text-[#ff7834] hover:text-[#e86b2a] font-medium"
                       >
                         ล้างตัวกรอง
                       </button>
@@ -432,7 +432,7 @@ export default function MapPortalSection() {
                 href={MAPPORTAL_URL}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="flex items-center justify-center gap-2 w-full py-3 px-4 bg-gradient-to-r from-orange-500 to-orange-600 text-white font-semibold rounded-xl hover:from-orange-600 hover:to-orange-700 transition-all shadow-md hover:shadow-lg"
+                className="flex items-center justify-center gap-2 w-full py-3 px-4 bg-gradient-to-r from-[#ff7834] to-[#e86b2a] text-white font-semibold rounded-xl hover:from-[#e86b2a] hover:to-[#e86b2a] transition-all shadow-md hover:shadow-lg"
               >
                 <MapIcon className="w-4 h-4" />
                 ดูแผนที่ทั้งหมด
@@ -472,7 +472,7 @@ function TabButton({
         {icon}
         {label}
         {badge !== undefined && (
-          <span className="px-2 py-0.5 rounded-full text-xs bg-orange-500 text-white font-bold leading-none">
+          <span className="px-2 py-0.5 rounded-full text-xs bg-[#ff7834] text-white font-bold leading-none">
             {badge}
           </span>
         )}
@@ -521,7 +521,7 @@ function MapPortalSkeleton() {
       <div className="absolute top-3 left-3 bottom-3 z-10 w-[350px] sm:w-[380px] bg-white/95 rounded-2xl shadow-xl overflow-hidden animate-pulse">
         <div className="px-5 pt-5 pb-4 border-b border-gray-100">
           <div className="flex items-center gap-3 mb-4">
-            <div className="w-11 h-11 bg-orange-100 rounded-xl" />
+            <div className="w-11 h-11 bg-[#ff7834]/10 rounded-xl" />
             <div>
               <div className="h-5 bg-gray-200 rounded w-32 mb-2" />
               <div className="h-4 bg-gray-100 rounded w-28" />

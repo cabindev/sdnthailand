@@ -220,7 +220,7 @@ const Navbar: React.FC = () => {
           <button
             onClick={() => isMobile && toggleMobileSubmenu(item.name)}
             className={`flex items-center px-3 py-2 text-sm font-light transition-colors duration-200 ${
-              isActive ? 'text-orange-600' : 'text-gray-700 hover:text-orange-600'
+              isActive ? 'text-[#ff7834]' : 'text-gray-700 hover:text-[#ff7834]'
             } ${isMobile ? 'w-full justify-between text-base' : ''}`}
             type="button"
           >
@@ -260,7 +260,7 @@ const Navbar: React.FC = () => {
                         <ExternalLink
                           key={subItem.name}
                           href={subItem.href}
-                          className="block w-full text-left px-4 py-2.5 text-sm font-light text-gray-700 hover:bg-gray-50 hover:text-orange-600 transition-colors"
+                          className="block w-full text-left px-4 py-2.5 text-sm font-light text-gray-700 hover:bg-gray-50 hover:text-[#ff7834] transition-colors"
                           onClick={() => {
                             setOpenSubmenu('');
                             setOpenNestedSubmenu('');
@@ -300,7 +300,7 @@ const Navbar: React.FC = () => {
                         <ExternalLink
                           key={subItem.name}
                           href={subItem.href}
-                          className="block w-full text-left pl-4 pr-4 py-2 text-sm font-light text-gray-600 hover:text-orange-600 hover:bg-gray-200 transition-colors"
+                          className="block w-full text-left pl-4 pr-4 py-2 text-sm font-light text-gray-600 hover:text-[#ff7834] hover:bg-gray-200 transition-colors"
                           onClick={closeMobileMenu}
                         >
                           {subItem.name}
@@ -328,7 +328,7 @@ const Navbar: React.FC = () => {
           <button
             onClick={() => isMobile && toggleMobileSubmenu(item.name)}
             className={`flex items-center px-3 py-2 text-sm font-light transition-colors duration-200 ${
-              isActive ? 'text-orange-600' : 'text-gray-700 hover:text-orange-600'
+              isActive ? 'text-[#ff7834]' : 'text-gray-700 hover:text-[#ff7834]'
             } ${isMobile ? 'w-full justify-between text-base' : ''}`}
             type="button"
           >
@@ -351,7 +351,7 @@ const Navbar: React.FC = () => {
             >
               {item.submenu.map((subItem) => {
                 const isExternal = subItem.href.startsWith('http');
-                const linkClassName = "block w-full text-left px-4 py-2.5 text-sm font-light text-gray-700 hover:bg-gray-50 hover:text-orange-600 transition-colors";
+                const linkClassName = "block w-full text-left px-4 py-2.5 text-sm font-light text-gray-700 hover:bg-gray-50 hover:text-[#ff7834] transition-colors";
 
                 return isExternal ? (
                   <ExternalLink
@@ -381,7 +381,7 @@ const Navbar: React.FC = () => {
             <div className="bg-gray-50 py-2 rounded mt-1">
               {item.submenu.map((subItem) => {
                 const isExternal = subItem.href.startsWith('http');
-                const linkClassName = "block w-full text-left pl-6 pr-4 py-3 text-sm font-light text-gray-600 hover:text-orange-600 hover:bg-gray-100 transition-colors";
+                const linkClassName = "block w-full text-left pl-6 pr-4 py-3 text-sm font-light text-gray-600 hover:text-[#ff7834] hover:bg-gray-100 transition-colors";
 
                 return isExternal ? (
                   <ExternalLink
@@ -415,9 +415,15 @@ const Navbar: React.FC = () => {
     const isExternal = item.href.startsWith('http');
     const linkProps = {
       href: item.href,
-      className: `block px-3 py-2 text-sm font-light transition-colors duration-200 ${
-        isActive ? 'text-orange-600' : 'text-gray-700 hover:text-orange-600'
-      } ${isMobile ? 'text-base' : ''}`,
+      className: `relative block px-3 py-2 text-sm font-light transition-colors duration-200 focus-visible:outline-none focus-visible:text-[#ff7834] ${
+        isActive ? 'text-[#ff7834]' : 'text-gray-700 hover:text-[#ff7834]'
+      } ${
+        isMobile
+          ? 'text-base'
+          : `after:absolute after:bottom-0 after:left-3 after:right-3 after:h-0.5 after:rounded-full after:bg-[#ff7834] after:origin-left after:transition-transform after:duration-300 motion-reduce:after:transition-none ${
+              isActive ? 'after:scale-x-100' : 'after:scale-x-0 hover:after:scale-x-100'
+            }`
+      }`,
       onClick: isMobile ? closeMobileMenu : undefined,
     };
 
@@ -469,7 +475,7 @@ const Navbar: React.FC = () => {
                     e.stopPropagation();
                     setIsProfileMenuOpen(!isProfileMenuOpen);
                   }}
-                  className="flex items-center space-x-2 text-sm focus:outline-none px-3 py-2 rounded hover:bg-gray-50"
+                  className="flex items-center space-x-2 text-sm px-3 py-2 rounded hover:bg-gray-50 focus:outline-none focus-visible:ring-2 focus-visible:ring-[#ff7834]/60"
                   type="button"
                 >
                   <img
@@ -489,14 +495,14 @@ const Navbar: React.FC = () => {
                   <div className="absolute right-0 mt-1 w-48 bg-white rounded-sm border border-gray-100 shadow-lg py-1 z-50">
                     <Link
                       href="/profile"
-                      className="block px-4 py-2.5 text-sm font-light text-gray-700 hover:bg-gray-50 hover:text-orange-600 transition-colors"
+                      className="block px-4 py-2.5 text-sm font-light text-gray-700 hover:bg-gray-50 hover:text-[#ff7834] transition-colors"
                       onClick={() => setIsProfileMenuOpen(false)}
                     >
                       โปรไฟล์
                     </Link>
                     <button
                       onClick={() => signOut()}
-                      className="block w-full text-left px-4 py-2.5 text-sm font-light text-gray-700 hover:bg-gray-50 hover:text-orange-600 transition-colors"
+                      className="block w-full text-left px-4 py-2.5 text-sm font-light text-gray-700 hover:bg-gray-50 hover:text-[#ff7834] transition-colors"
                       type="button"
                     >
                       ออกจากระบบ
@@ -509,7 +515,7 @@ const Navbar: React.FC = () => {
             {/* Mobile menu button */}
             <button
               onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-              className="lg:hidden p-2 rounded hover:bg-gray-100 transition-colors"
+              className="lg:hidden p-2 rounded hover:bg-gray-100 transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-[#ff7834]/60"
               type="button"
               aria-label="Toggle mobile menu"
             >

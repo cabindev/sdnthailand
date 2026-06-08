@@ -6,7 +6,7 @@ export default function MapPortalLoadingFallback() {
       <div className="absolute top-3 left-3 bottom-3 z-10 w-[350px] sm:w-[380px] bg-white/95 rounded-2xl shadow-xl overflow-hidden animate-pulse">
         <div className="px-4 pt-4 pb-3 border-b border-gray-100">
           <div className="flex items-center gap-2.5 mb-3">
-            <div className="w-8 h-8 bg-orange-100 rounded-lg" />
+            <div className="w-8 h-8 bg-[#ff7834]/10 rounded-lg" />
             <div>
               <div className="h-4 bg-gray-100 rounded w-28 mb-1" />
               <div className="h-3 bg-gray-50 rounded w-24" />
@@ -31,7 +31,7 @@ export default function MapPortalLoadingFallback() {
         </div>
       </div>
       <div className="absolute inset-0 flex flex-col items-center justify-center gap-3">
-        <Loader2 className="w-7 h-7 animate-spin text-orange-500" />
+        <Loader2 className="w-7 h-7 animate-spin text-[#ff7834]" />
         <span className="text-sm text-gray-400">กำลังโหลดแผนที่...</span>
       </div>
     </section>

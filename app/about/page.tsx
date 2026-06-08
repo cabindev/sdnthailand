@@ -10,35 +10,35 @@ export default function SDNInfo() {
     {
       title: "โครงสร้างองค์กร",
       description: "โครงสร้างสำนักงานเครือข่ายองค์กรงดเหล้า",
-      icon: <FaUsers className="text-orange-500 text-2xl" />,
+      icon: <FaUsers className="text-[#ff7834] text-2xl" />,
       href: "/about/chart",
       color: "bg-blue-50"
     },
     {
       title: "พันธกิจและวิสัยทัศน์",
       description: "เราเกิดมาเพื่ออะไร และอะไรคือเป้าหมายของเรา",
-      icon: <FaBullseye className="text-orange-500 text-2xl" />,
+      icon: <FaBullseye className="text-[#ff7834] text-2xl" />,
       href: "/about/mission",
       color: "bg-green-50"
     },
     {
       title: "แนวคิดหลัก",
       description: "12 แนวคิดหลักของเครือข่ายงดเหล้า",
-      icon: <FaFileAlt className="text-orange-500 text-2xl" />,
+      icon: <FaFileAlt className="text-[#ff7834] text-2xl" />,
       href: "/about/principle",
       color: "bg-yellow-50"
     },
     {
       title: "โครงการที่ดำเนินงาน",
       description: "โครงการที่ดำเนินงานประจำปี 2567",
-      icon: <FaProjectDiagram className="text-orange-500 text-2xl" />,
+      icon: <FaProjectDiagram className="text-[#ff7834] text-2xl" />,
       href: "/about/project2567",
       color: "bg-purple-50"
     },
     {
       title: "ติดต่อเรา",
       description: "ข้อมูลการติดต่อและที่ตั้งสำนักงาน",
-      icon: <FaPhone className="text-orange-500 text-2xl" />,
+      icon: <FaPhone className="text-[#ff7834] text-2xl" />,
       href: "/about/contact",
       color: "bg-pink-50"
     }
@@ -49,7 +49,7 @@ export default function SDNInfo() {
       <div className="container mx-auto px-4">
         <div className="text-center mb-12">
           <h2 className="text-3xl font-bold text-gray-900">เกี่ยวกับเรา</h2>
-          <div className="h-1 w-24 bg-orange-500 mx-auto mt-4"></div>
+          <div className="h-1 w-24 bg-[#ff7834] mx-auto mt-4"></div>
           <p className="mt-4 text-gray-600 max-w-2xl mx-auto">
             เรียนรู้เพิ่มเติมเกี่ยวกับสำนักงานเครือข่ายองค์กรงดเหล้า วิสัยทัศน์ พันธกิจ และการทำงานของเรา
           </p>

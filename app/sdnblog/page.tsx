@@ -2,7 +2,6 @@
 'use client'
 
 import { useState } from 'react'
-import PostCard from './components/BlogCard'
 import { useSearchParams, useRouter } from 'next/navigation'
 import useSWR from 'swr'
 import Link from 'next/link'
@@ -71,7 +70,7 @@ export default function SDNBlogPage() {
     return (
       <div className="container mx-auto px-4 py-20">
         <div className="flex justify-center items-center gap-6 min-h-[60vh]">
-          <span className="loading loading-dots loading-lg text-amber-500"></span>
+          <span className="loading loading-dots loading-lg text-[#ff7834]"></span>
         </div>
       </div>
     )
@@ -101,7 +100,7 @@ export default function SDNBlogPage() {
           <p className="text-gray-600 mb-6">ขออภัย ไม่พบบทความที่ต้องการในขณะนี้</p>
           <Link 
             href="/"
-            className="inline-flex items-center text-amber-500 hover:text-amber-600"
+            className="inline-flex items-center text-[#ff7834] hover:text-[#e86b2a]"
           >
             <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 19l-7-7 7-7"/>
@@ -120,7 +119,7 @@ export default function SDNBlogPage() {
         <h1 className="text-4xl font-bold text-gray-800 mb-4">
           SDN Thailand Blog
         </h1>
-        <div className="w-24 h-1 bg-amber-500 mx-auto mb-4"></div>
+        <div className="w-24 h-1 bg-[#ff7834] mx-auto mb-4"></div>
         <p className="text-gray-600 max-w-2xl mx-auto">
           บทความและเรื่องราวที่น่าสนใจจาก SDN Thailand
         </p>
@@ -129,13 +128,9 @@ export default function SDNBlogPage() {
       {/* Posts Grid */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
         {data.posts.map((post) => (
-          <div 
-            key={post.id} 
-            className="opacity-0 animate-fade-in max-w-sm mx-auto w-full"
-            style={{
-              animation: 'fadeIn 0.5s ease-in forwards',
-              animationDelay: '0.1s'
-            }}
+          <div
+            key={post.id}
+            className="mx-auto w-full max-w-sm animate-fade-in motion-reduce:animate-none"
           >
             <BlogCard post={post} />
           </div>
@@ -148,10 +143,10 @@ export default function SDNBlogPage() {
           <button
             onClick={() => handlePageChange(Math.max(1, currentPage - 1))}
             disabled={currentPage === 1}
-            className={`w-10 h-10 flex items-center justify-center rounded-full
+            className={`w-10 h-10 flex items-center justify-center rounded-full focus:outline-none focus-visible:ring-2 focus-visible:ring-[#ff7834]/50 focus-visible:ring-offset-2
               ${currentPage === 1 
-                ? 'bg-amber-100 text-amber-300 cursor-not-allowed' 
-                : 'bg-amber-500 text-white hover:bg-amber-600 transition-colors'
+                ? 'bg-[#ff7834]/10 text-[#ff7834]/40 cursor-not-allowed' 
+                : 'bg-[#ff7834] text-white hover:bg-[#e86b2a] transition-colors'
               }`}
             aria-label="Previous page"
           >
@@ -172,10 +167,10 @@ export default function SDNBlogPage() {
                   <button
                     key={pageNumber}
                     onClick={() => handlePageChange(pageNumber)}
-                    className={`w-10 h-10 flex items-center justify-center rounded-lg
+                    className={`w-10 h-10 flex items-center justify-center rounded-lg focus:outline-none focus-visible:ring-2 focus-visible:ring-[#ff7834]/50 focus-visible:ring-offset-2
                       ${currentPage === pageNumber
-                        ? 'bg-amber-500 text-white'
-                        : 'bg-white text-amber-500 border border-amber-500 hover:bg-amber-50'
+                        ? 'bg-[#ff7834] text-white'
+                        : 'bg-white text-[#ff7834] border border-[#ff7834] hover:bg-[#ff7834]/5'
                       }`}
                     aria-label={`Page ${pageNumber}`}
                     aria-current={currentPage === pageNumber ? 'page' : undefined}
@@ -197,10 +192,10 @@ export default function SDNBlogPage() {
           <button
             onClick={() => handlePageChange(Math.min(data.totalPages, currentPage + 1))}
             disabled={currentPage === data.totalPages}
-            className={`w-10 h-10 flex items-center justify-center rounded-full
+            className={`w-10 h-10 flex items-center justify-center rounded-full focus:outline-none focus-visible:ring-2 focus-visible:ring-[#ff7834]/50 focus-visible:ring-offset-2
               ${currentPage === data.totalPages 
-                ? 'bg-amber-100 text-amber-300 cursor-not-allowed' 
-                : 'bg-amber-500 text-white hover:bg-amber-600 transition-colors'
+                ? 'bg-[#ff7834]/10 text-[#ff7834]/40 cursor-not-allowed' 
+                : 'bg-[#ff7834] text-white hover:bg-[#e86b2a] transition-colors'
               }`}
             aria-label="Next page"
           >

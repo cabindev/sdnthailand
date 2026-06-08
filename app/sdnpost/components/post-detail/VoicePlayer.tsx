@@ -140,7 +140,7 @@ export default function VoicePlayer({ text }: VoicePlayerProps) {
             ? 'bg-gray-100 cursor-not-allowed opacity-50' 
             : 'bg-white hover:bg-orange-50 hover:shadow-md active:scale-95'
           }
-          ${isPlaying ? 'bg-orange-100 text-orange-600' : 'text-gray-600'}
+          ${isPlaying ? 'bg-[#ff7834]/15 text-[#e86b2a]' : 'text-gray-600'}
           border border-gray-200 shadow-sm
         `}
         title={

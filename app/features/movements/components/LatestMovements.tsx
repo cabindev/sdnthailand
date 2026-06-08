@@ -32,7 +32,7 @@ const NEWS_URL = '/api/sdn-latest?per_page=6';
 const VIDEO_URL = '/api/video?per_page=6';
 
 const TYPE_META: Record<MovementType, { label: string; badge: string; chip: string }> = {
-  blog: { label: 'บทความ', badge: 'bg-orange-500', chip: 'bg-orange-500 text-white' },
+  blog: { label: 'บทความ', badge: 'bg-[#ff7834]', chip: 'bg-[#ff7834] text-white' },
   news: { label: 'ข่าว', badge: 'bg-blue-600', chip: 'bg-blue-600 text-white' },
   video: { label: 'วิดีโอ', badge: 'bg-red-600', chip: 'bg-red-600 text-white' },
 };
@@ -115,9 +115,9 @@ function HeroCard({ item }: { item: MovementItem }) {
           {item.excerpt && (
             <p className="mb-5 text-sm leading-relaxed text-gray-600 line-clamp-3">{item.excerpt}</p>
           )}
-          <span className="inline-flex items-center font-medium text-orange-500 transition-colors group-hover:text-orange-600">
+          <span className="inline-flex items-center font-medium text-[#ff7834] transition-colors group-hover:text-[#e86b2a]">
             อ่านเพิ่มเติม
-            <IoArrowForward className="ml-2 h-4 w-4" />
+            <IoArrowForward className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1 motion-reduce:transform-none" />
           </span>
         </div>
       </div>
@@ -232,11 +232,12 @@ export default function LatestMovements() {
     <section className="bg-white py-12">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="mb-8 text-center">
-          <h2 className="bg-gradient-to-r from-orange-500 via-amber-500 to-orange-600 bg-clip-text text-4xl font-extrabold tracking-tight text-transparent sm:text-5xl md:text-6xl">
-            SDN<span className="text-gray-900">THAILAND</span>
+          <h2 className="text-4xl font-extrabold tracking-tight sm:text-5xl md:text-6xl">
+            <span className="text-[#ff7834]">SDN</span>
+            <span className="text-gray-900">THAILAND</span>
           </h2>
           <p className="mt-3 text-gray-600">เครือข่ายภาคประชาสังคม ลดการบริโภคเครื่องดื่มแอลกอฮอล์</p>
-          <div className="mx-auto mt-4 h-1 w-24 bg-orange-500" />
+          <div className="mx-auto mt-4 h-1 w-24 rounded-full bg-[#ff7834]" />
         </div>
 
         {/* Filter chips */}
@@ -250,7 +251,8 @@ export default function LatestMovements() {
                 key={key}
                 type="button"
                 onClick={() => setFilter(key)}
-                className={`rounded-full px-4 py-1.5 text-sm font-medium transition-colors ${
+                aria-pressed={active}
+                className={`rounded-full px-4 py-1.5 text-sm font-medium transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-[#ff7834]/50 focus-visible:ring-offset-2 ${
                   active ? activeClass : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
                 }`}
               >
@@ -268,7 +270,7 @@ export default function LatestMovements() {
             <button
               type="button"
               onClick={() => window.location.reload()}
-              className="rounded-full bg-orange-500 px-6 py-2 text-white transition-colors hover:bg-orange-600"
+              className="rounded-full bg-[#ff7834] px-6 py-2 text-white transition-colors hover:bg-[#e86b2a] focus:outline-none focus-visible:ring-2 focus-visible:ring-[#ff7834]/50 focus-visible:ring-offset-2"
             >
               ลองใหม่อีกครั้ง
             </button>

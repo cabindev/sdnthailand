@@ -19,21 +19,14 @@
   --font-body: 'IBM Plex Sans Thai Looped', sans-serif;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #121212;
-    --foreground: #f7f7f7;
-    --primary: #f7f7f7;
-    --primary-foreground: #121212;
-    --secondary: #252525;
-    --secondary-foreground: #f7f7f7;
-    --accent: #ff7834; 
-    --accent-foreground: #ffffff;
-    --muted: #6e6e6e;
-    --muted-foreground: #f7f7f7;
-    --hover-bg: #2c2c2c;
-    --hover-text: #f7f7f7;
-  }
+/*
+ * Light-only UI. The whole component layer hard-codes light surfaces
+ * (bg-white, text-gray-*), so auto dark mode only flips a few CSS
+ * variables and produces a broken half-dark page (e.g. /sdnpost).
+ * Lock the color scheme to light until a real dark theme is built.
+ */
+:root {
+  color-scheme: light;
 }
 
 /* Seppuri for headings */

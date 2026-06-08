@@ -164,7 +164,7 @@ export default function LogoShowcase() {
         {/* Navigation Buttons */}
         <button
           onClick={scrollPrev}
-          className="absolute -left-4 top-1/2 -translate-y-1/2 z-20 w-8 h-8 rounded-full bg-orange-500 text-white shadow-sm flex items-center justify-center hover:bg-orange-600 transition-colors"
+          className="absolute -left-4 top-1/2 -translate-y-1/2 z-20 w-8 h-8 rounded-full bg-[#ff7834] text-white shadow-sm flex items-center justify-center hover:bg-[#e86b2a] transition-colors"
         >
           <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
@@ -173,7 +173,7 @@ export default function LogoShowcase() {
 
         <button
           onClick={scrollNext}
-          className="absolute -right-4 top-1/2 -translate-y-1/2 z-20 w-8 h-8 rounded-full bg-orange-500 text-white shadow-sm flex items-center justify-center hover:bg-orange-600 transition-colors"
+          className="absolute -right-4 top-1/2 -translate-y-1/2 z-20 w-8 h-8 rounded-full bg-[#ff7834] text-white shadow-sm flex items-center justify-center hover:bg-[#e86b2a] transition-colors"
         >
           <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
@@ -187,7 +187,7 @@ export default function LogoShowcase() {
           <button
             key={idx}
             className={`w-1.5 h-1.5 rounded-full transition-all duration-300 ${
-              idx === selectedIndex ? 'bg-orange-500 w-3' : 'bg-gray-300'
+              idx === selectedIndex ? 'bg-[#ff7834] w-3' : 'bg-gray-300'
             }`}
             aria-label={`Go to slide ${idx + 1}`}
           />

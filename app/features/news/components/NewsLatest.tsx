@@ -60,7 +60,7 @@ export default function NewsLatest() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-8">
             <h2 className="text-3xl font-bold text-gray-900">ข่าวและกิจกรรมล่าสุด</h2>
-            <div className="w-24 h-1 bg-orange-500 mx-auto mt-4"></div>
+            <div className="w-24 h-1 bg-[#ff7834] mx-auto mt-4"></div>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
             {[1, 2, 3, 4].map((i) => (
@@ -88,7 +88,7 @@ export default function NewsLatest() {
             <button
               type="button"
               onClick={() => window.location.reload()}
-              className="px-6 py-2 bg-orange-500 text-white rounded-full hover:bg-orange-600 transition-colors"
+              className="px-6 py-2 bg-[#ff7834] text-white rounded-full hover:bg-[#e86b2a] transition-colors"
             >
               ลองใหม่อีกครั้ง
             </button>
@@ -104,7 +104,7 @@ export default function NewsLatest() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-8">
           <h2 className="text-3xl font-bold text-gray-900">ข่าวและกิจกรรมล่าสุด</h2>
-          <div className="w-24 h-1 bg-orange-500 mx-auto mt-4"></div>
+          <div className="w-24 h-1 bg-[#ff7834] mx-auto mt-4"></div>
         </div>
 
         {/* Refresh button */}
@@ -113,7 +113,7 @@ export default function NewsLatest() {
             type="button"
             onClick={handleRefresh}
             disabled={isRefreshing}
-            className="flex items-center gap-2 px-4 py-2 text-sm text-gray-600 hover:text-orange-600 hover:bg-orange-100 rounded-full transition-colors disabled:opacity-50"
+            className="flex items-center gap-2 px-4 py-2 text-sm text-gray-600 hover:text-[#e86b2a] hover:bg-[#ff7834]/10 rounded-full transition-colors disabled:opacity-50"
             title="รีเฟรชข้อมูล"
           >
             <IoRefresh className={`w-4 h-4 ${isRefreshing ? 'animate-spin' : ''}`} />
@@ -135,7 +135,7 @@ export default function NewsLatest() {
           <div className="text-center mt-8">
             <Link 
               href="/sdnpost" 
-              className="inline-block px-6 py-2 bg-orange-500 text-white rounded-full hover:bg-orange-600 transition-colors"
+              className="inline-block px-6 py-2 bg-[#ff7834] text-white rounded-full hover:bg-[#e86b2a] transition-colors"
             >
               ดูข่าวทั้งหมด
             </Link>

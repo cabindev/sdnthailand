@@ -213,7 +213,7 @@ const NavigationMenu = ({ activeSection }: NavigationMenuProps) => {
                                 className="block hover:shadow-md transition-all duration-300 rounded-md overflow-hidden text-center group hover:scale-105"
                                 onClick={() => setIsHamburgerOpen(false)}
                               >
-                                <div className="w-full h-[70px] bg-gradient-to-br from-gray-50 to-gray-100 rounded-md overflow-hidden flex items-center justify-center group-hover:from-orange-50 group-hover:to-orange-100 transition-all duration-300 p-2">
+                                <div className="w-full h-[70px] bg-gradient-to-br from-gray-50 to-gray-100 rounded-md overflow-hidden flex items-center justify-center group-hover:from-[#ff7834]/5 group-hover:to-[#ff7834]/10 transition-all duration-300 p-2">
                                   <Image
                                     src={link.image}
                                     alt={link.title}
@@ -238,7 +238,7 @@ const NavigationMenu = ({ activeSection }: NavigationMenuProps) => {
                                     }}
                                   />
                                 </div>
-                                <div className="text-xs mt-2 text-gray-700 font-medium truncate px-1 group-hover:text-orange-600 transition-colors duration-300">
+                                <div className="text-xs mt-2 text-gray-700 font-medium truncate px-1 group-hover:text-[#e86b2a] transition-colors duration-300">
                                   {link.title}
                                 </div>
                               </a>

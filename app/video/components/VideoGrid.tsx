@@ -31,7 +31,7 @@ export default function VideoGrid() {
           <button
             onClick={() => setPage(p => Math.max(1, p - 1))}
             disabled={page === 1}
-            className="px-4 py-2 bg-orange-500 text-white rounded-lg disabled:opacity-50"
+            className="px-4 py-2 bg-[#ff7834] text-white rounded-lg disabled:opacity-50"
           >
             Previous
           </button>
@@ -41,7 +41,7 @@ export default function VideoGrid() {
           <button
             onClick={() => setPage(p => Math.min(data.totalPages, p + 1))}
             disabled={page === data.totalPages}
-            className="px-4 py-2 bg-orange-500 text-white rounded-lg disabled:opacity-50"
+            className="px-4 py-2 bg-[#ff7834] text-white rounded-lg disabled:opacity-50"
           >
             Next
           </button>

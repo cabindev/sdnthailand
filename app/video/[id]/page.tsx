@@ -58,7 +58,7 @@ async function getVideo(id: string) {
             </p>
             <Link 
               href="/video"
-              className="mt-4 inline-block text-orange-500 hover:text-orange-600"
+              className="mt-4 inline-block text-[#ff7834] hover:text-[#e86b2a]"
             >
               กลับไปหน้าวิดีโอ
             </Link>

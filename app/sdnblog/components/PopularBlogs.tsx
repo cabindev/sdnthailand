@@ -62,7 +62,7 @@ export default function PopularBlog() {
    return (
      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
        <div className="flex justify-center items-center h-[400px]">
-         <div className="w-10 h-10 border-4 border-orange-500/20 border-t-orange-500 rounded-full animate-spin"></div>
+         <div className="w-10 h-10 border-4 border-[#ff7834]/20 border-t-[#ff7834] rounded-full animate-spin"></div>
        </div>
      </div>
    )
@@ -75,12 +75,12 @@ export default function PopularBlog() {
  return (
    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
      <div className="flex justify-between items-center mb-8">
-       <h2 className="text-2xl font-bold border-b-2 border-orange-500 pb-2 inline-block">
+       <h2 className="text-2xl font-bold border-b-2 border-[#ff7834] pb-2 inline-block">
          ข่าวล่าสุด
        </h2>
        <Link 
          href="/sdnpost"
-         className="text-orange-500 hover:text-orange-600 transition-colors font-medium"
+         className="text-[#ff7834] hover:text-[#e86b2a] transition-colors font-medium"
        >
          ดูข่าวทั้งหมด
        </Link>
@@ -115,8 +115,8 @@ export default function PopularBlog() {
                    />
                  </div>
                  <div className="mt-4">
-                   <div className="text-sm text-orange-500 mb-2">{formattedDate}</div>
-                   <h3 className="text-lg font-semibold text-gray-800 line-clamp-2 group-hover:text-orange-500 transition-colors" 
+                   <div className="text-sm text-[#ff7834] mb-2">{formattedDate}</div>
+                   <h3 className="text-lg font-semibold text-gray-800 line-clamp-2 group-hover:text-[#ff7834] transition-colors" 
                        dangerouslySetInnerHTML={{ __html: post.title.rendered }} />
                  </div>
                </div>
@@ -183,8 +183,8 @@ export default function PopularBlog() {
             tabIndex={0}
             className={`w-3 h-3 rounded-full transition-all cursor-pointer
               ${currentIndex === index 
-                ? 'bg-orange-500 w-6' 
-                : 'bg-gray-300 hover:bg-orange-300'
+                ? 'bg-[#ff7834] w-6' 
+                : 'bg-gray-300 hover:bg-[#ff7834]'
               }`}
           />
         ))}
