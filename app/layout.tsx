@@ -70,8 +70,8 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="th" className={`${seppuri.variable} ${ibmPlex.variable}`}>
-      <body>
+    <html lang="th" className={`${seppuri.variable} ${ibmPlex.variable}`} suppressHydrationWarning>
+      <body suppressHydrationWarning>
         <SWRProvider>
           <ConditionalNavbar />
           <main className="font-ibm min-h-screen">
