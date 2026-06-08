@@ -20,10 +20,14 @@ const config: Config = {
         'fade-in': {
           '0%': { opacity: '0', transform: 'translateY(10px)' },
           '100%': { opacity: '1', transform: 'translateY(0)' },
-        }
+        },
+        shimmer: {
+          '100%': { transform: 'translateX(100%)' },
+        },
       },
       animation: {
-        
+        'fade-in': 'fade-in 0.5s ease-out',
+        shimmer: 'shimmer 1.5s infinite',
       },
     },
   },

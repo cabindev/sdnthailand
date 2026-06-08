@@ -17,6 +17,7 @@ const LatestMovements = lazy(() => import("@/app/features/movements/components/L
 // Loading components
 import BlogLoadingFallback from "@/app/herosection/components/loading/BlogLoadingFallback";
 import MapPortalLoadingFallback from "@/app/herosection/components/loading/MapPortalLoadingFallback";
+import SectionLoadingFallback from "@/app/herosection/components/loading/SectionLoadingFallback";
 import IntegratedHeroSection from "./ProjectIntroPage";
 
 // Animation variants
@@ -178,7 +179,7 @@ function Section({
           {content}
         </Suspense>
       ) : (
-        <Suspense fallback={<div className="h-32 bg-gray-50 animate-pulse" />}>
+        <Suspense fallback={<SectionLoadingFallback />}>
           {content}
         </Suspense>
       )}
