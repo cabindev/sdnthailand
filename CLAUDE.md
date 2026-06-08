@@ -1,172 +1,118 @@
 # SDN Thailand Project - CLAUDE.md
 
 ## Project Overview
-This is a Next.js 14 web application for SDN Thailand (Sober Drivers Network Thailand) - an organization focused on alcohol-free advocacy and awareness campaigns in Thailand. The platform serves as a comprehensive hub for blogs, news, videos, user management, and various campaigns promoting alcohol-free lifestyle.
+This is a Next.js web application for SDN Thailand (Sober Drivers / StopDrink Network Thailand) - an organization focused on alcohol-free advocacy and awareness campaigns in Thailand. The platform is a public content hub for blogs, news, videos, and campaigns. It is **content/API-driven**: there is no database or authentication layer; content comes from external WordPress APIs and the only server-side write path is the contact form (email).
+
+For product strategy and the visual design system, see `PRODUCT.md` and `DESIGN.md` at the project root.
 
 ## Tech Stack
-- **Framework**: Next.js 14 (App Router)
+- **Framework**: Next.js 16 (App Router, Turbopack)
 - **Language**: TypeScript
-- **Database**: MySQL with Prisma ORM
-- **Authentication**: NextAuth.js v4 with Prisma adapter
-- **Styling**: Tailwind CSS with DaisyUI components
-- **UI Components**: Tremor React, Framer Motion, Lucide React icons
-- **Image handling**: Browser image compression
-- **Text-to-Speech**: Microsoft Cognitive Services Speech SDK
-- **Data fetching**: SWR for client-side data fetching
-- **Email**: Nodemailer
-- **Password hashing**: bcryptjs
+- **UI**: React 19
+- **Styling**: Tailwind CSS v4 (CSS-first config in `app/globals.css` via `@theme`/`@plugin`; no `tailwind.config.*`) + `@tailwindcss/typography`
+- **Animation**: Framer Motion (`framer-motion` v12)
+- **Icons**: lucide-react, react-icons, @heroicons/react
+- **Maps**: Leaflet + react-leaflet v5 (client-only, `dynamic(..., { ssr: false })`)
+- **Carousel**: Embla
+- **Data fetching**: SWR (client-side, against internal API routes that proxy WordPress)
+- **Email**: Nodemailer (contact form only)
+- **Text-to-Speech**: Azure Cognitive Services Speech REST API (called via `fetch`, no SDK)
+- **Production server**: Express (`server.js`) for Plesk/Passenger compatibility
+
+> No database, ORM, or auth: Prisma, NextAuth, bcryptjs, and the user/dashboard system were removed. The site is fully driven by external content APIs.
 
 ## Project Structure
 
 ```
 app/
-├── about/                    # About pages (mission, principles, projects)
-├── api/                      # API routes
-│   ├── auth/                 # Authentication endpoints
-│   ├── sdnblog/             # Blog API endpoints
-│   ├── sdnpost/             # Posts API endpoints
+├── about/                   # About pages (mission, principles, contact, chart, projects)
+├── api/                     # API routes (proxy/aggregate WordPress + utilities)
+│   ├── sdnblog/             # Blog API endpoints (+ related, views)
+│   ├── sdnpost/             # News/post API endpoints (+ related, views)
+│   ├── sdn-latest/          # Unified latest feed
 │   ├── video/               # Video API endpoints
-│   ├── text-to-speech/      # TTS functionality
-│   └── users/               # User management APIs
-├── auth/                     # Authentication pages
-├── components/               # Shared components
-├── dashboard/                # User dashboard
-├── data/                     # Static data (provinces, regions)
-├── features/                 # Feature-specific components
-│   ├── blog/                # Blog components and types
-│   ├── news/                # News components
-│   ├── ordain/              # Ordination campaign
-│   └── video/               # Video components
-├── herosection/             # Homepage sections
-├── library/                 # Digital library (maintenance mode)
-├── project2020/             # 2020 projects showcase
-├── sdnblog/                 # Blog pages
-├── sdnpost/                 # Post pages
-├── video/                   # Video pages
-└── yellow/                  # Yellow campaign page
+│   ├── civicspace/          # CivicSpace content
+│   ├── mapportal/           # MapPortal data
+│   ├── projects2020/        # 2020 projects
+│   ├── text-to-speech/      # Azure TTS (REST via fetch)
+│   ├── contact/             # Contact form (Nodemailer)
+│   └── yellow/              # Yellow campaign
+├── components/              # Shared components (Navbar, Footer, ...)
+├── data/                    # Static data (provinces, regions)
+├── features/                # Feature components (blog, news, video, ordain, mapportal, movements)
+├── herosection/            # Homepage sections (composed in herosection/components/Home.tsx)
+├── library/                # Digital library (maintenance mode)
+├── project2020/            # 2020 projects showcase
+├── sdnblog/                # Blog pages (list + [id] detail)
+├── sdnpost/                # News pages (list + [id] detail)
+├── video/                  # Video pages
+└── yellow/                 # Yellow campaign page
 
 public/
-├── campaign/                # Campaign images and assets
-├── images/                  # Profile and general images
-├── networks/               # Network organization logos
-└── procurement/            # Procurement documents
+├── campaign/               # Campaign images and assets
+├── images/                 # General images and logos
+└── networks/               # Network organization logos
 ```
 
 ## Key Features
 
-### 1. Content Management
-- **Blogs**: Full blog system with views tracking, related posts, audio reading
-- **Posts**: News/announcement system with sharing capabilities
-- **Videos**: Video content management with related videos
-- **Projects**: Showcase of projects from 2020 and 2567 (2024)
+### 1. Content (from external WordPress APIs)
+- **Blogs**: views tracking, related posts, audio reading (TTS)
+- **News/Posts**: sharing, related posts
+- **Videos**: video content with related videos
+- **Unified feed**: latest blog + news + video on the homepage
 
-### 2. User Management
-- User registration and authentication
-- Profile management with image upload
-- Role-based access (MEMBER, ADMIN)
-- Password reset functionality
-- Dashboard with user statistics
-
-### 3. Campaigns & Features
-- Buddhist ordination campaign
-- Various awareness campaigns (Dry January, PM 2.5, etc.)
+### 2. Campaigns & Sections
+- Buddhist ordination campaign (saffron-themed section)
+- MapPortal interactive map (Leaflet, homepage only)
 - Logo showcase for partner organizations
-- Network information display
+- Various awareness campaigns
 
-### 4. Accessibility Features
-- Text-to-speech functionality using Azure Cognitive Services
-- Audio reading for blog posts
-- Responsive design for mobile and desktop
+### 3. Accessibility
+- Text-to-speech (Azure) audio reading for articles
+- WCAG AA targets, `prefers-reduced-motion` honored, visible focus states
+- Mobile-first responsive design
 
-### 5. Data Management
-- Province and regional data for Thailand
-- User statistics and analytics
-- Media request system
-- Procurement system (DRAFT, OPEN, CLOSED, CANCELLED)
-
-## Database Schema
-
-### User Model
-- Authentication and profile information
-- Role-based permissions (MEMBER/ADMIN)
-- Password reset tokens with expiration
-- Media request relationships
-
-### Content Models
-- MediaRequest: User media requests with file attachments
-- Procurement: Procurement management with status tracking
-- AnnounceResult: Procurement announcement results
+### 4. Contact
+- Contact form (`/about/contact` → `/api/contact`) sends email via Nodemailer
 
 ## Development Commands
 
 ```bash
-# Development
-npm run dev          # Start development server
-npm run build        # Build for production
-npm run start        # Start production server
-npm run lint         # Run ESLint
-
-# Database
-npx prisma migrate dev    # Apply database migrations
-npx prisma generate      # Generate Prisma client
-npx prisma db push       # Push schema changes
+npm run dev     # Start dev server (Next 16, Turbopack)
+npm run build   # Production build
+npm run start   # Start production server (next start)
+npm run lint    # ESLint
 ```
 
+No database/migration commands — there is no DB.
+
 ## Environment Setup
-Required environment variables:
-- `DATABASE_URL` - MySQL database connection
-- `NEXTAUTH_SECRET` - NextAuth secret key
-- `NEXTAUTH_URL` - Application URL
-- Azure Speech Services credentials for TTS
+Environment variables (in `.env`, gitignored):
+- `WORDPRESS_API_URL`, `WP_APPLICATION_PASSWORD` - WordPress content source
+- `NEXT_PUBLIC_API_URL` - frontend/base URL
+- `MAPPORTAL_API_URL` - MapPortal data source
+- `EMAIL_USER`, `EMAIL_PASS` - Nodemailer (contact form)
+- `AZURE_SPEECH_KEY`, `AZURE_SPEECH_REGION` - TTS
 
-## Content Types
-
-### External APIs
-The application fetches content from external WordPress APIs:
-- Blog content from `blog.sdnthailand.com`
-- News content from `sdnthailand.com`
-- Images from various sources including Gravatar and WordPress
-
-### Local Content
-- User-generated media requests
-- Procurement documents and announcements
-- Profile images and campaign assets
+## Styling Notes (Tailwind v4)
+- No `tailwind.config.ts`; theme tokens live in `app/globals.css` under `@theme` (brand color `--accent: #ff7834`, fonts, keyframes).
+- Plugins loaded via `@plugin` (e.g. `@tailwindcss/typography`). PostCSS uses `@tailwindcss/postcss`.
+- Brand accent contrast rule: use `#ff7834` on dark surfaces / as fills, icons, focus rings; for accent text on light backgrounds use a darker shade (e.g. `#c2410c`) to meet AA. See `DESIGN.md`.
 
 ## Special Functionality
-
-### Text-to-Speech
-Integrated Azure Cognitive Services for Thai language text-to-speech conversion, particularly useful for blog content accessibility.
-
-### Image Optimization
-Uses Next.js Image component with optimized loading for external sources including WordPress and Gravatar.
-
-### Responsive Design
-Mobile-first approach with Tailwind CSS responsive utilities and DaisyUI component system.
+- **Text-to-Speech**: Azure Speech REST API for Thai article narration (no SDK dependency).
+- **Image Optimization**: Next.js `<Image>` with `remotePatterns` for WordPress/Gravatar/Azure blob sources (see `next.config.js`).
+- **MapPortal**: Leaflet map loaded client-only via dynamic import with `ssr: false`.
 
 ## Deployment Notes
-- Uses Express.js server for production with static file serving
-- Configured for MAMP local development environment
-- Images served from `/images` and `/img` static routes
-- Port configuration defaults to 3000
-
-## Recent Development Activity
-Based on recent commits:
-- Button improvements and fixes
-- New carousel implementation
-- Azure API text-to-speech integration
-- Design updates for Home 2025
-- Various UI/UX enhancements
+- Production uses a custom Express server (`server.js`) as the Passenger entry point on Plesk.
+- MAMP for local development; default port 3000.
+- Fonts self-hosted (Seppuri, IBM Plex Sans Thai Looped) under `app/fonts`.
 
 ## Thai Language Support
-The application is primarily in Thai language with:
-- Thai content management
-- Thai text-to-speech capabilities
-- Thailand-specific data (provinces, regions)
-- Thai cultural context (Buddhist campaigns, local awareness)
+- Primarily Thai UI and content; Thai TTS; Thailand-specific data (provinces, regions); Thai cultural context (Buddhist campaigns).
 
-## Security Considerations
-- Password hashing with bcryptjs
-- NextAuth.js for secure authentication
-- Role-based access control
-- File upload security measures
-- Reset token expiration handling
+## Notes
+- Installs may require `--legacy-peer-deps` while some libraries catch up to React 19 peer ranges.
+- The contact form is the only feature that sends data server-side (email); everything else is read-only content.
