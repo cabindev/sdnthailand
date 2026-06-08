@@ -21,8 +21,8 @@ export default function Chart() {
       {/* แผนกหลัก */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-12">
         {/* สมาคมเครือข่ายงดเหล้า... */}
-        <div className="card bg-blue-200 shadow-2xl col-span-1 md:col-span-2">
-          <div className="card-body text-center">
+        <div className="rounded-2xl bg-blue-200 shadow-2xl col-span-1 md:col-span-2">
+          <div className="p-6 text-center">
             <div className="flex justify-center mb-4">
               <img
                 src="/images/Teera.png"
@@ -31,15 +31,15 @@ export default function Chart() {
               />
             </div>
             <p className="font-semibold">นายกสมาคมฯ: นายธีระ วัชรปราณี</p>
-            <h2 className="card-title text-2xl mb-2 justify-center">
+            <h2 className="font-semibold text-2xl mb-2 justify-center">
               สมาคมเครือข่ายงดเหล้าและงดปัจจัยเสี่ยงต่อสุขภาพ
             </h2>
           </div>
         </div>
 
         {/* เครือข่ายงดเหล้า (Stop Drink Network) */}
-        <div className="card bg-purple-200 shadow-xl col-span-1">
-          <div className="card-body text-center">
+        <div className="rounded-2xl bg-purple-200 shadow-xl col-span-1">
+          <div className="p-6 text-center">
             <div className="flex justify-center">
               <img
                 src="/images/songran.jpg"
@@ -51,7 +51,7 @@ export default function Chart() {
               ประธานเครือข่าย: นายสงกรานต์ ภาคโชคดี
             </p>
             <p>สมาชิกอาสาสมัครทั่วประเทศ</p>
-            <h2 className="card-title text-xl mb-2 justity-center">
+            <h2 className="font-semibold text-xl mb-2 justity-center">
               เครือข่ายงดเหล้า (Stop Drink Network)
             </h2>
           </div>
@@ -96,8 +96,8 @@ export default function Chart() {
         {/* แผนกย่อย */}
         <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
           {/* ผู้ช่วยผู้อำนวยการสำนักงานฯ */}
-          <div className="card bg-teal-200 shadow-xl col-span-1 md:col-span-2">
-            <div className="card-body text-center">
+          <div className="rounded-2xl bg-teal-200 shadow-xl col-span-1 md:col-span-2">
+            <div className="p-6 text-center">
               <div className="flex justify-center">
                 <img
                   src="/images/chai.jpg"
@@ -106,7 +106,7 @@ export default function Chart() {
                 />
               </div>
               <h4>นายชัยณรงค์ คำแดง</h4>
-              <h2 className="card-title justify-center">
+              <h2 className="font-semibold justify-center">
                 ผู้ช่วยผู้อำนวยการสำนักงานฯ
               </h2>
               <h3>กลุ่มงานด้านสำนักงาน จัดซื้อและคลังสื่อ</h3>
@@ -114,9 +114,9 @@ export default function Chart() {
             
           </div>
           {/* ผู้จัดการโครงการส่วนกลาง */}
-          <div className="card bg-lime-200 shadow-xl col-span-1">
-            <div className="card-body">
-              <h2 className="card-title">
+          <div className="rounded-2xl bg-lime-200 shadow-xl col-span-1">
+            <div className="p-6">
+              <h2 className="font-semibold">
                 ผู้จัดการศูนย์ประสานงาน ระดับภูมิภาค 9 แห่ง
               </h2>
               {/* เพิ่มรายชื่อจังหวัดตามที่กำหนด */}
@@ -133,10 +133,10 @@ export default function Chart() {
           </div>
 
           {/* ผู้จัดการศูนย์ประสานงาน */}
-          <div className="card bg-green-200 shadow-xl col-span-1">
-            <div className="card-body">
+          <div className="rounded-2xl bg-green-200 shadow-xl col-span-1">
+            <div className="p-6">
               {/* เพิ่มรายชื่อจังหวัดตามที่กำหนด */}
-              <h2 className="card-title">ผู้จัดการโครงการส่วนกลาง</h2>
+              <h2 className="font-semibold">ผู้จัดการโครงการส่วนกลาง</h2>
               <div className="flex items-center space-x-2">
                 <div className="w-10 h-10 rounded-full overflow-hidden">
                   <img
@@ -231,9 +231,9 @@ export default function Chart() {
           </div>
 
           {/* กลุ่มสื่อสารและประชาสัมพันธ์ */}
-          <div className="card bg-orange-50 shadow-xl col-span-1 md:col-span-2">
-            <div className="card-body">
-              <h2 className="card-title">กลุ่มสื่อสารและประชาสัมพันธ์</h2>
+          <div className="rounded-2xl bg-orange-50 shadow-xl col-span-1 md:col-span-2">
+            <div className="p-6">
+              <h2 className="font-semibold">กลุ่มสื่อสารและประชาสัมพันธ์</h2>
               <div className="flex items-center space-x-2">
                 <div className="w-10 h-10 rounded-full overflow-hidden">
                   <img
