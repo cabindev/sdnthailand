@@ -86,6 +86,25 @@ export default function MapPortalSection() {
     [validDocs]
   );
 
+  // Top 5 latest docs that auto-rotate in the "recent" tab so it doesn't look static
+  const recentTop = useMemo(() => recentDocs.slice(0, 5), [recentDocs]);
+  const [recentIndex, setRecentIndex] = useState(0);
+
+  // Auto-advance through the latest 5, pausing for reduced-motion users
+  useEffect(() => {
+    if (activeTab !== 'recent' || recentTop.length <= 1) return;
+    if (window.matchMedia?.('(prefers-reduced-motion: reduce)').matches) return;
+    const id = setInterval(() => {
+      setRecentIndex((i) => (i + 1) % recentTop.length);
+    }, 4500);
+    return () => clearInterval(id);
+  }, [activeTab, recentTop.length]);
+
+  // Keep the index valid if the data set shrinks
+  useEffect(() => {
+    setRecentIndex((i) => (i >= recentTop.length ? 0 : i));
+  }, [recentTop.length]);
+
   const handleSelectRegion = useCallback((regionName: string, provinces: string[]) => {
     setSelectedRegion(regionName);
     setSelectedProvince(null);
@@ -320,60 +339,114 @@ export default function MapPortalSection() {
             {/* Content */}
             <div className="flex-1 overflow-hidden mt-1">
               {activeTab === 'recent' ? (
-                (() => {
-                  const doc = recentDocs[0];
-                  if (!doc) return (
-                    <div className="h-full flex items-center justify-center">
-                      <p className="text-sm text-gray-400">ยังไม่มีข้อมูล</p>
-                    </div>
-                  );
-                  const catColor = getCategoryColor(doc.category.id);
-                  return (
-                    <div className="h-full flex flex-col overflow-hidden">
-                      {/* Hero image - fills most of space */}
-                      <div className="relative flex-1 min-h-0 overflow-hidden">
-                        {doc.coverImage ? (
-                          <CoverImage src={doc.coverImage} alt={doc.title} />
-                        ) : (
-                          <MapPortalPlaceholder color={catColor} />
-                        )}
-                        {/* Dark gradient overlay bottom */}
-                        <div className="absolute inset-0 bg-linear-to-t from-black/80 via-black/20 to-transparent" />
-
-                        {/* Top badges */}
-                        <div className="absolute top-3 left-3 right-3 flex items-center justify-between">
-                          <div className="flex items-center gap-1.5 bg-black/40 backdrop-blur-xs rounded-full px-2.5 py-1">
-                            <div className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
-                            <span className="text-white text-[11px] font-medium">โพสต์ล่าสุด</span>
-                          </div>
-                          <span
-                            className="text-[11px] font-semibold px-2.5 py-1 rounded-full backdrop-blur-xs"
-                            style={{ backgroundColor: catColor + 'CC', color: '#fff' }}
-                          >
-                            {doc.category.name}
-                          </span>
-                        </div>
-
-                        {/* Bottom overlay content */}
-                        <div className="absolute bottom-0 left-0 right-0 p-4">
-                          <h3 className="text-white font-bold text-base leading-snug line-clamp-3 mb-2 drop-shadow-sm">
-                            {doc.title}
-                          </h3>
-                          {doc.description && (
-                            <p className="text-white/70 text-xs leading-relaxed line-clamp-2 mb-3">
-                              {doc.description}
-                            </p>
+                recentTop.length === 0 ? (
+                  <div className="h-full flex items-center justify-center">
+                    <p className="text-sm text-gray-400">ยังไม่มีข้อมูล</p>
+                  </div>
+                ) : (
+                  <div className="h-full flex flex-col overflow-hidden p-3 gap-2.5">
+                    {/* Compact featured card — re-keyed per doc to fade + restart the progress bar */}
+                    {(() => {
+                      const doc = recentTop[recentIndex];
+                      const catColor = getCategoryColor(doc.category.id);
+                      return (
+                        <button
+                          key={doc.id}
+                          type="button"
+                          onClick={() => handleMapDocClick(doc.id)}
+                          className="group relative shrink-0 w-full aspect-16/10 rounded-2xl overflow-hidden text-left animate-fade-in"
+                        >
+                          {doc.coverImage ? (
+                            <CoverImage src={doc.coverImage} alt={doc.title} />
+                          ) : (
+                            <MapPortalPlaceholder color={catColor} />
                           )}
-                          <div className="flex items-center gap-1 text-white/60 text-xs">
-                            <MapPin className="w-3 h-3 shrink-0" />
-                            <span>{doc.amphoe}, {doc.province}</span>
+                          <div className="absolute inset-0 bg-linear-to-t from-black/85 via-black/25 to-black/5" />
+
+                          {/* Top badges */}
+                          <div className="absolute top-2.5 left-2.5 right-2.5 flex items-center justify-between gap-2">
+                            <span className="flex items-center gap-1.5 bg-black/45 backdrop-blur-xs rounded-full pl-2 pr-2.5 py-1 shrink-0">
+                              <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
+                              <span className="text-white text-[10px] font-medium tracking-wide">ล่าสุด</span>
+                            </span>
+                            <span
+                              className="text-[10px] font-semibold px-2 py-1 rounded-full backdrop-blur-xs truncate"
+                              style={{ backgroundColor: catColor + 'E6', color: '#fff' }}
+                            >
+                              {doc.category.name}
+                            </span>
                           </div>
+
+                          {/* Bottom overlay content */}
+                          <div className="absolute bottom-0 left-0 right-0 p-3">
+                            <h3 className="text-white font-bold text-sm leading-snug line-clamp-2 mb-1.5 drop-shadow-sm">
+                              {doc.title}
+                            </h3>
+                            <div className="flex items-center gap-1 text-white/75 text-[11px]">
+                              <MapPin className="w-3 h-3 shrink-0" />
+                              <span className="truncate">{doc.amphoe}, {doc.province}</span>
+                            </div>
+                          </div>
+
+                          {/* Auto-advance progress bar (hidden for reduced-motion) */}
+                          {recentTop.length > 1 && (
+                            <div className="absolute bottom-0 left-0 right-0 h-0.5 bg-white/15">
+                              <div className="h-full bg-[#ff7834] origin-left animate-progress motion-reduce:hidden" />
+                            </div>
+                          )}
+                        </button>
+                      );
+                    })()}
+
+                    {/* Up-next queue — doubles as the rotation indicator */}
+                    {recentTop.length > 1 && (
+                      <div className="flex-1 min-h-0 overflow-y-auto -mr-1 pr-1">
+                        <p className="px-1 pb-1.5 text-[11px] font-semibold text-gray-400">คิวถัดไป</p>
+                        <div className="space-y-1">
+                          {recentTop.map((d, i) => {
+                            const active = i === recentIndex;
+                            const dColor = getCategoryColor(d.category.id);
+                            return (
+                              <button
+                                key={d.id}
+                                type="button"
+                                onClick={() => setRecentIndex(i)}
+                                aria-current={active}
+                                className={`w-full flex items-center gap-2.5 p-1.5 rounded-xl text-left transition-colors ${
+                                  active ? 'bg-[#ff7834]/10' : 'hover:bg-gray-50'
+                                }`}
+                              >
+                                <span className="w-11 h-11 rounded-lg overflow-hidden shrink-0 bg-gray-100">
+                                  {d.coverImage ? (
+                                    <CoverImage src={d.coverImage} alt={d.title} />
+                                  ) : (
+                                    <span
+                                      className="w-full h-full flex items-center justify-center"
+                                      style={{ backgroundColor: dColor + '1A' }}
+                                    >
+                                      <MapPin className="w-4 h-4" style={{ color: dColor }} />
+                                    </span>
+                                  )}
+                                </span>
+                                <span className="flex-1 min-w-0">
+                                  <span className={`block text-xs font-semibold leading-snug line-clamp-1 ${
+                                    active ? 'text-[#c2410c]' : 'text-gray-800'
+                                  }`}>
+                                    {d.title}
+                                  </span>
+                                  <span className="flex items-center gap-1.5 mt-0.5">
+                                    <span className="w-1.5 h-1.5 rounded-full shrink-0" style={{ backgroundColor: dColor }} />
+                                    <span className="text-[11px] text-gray-400 truncate">{d.province}</span>
+                                  </span>
+                                </span>
+                              </button>
+                            );
+                          })}
                         </div>
                       </div>
-
-                    </div>
-                  );
-                })()
+                    )}
+                  </div>
+                )
               ) : activeTab === 'regions' ? (
                 <RegionSelector
                   documents={validDocs}
