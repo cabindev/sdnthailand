@@ -1,8 +1,9 @@
 'use client';
 
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import useSWR from 'swr';
 import Link from 'next/link';
+import { AnimatePresence, motion } from 'framer-motion';
 import { IoPlayCircle, IoArrowForward } from 'react-icons/io5';
 
 type MovementType = 'blog' | 'news' | 'video';
@@ -228,6 +229,30 @@ export default function LatestMovements() {
   const isLoading = !blogData && !newsData && !videoData;
   const allFailed = blogError && newsError && videoError;
 
+  // การ์ดใหญ่: เมื่อดู "ทั้งหมด" ให้วนสลับระหว่างข่าวล่าสุดและบทความล่าสุด
+  const heroItems = useMemo<MovementItem[]>(() => {
+    if (filter !== 'all') return filtered.slice(0, 1);
+    const latestNews = items.find((i) => i.type === 'news');
+    const latestBlog = items.find((i) => i.type === 'blog');
+    const rotation = [latestNews, latestBlog].filter(Boolean) as MovementItem[];
+    return rotation.length > 0 ? rotation : filtered.slice(0, 1);
+  }, [items, filtered, filter]);
+
+  const [heroIndex, setHeroIndex] = useState(0);
+
+  useEffect(() => {
+    setHeroIndex(0);
+    if (heroItems.length <= 1) return;
+    const id = setInterval(() => {
+      setHeroIndex((i) => (i + 1) % heroItems.length);
+    }, 6000);
+    return () => clearInterval(id);
+  }, [heroItems.length, filter]);
+
+  const heroItem = heroItems[heroIndex] ?? heroItems[0];
+  const heroIds = new Set(heroItems.map((i) => `${i.type}-${i.id}`));
+  const gridItems = filtered.filter((i) => !heroIds.has(`${i.type}-${i.id}`)).slice(0, 6);
+
   return (
     <section className="bg-white py-12">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
@@ -279,10 +304,40 @@ export default function LatestMovements() {
           <div className="py-12 text-center text-gray-500">ไม่พบข้อมูลในหมวดนี้</div>
         ) : (
           <div className="space-y-8">
-            <HeroCard item={filtered[0]} />
-            {filtered.length > 1 && (
+            {heroItem && (
+              <div>
+                <AnimatePresence mode="wait">
+                  <motion.div
+                    key={`${heroItem.type}-${heroItem.id}`}
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    exit={{ opacity: 0 }}
+                    transition={{ duration: 0.4 }}
+                  >
+                    <HeroCard item={heroItem} />
+                  </motion.div>
+                </AnimatePresence>
+                {heroItems.length > 1 && (
+                  <div className="mt-4 flex justify-center gap-2">
+                    {heroItems.map((item, i) => (
+                      <button
+                        key={`${item.type}-${item.id}`}
+                        type="button"
+                        onClick={() => setHeroIndex(i)}
+                        aria-label={`แสดง${TYPE_META[item.type].label}ล่าสุด`}
+                        aria-pressed={i === heroIndex}
+                        className={`h-2 rounded-full transition-all focus:outline-hidden focus-visible:ring-2 focus-visible:ring-[#ff7834]/50 focus-visible:ring-offset-2 ${
+                          i === heroIndex ? 'w-6 bg-[#ff7834]' : 'w-2 bg-gray-300 hover:bg-gray-400'
+                        }`}
+                      />
+                    ))}
+                  </div>
+                )}
+              </div>
+            )}
+            {gridItems.length > 0 && (
               <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
-                {filtered.slice(1, 7).map((item) => (
+                {gridItems.map((item) => (
                   <GridCard key={`${item.type}-${item.id}`} item={item} />
                 ))}
               </div>

@@ -73,16 +73,6 @@ export default function PostDetail({ post }: PostDetailProps) {
            {/* Author and Date */}
            <div className="flex flex-col md:flex-row md:items-center justify-between mb-6 md:mb-8 pb-6 md:pb-8 border-b border-gray-200 gap-4">
              <div className="flex items-center gap-4">
-               {author?.avatar_urls?.['96'] && (
-                 <div className="w-10 md:w-12 h-10 md:h-12 rounded-full overflow-hidden">
-                   <SafeImage 
-                     src={author.avatar_urls['96']}
-                     alt={author.name || ''}
-                     className="w-full h-full object-cover"
-                     defaultSrc="/images/default-avatar.png"
-                   />
-                 </div>
-               )}
                <div>
                  <div className="font-ibm font-medium text-gray-800 text-sm md:text-base">
                    {author?.name || 'ไม่ระบุผู้เขียน'}
