@@ -3,6 +3,8 @@
 import { useState, useEffect, Suspense, lazy } from "react";
 import { motion, AnimatePresence, MotionConfig, type Variants } from "framer-motion";
 import GuildMenu from "./GuildMenu";
+import CampaignBanner from "@/app/features/campaign/CampaignBanner";
+import RequestMediaPopup from "@/app/features/campaign/RequestMediaPopup";
 
 // Lazy load components
 const Support = lazy(() => import("./Support"));
@@ -65,6 +67,23 @@ export default function Home() {
   return (
     <MotionConfig reducedMotion="user">
     <main className="min-h-screen bg-white">
+
+      {/* Site identity header (ย้ายมาไว้บนสุด) */}
+      <div className="bg-white pt-12">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+          <div className="text-center">
+            <h1 className="text-4xl font-extrabold tracking-tight sm:text-5xl md:text-6xl">
+              <span className="text-[#ff7834]">SDN</span>
+              <span className="text-gray-900">THAILAND</span>
+            </h1>
+            <p className="mt-3 text-gray-600">เครือข่ายภาคประชาสังคม ลดการบริโภคเครื่องดื่มแอลกอฮอล์</p>
+            <div className="mx-auto mt-4 h-1 w-24 rounded-full bg-[#ff7834]" />
+          </div>
+        </div>
+      </div>
+
+      {/* Campaign announcement: งดเหล้าเข้าพรรษา 2569 (ซ่อนเองเมื่อจบกิจกรรม) */}
+      <CampaignBanner />
 
       {/* Top Section: Latest Movements (รวมบทความ + ข่าว + วิดีโอ) */}
       <Section id="movements" fallback={<BlogLoadingFallback />}>
@@ -139,6 +158,9 @@ export default function Home() {
       <Section className="bg-white">
         <LogoShowcase />
       </Section>
+
+      {/* Request campaign media popup (มุมซ้ายล่าง) */}
+      <RequestMediaPopup />
 
       {/* Back to Top Button */}
       <BackToTopButton isVisible={isScrolled} onClick={scrollToTop} />
