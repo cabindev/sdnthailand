@@ -12,7 +12,7 @@ import { Calendar, Facebook } from 'lucide-react';
  */
 
 // ช่วงกิจกรรม 1 ก.ค. – 28 ต.ค. 2569 (พ.ศ.) = 2026 (ค.ศ.) — แบนเนอร์ซ่อนเองเมื่อจบ
-const CAMPAIGN_END = new Date('2026-10-28T23:59:59+07:00').getTime();
+export const CAMPAIGN_END = new Date('2026-10-28T23:59:59+07:00').getTime();
 
 const fadeInUp: Variants = {
   initial: { y: 32, opacity: 0 },
@@ -28,14 +28,11 @@ export default function CampaignBanner() {
   if (Date.now() > CAMPAIGN_END) return null;
 
   return (
-    <div className="bg-linear-to-b from-orange-50 to-white py-10 sm:py-14">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <motion.div
           className="grid items-center gap-6 lg:gap-10 lg:grid-cols-[1.15fr_1fr]"
           variants={fadeInUp}
           initial="initial"
-          whileInView="animate"
-          viewport={{ once: true, margin: '-60px' }}
+          animate="animate"
         >
           {/* โปสเตอร์แคมเปญ — ลิงก์ไปเพจ Facebook */}
           <a
@@ -104,7 +101,5 @@ export default function CampaignBanner() {
             </div>
           </div>
         </motion.div>
-      </div>
-    </div>
   );
 }

@@ -3,7 +3,7 @@
 import { useState, useEffect, Suspense, lazy } from "react";
 import { motion, AnimatePresence, MotionConfig, type Variants } from "framer-motion";
 import GuildMenu from "./GuildMenu";
-import CampaignBanner from "@/app/features/campaign/CampaignBanner";
+import CampaignRotator from "@/app/features/campaign/CampaignRotator";
 import RequestMediaPopup from "@/app/features/campaign/RequestMediaPopup";
 
 // Lazy load components
@@ -82,8 +82,12 @@ export default function Home() {
         </div>
       </div>
 
-      {/* Campaign announcement: งดเหล้าเข้าพรรษา 2569 (ซ่อนเองเมื่อจบกิจกรรม) */}
-      <CampaignBanner />
+      {/* Campaign section: สลับแสดงงดเหล้าเข้าพรรษา 2569 / ลงนามออนไลน์ ลด ละ เลิกเหล้า (แต่ละแบนเนอร์ซ่อนเองเมื่อจบกิจกรรม) */}
+      <div className="bg-linear-to-b from-orange-50 to-white py-10 sm:py-14">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <CampaignRotator />
+        </div>
+      </div>
 
       {/* Top Section: Latest Movements (รวมบทความ + ข่าว + วิดีโอ) */}
       <Section id="movements" fallback={<BlogLoadingFallback />}>
