@@ -34,7 +34,7 @@ const VIDEO_URL = '/api/video?per_page=6';
 
 const TYPE_META: Record<MovementType, { label: string; badge: string; chip: string }> = {
   blog: { label: 'บทความ', badge: 'bg-[#ff7834]', chip: 'bg-[#ff7834] text-white' },
-  news: { label: 'ข่าว', badge: 'bg-blue-600', chip: 'bg-blue-600 text-white' },
+  news: { label: 'ข่าว', badge: 'bg-orange-400', chip: 'bg-orange-400 text-white' },
   video: { label: 'วิดีโอ', badge: 'bg-red-600', chip: 'bg-red-600 text-white' },
 };
 
@@ -59,8 +59,17 @@ function blogImage(post: any): string {
   );
 }
 
-const embeddedImage = (post: any, fallback: string): string =>
-  post?._embedded?.['wp:featuredmedia']?.[0]?.source_url || fallback;
+function embeddedImage(post: any, fallback: string): string {
+  const media = post?._embedded?.['wp:featuredmedia']?.[0];
+  const sizes = media?.media_details?.sizes;
+  return (
+    sizes?.full?.source_url ||
+    sizes?.large?.source_url ||
+    sizes?.medium_large?.source_url ||
+    media?.source_url ||
+    fallback
+  );
+}
 
 function timeAgo(dateStr: string): string {
   const date = new Date(dateStr);

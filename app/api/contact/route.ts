@@ -260,7 +260,7 @@ export async function POST(request: NextRequest) {
 
     await transporter.sendMail({
       from: '"SDN Thailand" <sdnthailandbackup@gmail.com>',
-      to: "contact@sdnthailand.com,evo_reaction@hotmail.com,tom_teera@hotmail.com,tan66847@gmail.com",
+      to: "contact@sdnthailand.com,evo_reaction@hotmail.com,tom_teera@hotmail.com,tan66847@gmail.com,chainarong880@gmail.com,eakarinsaisunee@gmail.com",
       subject: `ข้อความติดต่อจากเว็บไซต์: ${subject}`,
       html: adminEmailHtml,
       replyTo: email,

@@ -5,9 +5,10 @@ import { useEffect, useState, useCallback, useMemo } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
 import CampaignBanner, { CAMPAIGN_END } from './CampaignBanner';
 import SignCampaignBanner, { SIGN_END } from './SignCampaignBanner';
+import PointsCampaignBanner, { POINTS_END } from './PointsCampaignBanner';
 
 /**
- * สลับแสดงแบนเนอร์แคมเปญ 2 รายการ (งดเหล้าเข้าพรรษา 2569 / ลงนามออนไลน์ ลด ละ เลิกเหล้า)
+ * สลับแสดงแบนเนอร์แคมเปญ 3 รายการ (งดเหล้าเข้าพรรษา 2569 / ลงนามออนไลน์ ลด ละ เลิกเหล้า / สะสมแต้มสุขภาพ)
  * ทีละอัน แบบ crossfade อัตโนมัติ — คล้ายสไลด์โชว์แคมเปญด้านล่างของหน้าแรก
  */
 
@@ -19,6 +20,7 @@ export default function CampaignRotator() {
       [
         { id: 'lent', Component: CampaignBanner, active: Date.now() <= CAMPAIGN_END },
         { id: 'sign', Component: SignCampaignBanner, active: Date.now() <= SIGN_END },
+        { id: 'points', Component: PointsCampaignBanner, active: Date.now() <= POINTS_END },
       ].filter((slide) => slide.active),
     []
   );
