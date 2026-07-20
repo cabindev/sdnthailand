@@ -9,6 +9,9 @@ import { IoIosArrowDown, IoIosArrowForward } from "react-icons/io";
 interface SubMenuItem {
   name: string;
   href: string;
+  description?: string;
+  badge?: string;
+  badgeClassName?: string;
 }
 
 interface NestedMenuItem {
@@ -104,6 +107,25 @@ const Navbar: React.FC = () => {
       items: [
         { name: 'Lanna Document', href: 'https://lanna.sdnthailand.com/pages/login.php' },
         { name: 'ร้อยคนหัวใจเพชร', href: 'https://sdnthailand.synology.me/soberteam' },
+      ]
+    },
+    {
+      name: 'ระบบประเมินผล',
+      items: [
+        {
+          name: 'ระบบติดตามประเมินผล',
+          href: 'https://community-driven.sdnthailand.com/',
+          badge: 'กพร.',
+          badgeClassName: 'bg-yellow-100 text-yellow-800',
+          description: 'รายงานผลการดำเนินงานแบบมีส่วนร่วม',
+        },
+        {
+          name: 'Audit Score',
+          href: 'https://healthy-impact.sdnthailand.com/',
+          badge: 'สสส.',
+          badgeClassName: 'bg-green-600 text-white',
+          description: 'คะแนนประเมินผลกระทบสุขภาพ (Healthy Impact)',
+        },
       ]
     },
   ];
@@ -243,7 +265,7 @@ const Navbar: React.FC = () => {
                   
                   {/* Nested items */}
                   {openNestedSubmenu === nestedItem.name && (
-                    <div className="absolute right-full top-0 w-64 bg-white shadow-lg border border-gray-100 py-1 z-50 rounded-xs">
+                    <div className="absolute right-full top-0 w-72 bg-white shadow-lg border border-gray-100 py-1 z-50 rounded-xs">
                       {nestedItem.items.map((subItem) => (
                         <ExternalLink
                           key={subItem.name}
@@ -254,7 +276,19 @@ const Navbar: React.FC = () => {
                             setOpenNestedSubmenu('');
                           }}
                         >
-                          {subItem.name}
+                          <span className="flex items-center gap-1.5">
+                            {subItem.badge && (
+                              <span className={`inline-block px-1.5 py-0.5 rounded-full text-[10px] font-medium ${subItem.badgeClassName ?? 'bg-gray-100 text-gray-600'}`}>
+                                {subItem.badge}
+                              </span>
+                            )}
+                            <span>{subItem.name}</span>
+                          </span>
+                          {subItem.description && (
+                            <span className="block mt-0.5 text-xs font-light text-gray-400">
+                              {subItem.description}
+                            </span>
+                          )}
                         </ExternalLink>
                       ))}
                     </div>
@@ -291,7 +325,19 @@ const Navbar: React.FC = () => {
                           className="block w-full text-left pl-4 pr-4 py-2 text-sm font-light text-gray-600 hover:text-[#ff7834] hover:bg-gray-200 transition-colors"
                           onClick={closeMobileMenu}
                         >
-                          {subItem.name}
+                          <span className="flex items-center gap-1.5">
+                            {subItem.badge && (
+                              <span className={`inline-block px-1.5 py-0.5 rounded-full text-[10px] font-medium ${subItem.badgeClassName ?? 'bg-gray-200 text-gray-600'}`}>
+                                {subItem.badge}
+                              </span>
+                            )}
+                            <span>{subItem.name}</span>
+                          </span>
+                          {subItem.description && (
+                            <span className="block mt-0.5 text-xs font-light text-gray-400">
+                              {subItem.description}
+                            </span>
+                          )}
                         </ExternalLink>
                       ))}
                     </div>

@@ -28,6 +28,13 @@ export default function RequestMediaPopup() {
     return () => window.clearTimeout(t);
   }, []);
 
+  // การ์ดที่โผล่ขึ้นมาให้ยุบกลับเป็นปุ่มกลมเองหลังจากแสดง 5 วิ (ไม่รบกวนถ้าผู้ใช้ปิดเองไปแล้ว)
+  useEffect(() => {
+    if (!expanded) return;
+    const t = window.setTimeout(() => setExpanded(false), 5000);
+    return () => window.clearTimeout(t);
+  }, [expanded]);
+
   const collapse = () => {
     setExpanded(false);
     window.localStorage.setItem(STORAGE_KEY, '1');
