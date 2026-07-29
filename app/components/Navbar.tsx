@@ -107,6 +107,11 @@ const Navbar: React.FC = () => {
       items: [
         { name: 'Lanna Document', href: 'https://lanna.sdnthailand.com/pages/login.php' },
         { name: 'ร้อยคนหัวใจเพชร', href: 'https://sdnthailand.synology.me/soberteam' },
+        {
+          name: 'คืนข้อมูลงดเหล้าเข้าพรรษา 2569',
+          href: 'https://buddhistlent.sdnthailand.com/',
+          description: 'ข้อมูลรณรงค์งดเหล้าเข้าพรรษา ปี 2569',
+        },
       ]
     },
     {
