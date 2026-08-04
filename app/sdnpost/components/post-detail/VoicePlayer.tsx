@@ -56,7 +56,7 @@ export default function VoicePlayer({ text }: VoicePlayerProps) {
         body: JSON.stringify({
           text: cleanedText,
           languageCode: 'th-TH',
-          voiceName: 'th-TH-NiwatNeural'
+          voiceName: 'th-TH-Krit:MAI-Voice-2'
         })
       })
 

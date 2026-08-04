@@ -12,6 +12,32 @@ const RATE_LIMIT_WINDOW = 60 * 1000 // 1 minute
 const RATE_LIMIT_MAX_REQUESTS = 10 // 10 requests per minute per IP
 const MAX_TEXT_LENGTH = 2000 // ลดลงเป็น 2000 characters
 
+// Azure HD voices (ชื่อมี ":" เช่น th-TH-Krit:MAI-Voice-2) จำกัดข้อความ
+// ต่อ request ไว้ที่ราว 400-450 ตัวอักษร (เกินแล้ว Azure ตอบ 502) ต้องตัดเป็นท่อนแล้วต่อเสียงเอง
+const HD_VOICE_CHUNK_LIMIT = 350
+
+function isHDVoice(voiceName: string): boolean {
+  return voiceName.includes(':')
+}
+
+// ตัดข้อความเป็นท่อนที่ช่องว่างใกล้ maxLen ที่สุด เพื่อไม่ให้คำขาดกลางคำ
+function splitTextForHDVoice(text: string, maxLen: number): string[] {
+  if (text.length <= maxLen) return [text]
+
+  const chunks: string[] = []
+  let remaining = text
+
+  while (remaining.length > maxLen) {
+    let cut = remaining.lastIndexOf(' ', maxLen)
+    if (cut <= 0) cut = maxLen
+    chunks.push(remaining.slice(0, cut).trim())
+    remaining = remaining.slice(cut).trim()
+  }
+  if (remaining) chunks.push(remaining)
+
+  return chunks
+}
+
 // Rate limiting function
 function isRateLimited(ip: string): boolean {
   const now = Date.now()
@@ -86,7 +112,7 @@ function generateSSML(text: string, voiceName?: string): string {
     .replace(/[\u0000-\u0008\u000B\u000C\u000E-\u001F\u007F-\u0084\u0086-\u009F]/g, '')
 
   // Azure requires voice tag - ใช้ voice ที่ทำงานได้
-  const voice = voiceName || 'th-TH-NiwatNeural'
+  const voice = voiceName || 'th-TH-Krit:MAI-Voice-2'
   
   return `<speak version="1.0" xmlns="http://www.w3.org/2001/10/synthesis" xml:lang="th-TH">
 <voice name="${voice}">
@@ -120,11 +146,11 @@ export async function POST(request: NextRequest) {
       )
     }
 
-    const { 
-      text, 
-      languageCode = 'th-TH', 
-      voiceName = 'th-TH-NiwatNeural', // ใช้ voice ที่ทำงานได้!
-      ssmlGender = 'Male', // NiwatNeural เป็นเสียงผู้ชาย
+    const {
+      text,
+      languageCode = 'th-TH',
+      voiceName = 'th-TH-Krit:MAI-Voice-2', // Neural HD voice - เสียงธรรมชาติกว่า Neural ปกติ
+      ssmlGender = 'Male', // Krit เป็นเสียงผู้ชาย
       speakingRate = 0.9,
       pitch = '0st',
       volume = 'default'
@@ -151,59 +177,93 @@ export async function POST(request: NextRequest) {
       )
     }
 
-    // Generate SSML แบบง่าย
-    const ssml = generateSSML(textValidation.sanitized, voiceName)
+    const azureUrl = `https://${azureSpeechRegion}.tts.speech.microsoft.com/cognitiveservices/v1`
+
+    // เรียก Azure สำหรับ SSML ท่อนเดียว - throw error ที่มี .status ถ้าไม่สำเร็จ
+    async function synthesizeSSML(ssml: string): Promise<ArrayBuffer> {
+      const controller = new AbortController()
+      const timeoutId = setTimeout(() => controller.abort(), 20000) // 20 second timeout ต่อท่อน
+
+      try {
+        const response = await fetch(azureUrl, {
+          method: 'POST',
+          headers: {
+            'Ocp-Apim-Subscription-Key': azureSpeechKey,
+            'Content-Type': 'application/ssml+xml',
+            'X-Microsoft-OutputFormat': 'audio-24khz-48kbitrate-mono-mp3',
+            'User-Agent': 'SDNThailand-TTS/1.0'
+          },
+          body: ssml,
+          signal: controller.signal
+        })
+
+        if (!response.ok) {
+          const errorText = await response.text()
+          console.error(`Azure TTS API Error (${response.status}):`, errorText)
+          const error = new Error('Azure TTS request failed') as Error & { status?: number }
+          error.status = response.status
+          throw error
+        }
+
+        return await response.arrayBuffer()
+      } finally {
+        clearTimeout(timeoutId)
+      }
+    }
+
+    // เสียง HD (ชื่อมี ":") จำกัดความยาวข้อความต่อ request - ต้องตัดเป็นท่อนแล้วต่อเสียงเอง
+    const useChunking = isHDVoice(voiceName) && textValidation.sanitized.length > HD_VOICE_CHUNK_LIMIT
+    const textChunks = useChunking
+      ? splitTextForHDVoice(textValidation.sanitized, HD_VOICE_CHUNK_LIMIT)
+      : [textValidation.sanitized]
 
     console.log(`Azure TTS Request from ${clientIP}:`, {
       textLength: textValidation.sanitized.length,
       voice: voiceName || 'auto',
-      ssml: ssml.substring(0, 200) + '...', // แสดง SSML ตัวอย่าง
+      chunks: textChunks.length,
       truncated: textValidation.error ? true : false
     })
 
-    // Call Azure Speech API with timeout
-    const controller = new AbortController()
-    const timeoutId = setTimeout(() => controller.abort(), 30000) // 30 second timeout
+    let audioBuffer: ArrayBuffer
+    try {
+      const chunkBuffers: ArrayBuffer[] = []
+      for (const chunk of textChunks) {
+        chunkBuffers.push(await synthesizeSSML(generateSSML(chunk, voiceName)))
+      }
 
-    const azureUrl = `https://${azureSpeechRegion}.tts.speech.microsoft.com/cognitiveservices/v1`
+      if (chunkBuffers.length === 1) {
+        audioBuffer = chunkBuffers[0]
+      } else {
+        const totalLength = chunkBuffers.reduce((sum, b) => sum + b.byteLength, 0)
+        const combined = new Uint8Array(totalLength)
+        let offset = 0
+        for (const b of chunkBuffers) {
+          combined.set(new Uint8Array(b), offset)
+          offset += b.byteLength
+        }
+        audioBuffer = combined.buffer
+      }
+    } catch (err) {
+      const status = (err as { status?: number }).status
 
-    const response = await fetch(azureUrl, {
-      method: 'POST',
-      headers: {
-        'Ocp-Apim-Subscription-Key': azureSpeechKey,
-        'Content-Type': 'application/ssml+xml',
-        'X-Microsoft-OutputFormat': 'audio-24khz-48kbitrate-mono-mp3',
-        'User-Agent': 'SDNThailand-TTS/1.0'
-      },
-      body: ssml,
-      signal: controller.signal
-    })
-
-    clearTimeout(timeoutId)
-
-    if (!response.ok) {
-      const errorText = await response.text()
-      console.error(`Azure TTS API Error (${response.status}):`, errorText)
-      
-      // Log for monitoring
       console.error(`TTS API Error for IP ${clientIP}:`, {
-        status: response.status,
+        status,
         textLength: textValidation.sanitized.length,
         voice: voiceName
       })
-      
+
       // Return user-friendly error messages
-      if (response.status === 403) {
+      if (status === 403) {
         return NextResponse.json(
           { error: 'API access denied. Please check Azure API key configuration.' },
           { status: 403 }
         )
-      } else if (response.status === 400) {
+      } else if (status === 400) {
         return NextResponse.json(
           { error: 'Invalid voice or parameters selected.' },
           { status: 400 }
         )
-      } else if (response.status === 429) {
+      } else if (status === 429) {
         return NextResponse.json(
           { error: 'Rate limit exceeded. Please try again later.' },
           { status: 429 }
@@ -216,8 +276,6 @@ export async function POST(request: NextRequest) {
       }
     }
 
-    // Azure returns binary audio data directly
-    const audioBuffer = await response.arrayBuffer()
     const processingTime = Date.now() - startTime
 
     if (!audioBuffer || audioBuffer.byteLength === 0) {
