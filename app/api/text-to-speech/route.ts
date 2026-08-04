@@ -177,6 +177,8 @@ export async function POST(request: NextRequest) {
       )
     }
 
+    // แยกตัวแปรใหม่ที่ type เป็น string แน่นอน เพราะ TS ไม่ narrow ให้ closure ด้านล่าง
+    const speechKey: string = azureSpeechKey
     const azureUrl = `https://${azureSpeechRegion}.tts.speech.microsoft.com/cognitiveservices/v1`
 
     // เรียก Azure สำหรับ SSML ท่อนเดียว - throw error ที่มี .status ถ้าไม่สำเร็จ
@@ -188,7 +190,7 @@ export async function POST(request: NextRequest) {
         const response = await fetch(azureUrl, {
           method: 'POST',
           headers: {
-            'Ocp-Apim-Subscription-Key': azureSpeechKey,
+            'Ocp-Apim-Subscription-Key': speechKey,
             'Content-Type': 'application/ssml+xml',
             'X-Microsoft-OutputFormat': 'audio-24khz-48kbitrate-mono-mp3',
             'User-Agent': 'SDNThailand-TTS/1.0'
