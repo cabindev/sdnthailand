@@ -5,7 +5,11 @@ import { useState, useRef, useCallback, useEffect } from 'react'
 import { FaPlay, FaPause, FaSpinner } from 'react-icons/fa'
 
 const VOICE_NAME = 'th-TH-Krit:MAI-Voice-2'
-const MAX_TEXT_LENGTH = 2000
+
+// โหลดล่วงหน้ากี่ท่อนนับจากท่อนที่กำลังเล่น
+// ท่อนหนึ่งยาวราว 25 วินาที ส่วนการสังเคราะห์ใช้ ~5-9 วินาที เผื่อ 3 ท่อนจึงเหลือเฟือ
+// และทำให้การกดหยุดกลางบทความไม่เผาโควตา Azure ไปกับท่อนที่ไม่มีใครฟัง
+const PREFETCH_AHEAD = 3
 
 interface ArticleAudioPlayerProps {
   text: string
@@ -20,9 +24,9 @@ interface ArticleAudioPlayerProps {
  * เสียง HD ของ Azure ใช้เวลาสังเคราะห์ ~5-9 วินาทีต่อ 350 ตัวอักษร และรับข้อความได้ไม่เกิน
  * ~380 ตัวอักษรต่อ request บทความยาวจึงถูกตัดเป็นหลายท่อนที่ฝั่ง API
  *
- * แทนที่จะรอให้ครบทุกท่อนก่อนเริ่มเล่น (บทความ 2000 ตัวอักษรต้องรอ ~7 วินาที) คอมโพเนนต์นี้
- * ขอท่อนแรกก่อนแล้วเริ่มเล่นทันที จากนั้นขอท่อนที่เหลือพร้อมกันทั้งหมดระหว่างที่ท่อนแรกกำลังเล่น
- * ท่อนหนึ่งมีความยาวเสียงราว 25 วินาที ซึ่งนานพอให้ท่อนที่เหลือโหลดเสร็จก่อนถึงคิว
+ * แทนที่จะรอให้ครบทุกท่อนก่อนเริ่มเล่น (บทความยาวต้องรอเป็นนาที) คอมโพเนนต์นี้ขอท่อนแรกก่อน
+ * แล้วเริ่มเล่นทันที จากนั้นโหลดท่อนถัดไปล่วงหน้าแบบหน้าต่างเลื่อนระหว่างที่เสียงกำลังเล่นอยู่
+ * ท่อนหนึ่งมีความยาวเสียงราว 25 วินาที ซึ่งนานพอให้ท่อนถัดไปโหลดเสร็จก่อนถึงคิวเสมอ
  */
 export default function ArticleAudioPlayer({ text, idleLabel, ariaLabel }: ArticleAudioPlayerProps) {
   const [isPlaying, setIsPlaying] = useState(false)
@@ -51,7 +55,8 @@ export default function ArticleAudioPlayer({ text, idleLabel, ariaLabel }: Artic
       .replace(/&#39;/g, "'")
       .replace(/\s+/g, ' ') // ลบ whitespace ส่วนเกิน
       .trim()
-      .slice(0, MAX_TEXT_LENGTH)
+    // ไม่ตัดความยาวที่นี่ - ปล่อยให้ API เป็นเจ้าของเพดาน MAX_TEXT_LENGTH ที่เดียว
+    // และตัดที่ขอบเขตคำให้ด้วย ถ้าตัดตรงนี้จะได้คำขาดกลางคำก่อนที่ API จะเห็น
   }, [])
 
   // หยุดเสียง ยกเลิก request ที่ค้าง และคืนหน่วยความจำของ blob ทั้งหมด
@@ -152,31 +157,39 @@ export default function ArticleAudioPlayer({ text, idleLabel, ariaLabel }: Artic
       const firstResponse = await fetchChunk(cleanedText, 0, controller.signal)
       const chunkCount = Math.max(1, Number(firstResponse.headers.get('X-Chunk-Count')) || 1)
 
-      const isReady: boolean[] = new Array(chunkCount).fill(false)
-      const markReady = (i: number) => (url: string) => {
-        isReady[i] = true
-        return url
-      }
+      const chunkUrls = new Map<number, Promise<string>>()
+      const ready = new Set<number>()
 
-      const chunkUrls: Promise<string>[] = [toObjectUrl(firstResponse).then(markReady(0))]
+      // เริ่มโหลดท่อนที่ i ถ้ายังไม่เคยเริ่ม - เรียกซ้ำได้ ไม่ยิงซ้ำ
+      const ensureFetching = (i: number) => {
+        if (i >= chunkCount || chunkUrls.has(i)) return
 
-      // ท่อนที่เหลือยิงพร้อมกันทั้งหมด แล้วปล่อยให้โหลดอยู่เบื้องหลังระหว่างท่อนแรกเล่น
-      for (let i = 1; i < chunkCount; i++) {
-        chunkUrls.push(
-          fetchChunk(cleanedText, i, controller.signal).then(toObjectUrl).then(markReady(i))
-        )
+        const promise = (i === 0
+          ? toObjectUrl(firstResponse)
+          : fetchChunk(cleanedText, i, controller.signal).then(toObjectUrl)
+        ).then(url => {
+          ready.add(i)
+          return url
+        })
+
+        // กัน unhandled rejection ระหว่างรอคิว - error จริงถูกจับตอน await ในลูปด้านล่าง
+        promise.catch(() => {})
+        chunkUrls.set(i, promise)
       }
-      // กัน unhandled rejection ระหว่างรอคิว - error จริงจะถูกจับตอน await ในลูปด้านล่าง
-      chunkUrls.forEach(p => p.catch(() => {}))
 
       if (session !== sessionRef.current) return
 
       for (let i = 0; i < chunkCount; i++) {
+        // โหลดล่วงหน้าเป็นหน้าต่างเลื่อน ไม่ยิงทั้งบทความรวดเดียว
+        // บทความ 6000 ตัวอักษรมีได้ถึง ~18 ท่อน การยิงหมดพร้อมกันหนักเกินจำเป็น
+        // และเปลืองโควตา Azure ถ้าผู้ใช้ฟังไม่จบ
+        for (let j = i; j <= i + PREFETCH_AHEAD; j++) ensureFetching(j)
+
         // แสดงสถานะกำลังโหลดเฉพาะตอนที่ท่อนถัดไปยังมาไม่ทันจริง ๆ
         // ถ้าโหลดเสร็จรออยู่แล้วต้องไม่กะพริบเป็น spinner คั่นระหว่างท่อน
-        if (i > 0 && !isReady[i]) setIsLoading(true)
+        if (i > 0 && !ready.has(i)) setIsLoading(true)
 
-        const url = await chunkUrls[i]
+        const url = await chunkUrls.get(i)!
         if (session !== sessionRef.current) return
 
         setIsLoading(false)
@@ -184,6 +197,10 @@ export default function ArticleAudioPlayer({ text, idleLabel, ariaLabel }: Artic
 
         await playUrl(url, session)
         if (session !== sessionRef.current) return
+
+        // คืนหน่วยความจำท่อนที่เล่นจบแล้วทันที บทความยาวจะได้ไม่สะสม blob ทั้งเรื่องไว้
+        URL.revokeObjectURL(url)
+        objectUrlsRef.current = objectUrlsRef.current.filter(u => u !== url)
       }
 
       setIsPlaying(false)
