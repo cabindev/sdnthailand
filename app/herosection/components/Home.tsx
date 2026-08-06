@@ -5,6 +5,7 @@ import { motion, AnimatePresence, MotionConfig, type Variants } from "framer-mot
 import GuildMenu from "./GuildMenu";
 import CampaignRotator from "@/app/features/campaign/CampaignRotator";
 import RequestMediaPopup from "@/app/features/campaign/RequestMediaPopup";
+import IntroVideoPopup from "@/app/features/campaign/IntroVideoPopup";
 
 // Lazy load components
 const Support = lazy(() => import("./Support"));
@@ -67,6 +68,9 @@ export default function Home() {
   return (
     <MotionConfig reducedMotion="user">
     <main className="min-h-screen bg-white">
+
+      {/* วิดีโอแนะนำ เด้งขึ้นมาตอนเปิดหน้าแรก (ปิดได้ จำไว้ต่อ session) */}
+      <IntroVideoPopup />
 
       {/* Site identity header (ย้ายมาไว้บนสุด) */}
       <div className="bg-white pt-12">
