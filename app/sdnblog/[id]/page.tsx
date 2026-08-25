@@ -1,6 +1,7 @@
 // app/sdnblog/[id]/page.tsx
 import { Suspense } from 'react'
 import { Metadata } from 'next'
+import { notFound } from 'next/navigation'
 import BlogPostDetail from '../components/blog-detail/BlogPostDetail'
 import LoadingSpinner from '../components/LoadingSpinner'
 
@@ -22,6 +23,7 @@ async function getBlogPost(id: string) {
 
  const [postResponse, viewResponse] = await Promise.all([postData, viewData])
  
+ if (postResponse.status === 404) return null
  if (!postResponse.ok) throw new Error('Failed to fetch blog post')
  
  const post = await postResponse.json()
@@ -37,6 +39,14 @@ export async function generateMetadata(props: Props): Promise<Metadata> {
   const params = await props.params;
   try {
     const post = await getBlogPost(params.id)
+
+    if (!post) {
+      return {
+        title: 'ไม่พบบทความ | SDN Thailand',
+        robots: { index: false, follow: false },
+      }
+    }
+
     const featuredImage = post._embedded?.['wp:featuredmedia']?.[0]?.source_url || '/images/default-og.png'
     const description = post.excerpt?.rendered?.replace(/<[^>]+>/g, '') || ''
 
@@ -79,14 +89,10 @@ export async function generateMetadata(props: Props): Promise<Metadata> {
 
 export default async function Page(props: Props) {
   const params = await props.params;
+  let post
+
   try {
-    const post = await getBlogPost(params.id)
-    
-    return (
-      <Suspense fallback={<LoadingSpinner />}>
-        <BlogPostDetail post={post} />
-      </Suspense>
-    )
+    post = await getBlogPost(params.id)
   } catch (error) {
     return (
       <div className="container mx-auto px-4 py-20">
@@ -96,10 +102,19 @@ export default async function Page(props: Props) {
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" 
                 d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
             </svg>
-            ไม่พบบทความที่ต้องการ
+            ไม่สามารถโหลดบทความได้ กรุณาลองใหม่อีกครั้ง
           </p>
         </div>
       </div>
     )
   }
+
+  // ต้องเรียกนอก try เพราะ notFound() ทำงานด้วยการ throw
+  if (!post) notFound()
+
+  return (
+    <Suspense fallback={<LoadingSpinner />}>
+      <BlogPostDetail post={post} />
+    </Suspense>
+  )
 }
