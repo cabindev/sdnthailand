@@ -1,6 +1,7 @@
 // app/sdnpost/[id]/page.tsx
 import { Suspense } from 'react'
 import { Metadata } from 'next'
+import { notFound } from 'next/navigation'
 import { Post } from '../types'
 import LoadingSpinner from '../components/LoadingSpinner'
 import PostDetail from '../components/post-detail/PostDetail'
@@ -15,6 +16,8 @@ async function getPost(id: string) {
  
  const [postResponse] = await Promise.all([postData])
  
+ if (postResponse.status === 404) return null
+
  if (!postResponse.ok) {
    throw new Error('Failed to fetch post') 
  }
@@ -27,6 +30,14 @@ export async function generateMetadata(props: { params: Promise<{ id: string }> 
   const params = await props.params;
   try {
     const post = await getPost(params.id)
+
+    if (!post) {
+      return {
+        title: 'ไม่พบข่าว | SDN Thailand',
+        robots: { index: false, follow: false },
+      }
+    }
+
     const featuredImage = post._embedded?.['wp:featuredmedia']?.[0]?.source_url || '/images/default-featured.png'
     const description = post.excerpt?.rendered?.replace(/<[^>]+>/g, '') || ''
     const authorName = post._embedded?.author?.[0]?.name
@@ -72,14 +83,10 @@ export async function generateMetadata(props: { params: Promise<{ id: string }> 
 
 export default async function Page(props: { params: Promise<{ id: string }> }) {
   const params = await props.params;
+  let post
+
   try {
-    const post = await getPost(params.id)
-    
-    return (
-      <Suspense fallback={<LoadingSpinner />}>
-        <PostDetail post={post} />
-      </Suspense>
-    )
+    post = await getPost(params.id)
   } catch (error) {
     return (
       <div className="container mx-auto px-4 py-20">
@@ -89,10 +96,19 @@ export default async function Page(props: { params: Promise<{ id: string }> }) {
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" 
                 d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
             </svg>
-            ไม่พบข่าวที่ต้องการ
+            ไม่สามารถโหลดข่าวได้ กรุณาลองใหม่อีกครั้ง
           </p>
         </div>
       </div>
     )
   }
+
+  // ต้องเรียกนอก try เพราะ notFound() ทำงานด้วยการ throw
+  if (!post) notFound()
+
+  return (
+    <Suspense fallback={<LoadingSpinner />}>
+      <PostDetail post={post} />
+    </Suspense>
+  )
 }

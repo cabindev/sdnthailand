@@ -14,6 +14,9 @@ const getPost = cache(async (id: string) => {
       headers: { 'Accept': 'application/json' }
     }
   )
+  // WordPress ตอบ 404 เมื่อไม่มีบทความ id นี้ ต้องแยกจาก error อื่น
+  if (res.status === 404) return null
+  if (!res.ok) throw new Error(`WordPress API error: ${res.status}`)
   return res.json()
 })
 
@@ -28,6 +31,12 @@ export async function GET(request: NextRequest, props: { params: Promise<{ id: s
 
   try {
     const post = await getPost(params.id)
+    if (!post) {
+      return NextResponse.json(
+        { success: false, error: 'Blog post not found' },
+        { status: 404 }
+      )
+    }
     return NextResponse.json({ success: true, data: post })
   } catch (error) {
     return NextResponse.json(

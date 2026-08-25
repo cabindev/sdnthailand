@@ -2,6 +2,7 @@
 import { Suspense } from 'react'
 import Link from 'next/link'
 import { Metadata } from 'next'
+import { notFound } from 'next/navigation'
 import VideoDetail from '../components/VideoDetail'
 import LoadingGrid from '../components/LoadingGrid'
 
@@ -15,6 +16,11 @@ async function getVideo(id: string) {
       const response = await fetch(`${process.env.WORDPRESS_API_URL || 'https://sdnthailand.synology.me'}/index.php?rest_route=/wp/v2/videos/${id}&_embed=true`, {
         next: { revalidate: 60 }
       });
+  
+      // WordPress ตอบ 404 เมื่อไม่มีวิดีโอ id นี้ ต้องแยกจาก error อื่น
+      if (response.status === 404) {
+        return null;
+      }
   
       if (!response.ok) {
         throw new Error(`Failed to fetch video: ${response.status}`);
@@ -31,20 +37,14 @@ async function getVideo(id: string) {
   
   export default async function Page(props: Props) {
     const params = await props.params;
+    let video;
+  
     try {
       if (!params.id) {
         throw new Error('Video ID is required');
       }
   
-      const video = await getVideo(params.id);
-  
-      return (
-        <main className="min-h-screen bg-gray-50">
-          <Suspense fallback={<LoadingGrid />}>
-            <VideoDetail video={video} />
-          </Suspense>
-        </main>
-      );
+      video = await getVideo(params.id);
   
     } catch (error) {
       return (
@@ -55,7 +55,7 @@ async function getVideo(id: string) {
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" 
                   d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
               </svg>
-              ไม่พบวิดีโอที่ต้องการ หรือเกิดข้อผิดพลาดในการโหลดข้อมูล
+              ไม่สามารถโหลดวิดีโอได้ กรุณาลองใหม่อีกครั้ง
             </p>
             <Link 
               href="/video"
@@ -67,4 +67,15 @@ async function getVideo(id: string) {
         </div>
       );
     }
+  
+    // ต้องเรียกนอก try เพราะ notFound() ทำงานด้วยการ throw
+    if (!video) notFound();
+  
+    return (
+      <main className="min-h-screen bg-gray-50">
+        <Suspense fallback={<LoadingGrid />}>
+          <VideoDetail video={video} />
+        </Suspense>
+      </main>
+    );
   }
