@@ -5,7 +5,6 @@ import { motion, AnimatePresence, MotionConfig, type Variants } from "framer-mot
 import GuildMenu from "./GuildMenu";
 import CampaignRotator from "@/app/features/campaign/CampaignRotator";
 import RequestMediaPopup from "@/app/features/campaign/RequestMediaPopup";
-import IntroVideoPopup from "@/app/features/campaign/IntroVideoPopup";
 
 // Lazy load components
 const Support = lazy(() => import("./Support"));
@@ -69,11 +68,13 @@ export default function Home() {
     <MotionConfig reducedMotion="user">
     <main className="min-h-screen bg-white">
 
-      {/* วิดีโอแนะนำ เด้งขึ้นมาตอนเปิดหน้าแรก (ปิดได้ จำไว้ต่อ session) */}
-      <IntroVideoPopup />
+      {/* Top Section: Latest Movements (รวมบทความ + ข่าว + วิดีโอ) — ย้ายมาไว้บนสุด */}
+      <Section id="movements" fallback={<BlogLoadingFallback />}>
+        <LatestMovements />
+      </Section>
 
-      {/* Site identity header (ย้ายมาไว้บนสุด) */}
-      <div className="bg-white pt-12">
+      {/* Site identity header */}
+      <div className="bg-white pt-4">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="text-center">
             <h1 className="text-4xl font-extrabold tracking-tight sm:text-5xl md:text-6xl">
@@ -92,11 +93,6 @@ export default function Home() {
           <CampaignRotator />
         </div>
       </div>
-
-      {/* Top Section: Latest Movements (รวมบทความ + ข่าว + วิดีโอ) */}
-      <Section id="movements" fallback={<BlogLoadingFallback />}>
-        <LatestMovements />
-      </Section>
 
       {/* Guild Menu */}
       <GuildMenu />
