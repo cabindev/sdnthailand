@@ -100,6 +100,7 @@ const Navbar: React.FC = () => {
         { name: 'AVS+', href: 'https://sdnthailand.synology.me/avs/' },
         { name: 'SDN Map-portal', href: 'https://sdnmapportal.sdnthailand.com/' },
         { name: 'SSN Thailand', href: 'https://database.ssnthailand.com/' },
+        { name: 'SDN Network', href: 'https://network.sdnthailand.com/' },
       ]
     },
     {
