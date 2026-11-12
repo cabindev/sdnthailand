@@ -5,6 +5,7 @@ import { motion, AnimatePresence, MotionConfig, type Variants } from "framer-mot
 import GuildMenu from "./GuildMenu";
 import CampaignRotator from "@/app/features/campaign/CampaignRotator";
 import RequestMediaPopup from "@/app/features/campaign/RequestMediaPopup";
+import FarewellJourneySection from "@/app/features/campaign/FarewellJourneySection";
 
 // Lazy load components
 const Support = lazy(() => import("./Support"));
@@ -67,6 +68,9 @@ export default function Home() {
   return (
     <MotionConfig reducedMotion="user">
     <main className="min-h-screen bg-white">
+
+      {/* First Section: เส้นทางสุดท้าย — ส่งด้วยใจ (งานศพปลอดเหล้า) */}
+      <FarewellJourneySection />
 
       {/* Top Section: Latest Movements (รวมบทความ + ข่าว + วิดีโอ) — ย้ายมาไว้บนสุด */}
       <Section id="movements" fallback={<BlogLoadingFallback />}>
