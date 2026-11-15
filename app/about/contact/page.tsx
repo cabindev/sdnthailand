@@ -278,10 +278,11 @@ export default function Contact() {
              <h3 className="text-lg font-medium text-gray-900 mb-4">สำนักงานโพธิ์แก้ว</h3>
              <address className="not-italic space-y-3 text-sm text-gray-600">
                <p>
-                 สำนักงานเครือข่ายองค์กรงดเหล้า<br />
-                 110/287-288 ม.6 ซอยโพธิ์แก้ว แยก 4<br />
-                 ถ.โพธิ์แก้ว แขวงคลองกุ่ม เขตบึงกุ่ม<br />
-                 กทม. 10240
+                 <span className="font-medium text-gray-900">มูลนิธิวิถีสุข</span> (Health Way Foundation)<br />
+                 สำนักงานเครือข่ายองค์กรงดเหล้า ดำเนินงานภายใต้มูลนิธิวิถีสุข<br />
+                 110/287-288 หมู่ 6 แขวงคลองกุ่ม<br />
+                 เขตบึงกุ่ม กรุงเทพมหานคร 10240<br />
+                 (ซอยโพธิ์แก้ว แยก 4 ถ.โพธิ์แก้ว)
                </p>
                <div className="flex items-center space-x-2">
                  <FaPhone className="text-orange-500" />

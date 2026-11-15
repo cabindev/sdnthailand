@@ -69,9 +69,12 @@ export default function Footer() {
                 <path strokeLinecap="round" strokeLinejoin="round" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
               </svg>
               <address className="text-[15px] not-italic leading-relaxed text-white/70">
-                110/287-288 ม.6 ซอยโพธิ์แก้ว แยก 4<br />
-                ถ.โพธิ์แก้ว แขวงคลองกุ่ม เขตบึงกุ่ม<br />
-                กรุงเทพมหานคร 10240
+                <span className="font-medium text-white">มูลนิธิวิถีสุข</span>{' '}
+                <span className="text-white/60">(Health Way Foundation)</span>
+                <br />
+                110/287-288 หมู่ 6 แขวงคลองกุ่ม<br />
+                เขตบึงกุ่ม กรุงเทพมหานคร 10240<br />
+                <span className="text-white/55">(ซอยโพธิ์แก้ว แยก 4 ถ.โพธิ์แก้ว)</span>
               </address>
             </div>
             <a
