@@ -279,7 +279,7 @@ export default function Contact() {
              <address className="not-italic space-y-3 text-sm text-gray-600">
                <p>
                  <span className="font-medium text-gray-900">มูลนิธิวิถีสุข</span> (Health Way Foundation)<br />
-                 สำนักงานเครือข่ายองค์กรงดเหล้า ดำเนินงานภายใต้มูลนิธิวิถีสุข<br />
+                 สำนักงานเครือข่ายองค์กรงดเหล้า<br />
                  110/287-288 หมู่ 6 แขวงคลองกุ่ม<br />
                  เขตบึงกุ่ม กรุงเทพมหานคร 10240<br />
                  (ซอยโพธิ์แก้ว แยก 4 ถ.โพธิ์แก้ว)
