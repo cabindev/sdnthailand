@@ -93,6 +93,22 @@ export default function Footer() {
               </svg>
               02-948-3300
             </a>
+            <a
+              href="mailto:contact@sdnthailand.com"
+              className="group flex items-center gap-3 text-[15px] text-white/70 transition-colors hover:text-[#ff7834] focus-visible:text-[#ff7834] focus-visible:outline-hidden"
+            >
+              <svg
+                className="h-5 w-5 shrink-0 text-[#ff7834]"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+                strokeWidth={1.8}
+                aria-hidden="true"
+              >
+                <path strokeLinecap="round" strokeLinejoin="round" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+              </svg>
+              contact@sdnthailand.com
+            </a>
           </div>
 
           {/* Quick links */}
